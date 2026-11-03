@@ -1,0 +1,35 @@
+{
+  "P3_debut": 19,
+  "P3_alerte_mediane": 23.0,
+  "P3_alerte_p10_p90": [
+    22.0,
+    24.0
+  ],
+  "P3_detecte_pct": 100.0,
+  "P3_controle_ponctuel_rejet_pct": 10.666666666666668,
+  "P8_debut": 24,
+  "P8_alerte_mediane": 27.0,
+  "P8_alerte_p10_p90": [
+    26.0,
+    29.0
+  ],
+  "P8_detecte_pct": 100.0,
+  "P8_controle_ponctuel_rejet_pct": 0.0,
+  "fausses_alertes_pct": {
+    "P1": 0.0,
+    "P2": 3.6,
+    "P4": 0.9,
+    "P6": 0.0
+  },
+  "Z_moyen_cloture": {
+    "P1": 1.0,
+    "P2": 0.96,
+    "P3": 0.0,
+    "P4": 0.94,
+    "P5": 0.82,
+    "P6": 1.0,
+    "P7": 0.62,
+    "P8": 0.34
+  },
+  "runs": 300
+}
