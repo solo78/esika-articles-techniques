@@ -6,29 +6,67 @@
     24.0
   ],
   "P3_detecte_pct": 100.0,
-  "P3_controle_ponctuel_rejet_pct": 10.666666666666668,
+  "P3_controle_ponctuel_rejet_pct": 11.666666666666666,
   "P8_debut": 24,
   "P8_alerte_mediane": 27.0,
   "P8_alerte_p10_p90": [
-    26.0,
+    27.0,
     29.0
   ],
   "P8_detecte_pct": 100.0,
   "P8_controle_ponctuel_rejet_pct": 0.0,
-  "fausses_alertes_pct": {
+  "P3_seuil_note_mediane": 21.0,
+  "P3_seuil_note_p10_p90": [
+    20.0,
+    23.0
+  ],
+  "P8_seuil_note_mediane": 24.0,
+  "P8_seuil_note_p10_p90": [
+    24.0,
+    26.0
+  ],
+  "fausses_alertes_reputation_pct": {
     "P1": 0.0,
-    "P2": 3.6,
-    "P4": 0.9,
-    "P6": 0.0
+    "P2": 3.38,
+    "P4": 0.73,
+    "P6": 0.0,
+    "P5": 34.42
   },
+  "fausses_alertes_seuil_note_pct": {
+    "P1": 0.0,
+    "P2": 4.38,
+    "P4": 0.77,
+    "P6": 0.06,
+    "P5": 19.44
+  },
+  "P6_premier_mois_vert_mediane": 26.0,
+  "P6_demarre_rouge_pct": 8.0,
+  "P8_statut_fin": {
+    "orange": 300
+  },
+  "stabilite_apres_derive": {
+    "P3": {
+      "reputation": 1.0,
+      "seuil_note": 1.86,
+      "mois_sans_alerte_apres_1re_alerte_seuil": 0.56,
+      "mois_sans_alerte_apres_1re_alerte_rep": 0.0
+    },
+    "P8": {
+      "reputation": 1.06,
+      "seuil_note": 4.933333333333334,
+      "mois_sans_alerte_apres_1re_alerte_seuil": 3.6366666666666667,
+      "mois_sans_alerte_apres_1re_alerte_rep": 0.03333333333333333
+    }
+  },
+  "P8_atteint_rouge_pct": 0.0,
   "Z_moyen_cloture": {
     "P1": 1.0,
-    "P2": 0.96,
+    "P2": 0.97,
     "P3": 0.0,
     "P4": 0.94,
-    "P5": 0.82,
+    "P5": 0.83,
     "P6": 1.0,
-    "P7": 0.62,
+    "P7": 0.61,
     "P8": 0.34
   },
   "runs": 300

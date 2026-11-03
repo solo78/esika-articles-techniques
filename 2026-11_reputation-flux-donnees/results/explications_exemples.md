@@ -1,9 +1,9 @@
-- P3, mois 20 : Note 0.90. Principales causes : Exactitude (rapprochement comptable) (écart de 1.9% avec le flux comptable, -4.8 pts) ; Complétude (1.4% de lignes sans date de survenance, -2.7 pts).
-- P3, mois 23 : Note 0.66. Principales causes : Exactitude (rapprochement comptable) (écart de 5.2% avec le flux comptable, -12.9 pts) ; Complétude (5.4% de lignes sans date de survenance, -10.8 pts).
-- P3, mois 26 : Note 0.64. Principales causes : Exactitude (rapprochement comptable) (écart de 10.0% avec le flux comptable, -24.9 pts) ; Complétude (4.1% de lignes sans date de survenance, -8.2 pts).
-- P3, mois 30 : Note 0.50. Principales causes : Exactitude (rapprochement comptable) (écart de 24.8% avec le flux comptable, -25.0 pts) ; Complétude (8.5% de lignes sans date de survenance, -16.9 pts).
+- P3, mois 20 : Note 0.90. Principales causes : Exactitude (rapprochement comptable) (écart de 2.5% avec le flux comptable, -6.1 pts) ; Complétude (2.0% de lignes sans date de survenance, -3.9 pts).
+- P3, mois 23 : Note 0.58. Principales causes : Exactitude (rapprochement comptable) (écart de 10.8% avec le flux comptable, -25.0 pts) ; Complétude (6.5% de lignes sans date de survenance, -13.0 pts).
+- P3, mois 26 : Note 0.60. Principales causes : Exactitude (rapprochement comptable) (écart de 13.0% avec le flux comptable, -25.0 pts) ; Complétude (6.6% de lignes sans date de survenance, -13.2 pts).
+- P3, mois 30 : Note 0.58. Principales causes : Exactitude (rapprochement comptable) (écart de 20.6% avec le flux comptable, -25.0 pts) ; Complétude (6.4% de lignes sans date de survenance, -12.8 pts).
 - P7, mois 27 : Incident critique : écart de 100% avec le flux comptable, bordereau mis en quarantaine.
-- P8, mois 24 : Note 0.80. Principales causes : Cohérence (part des paiements survenus le mois même anormalement haute (45%), -20.0 pts).
-- P8, mois 27 : Note 0.80. Principales causes : Cohérence (part des paiements survenus le mois même anormalement haute (46%), -20.0 pts).
-- P5, mois 3 : Note 0.83. Principales causes : Fraîcheur (transmis 37 jours après la fin du mois, -15.0 pts) ; Exactitude (rapprochement comptable) (écart de 0.9% avec le flux comptable, -2.4 pts).
-- P5, mois 4 : Note 0.84. Principales causes : Fraîcheur (transmis 30 jours après la fin du mois, -15.0 pts) ; Exactitude (rapprochement comptable) (écart de 0.3% avec le flux comptable, -0.7 pts).
+- P8, mois 24 : Note 0.81. Principales causes : Cohérence (part des paiements survenus le mois même anormalement haute (44%), -19.3 pts).
+- P8, mois 27 : Note 0.80. Principales causes : Cohérence (part des paiements survenus le mois même anormalement haute (54%), -20.0 pts).
+- P5, mois 2 : Note 0.91. Principales causes : Fraîcheur (transmis 22 jours après la fin du mois, -9.0 pts).
+- P5, mois 7 : Note 0.84. Principales causes : Fraîcheur (transmis 25 jours après la fin du mois, -11.2 pts) ; Exactitude (rapprochement comptable) (écart de 1.9% avec le flux comptable, -4.8 pts).

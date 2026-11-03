@@ -200,9 +200,30 @@ def main(runs: int):
     q8.to_csv(OUT / "P8_erreur_par_trimestre.csv")
     fig_quarters(q8)
 
+    # tests appariés entre stratégies (mêmes graines)
+    piv = port.pivot(index="seed", columns="strategy", values="rel_err")
+    paired = {}
+    for x, y in [("Réputation", "Benktander"), ("Benktander", "Redressement"),
+                 ("Réputation", "Redressement"),
+                 ("Réputation, a priori -15 %", "Benktander, a priori -15 %"),
+                 ("Réputation sans rapprochement", "Benktander sans rapprochement")]:
+        d_bias = (piv[x] - piv[y]) * 100
+        d_sq = (piv[x] ** 2 - piv[y] ** 2) * 1e4
+        paired[f"{x} vs {y}"] = {
+            "diff_biais_pts": round(d_bias.mean(), 2),
+            "t_biais": round(d_bias.mean() / (d_bias.std() / np.sqrt(len(d_bias))), 1),
+            "diff_erreur_quadratique_pct2": round(d_sq.mean(), 1),
+            "t_erreur_quadratique": round(d_sq.mean() / (d_sq.std() / np.sqrt(len(d_sq))), 1),
+            "rmse_x_pct": round(np.sqrt((piv[x] ** 2).mean()) * 100, 2),
+            "rmse_y_pct": round(np.sqrt((piv[y] ** 2).mean()) * 100, 2),
+        }
+    (OUT / "tests_apparies.json").write_text(json.dumps(paired, indent=2, ensure_ascii=False))
+
     alert = pd.DataFrame([r["alert"] for r in results])
     reject = pd.DataFrame([r["reject"] for r in results])
+    thr = pd.DataFrame([r["threshold"] for r in results])
     fa = pd.DataFrame([r["false_alerts"] for r in results])
+    fa_thr = pd.DataFrame([r["false_alerts_thr"] for r in results])
     zs = pd.DataFrame([r["Z"] for r in results])
     detection = {
         "P3_debut": 19, "P3_alerte_mediane": float(alert["P3"].median()),
@@ -213,7 +234,20 @@ def main(runs: int):
         "P8_alerte_p10_p90": [float(alert["P8"].quantile(0.1)), float(alert["P8"].quantile(0.9))],
         "P8_detecte_pct": float(alert["P8"].notna().mean() * 100),
         "P8_controle_ponctuel_rejet_pct": float(reject["P8"].notna().mean() * 100),
-        "fausses_alertes_pct": (fa.mean() * 100).round(2).to_dict(),
+        "P3_seuil_note_mediane": float(thr["P3"].median()),
+        "P3_seuil_note_p10_p90": [float(thr["P3"].quantile(0.1)), float(thr["P3"].quantile(0.9))],
+        "P8_seuil_note_mediane": float(thr["P8"].median()),
+        "P8_seuil_note_p10_p90": [float(thr["P8"].quantile(0.1)), float(thr["P8"].quantile(0.9))],
+        "fausses_alertes_reputation_pct": (fa.mean() * 100).round(2).to_dict(),
+        "fausses_alertes_seuil_note_pct": (fa_thr.mean() * 100).round(2).to_dict(),
+        "P6_premier_mois_vert_mediane": float(pd.Series([r["P6_first_green"] for r in results]).median()),
+        "P6_demarre_rouge_pct": float(np.mean([r["P6_start_status"] == "rouge" for r in results]) * 100),
+        "P8_statut_fin": pd.Series([r["P8_end_status"] for r in results]).value_counts().to_dict(),
+        "stabilite_apres_derive": {
+            code: {k: float(pd.Series([r["flips"][code][k] for r in results]).dropna().mean())
+                   for k in results[0]["flips"][code]}
+            for code in ["P3", "P8"]},
+        "P8_atteint_rouge_pct": float(np.mean([r["P8_min_q05"] < 0.70 for r in results]) * 100),
         "Z_moyen_cloture": zs.mean().round(2).to_dict(),
         "runs": runs,
     }
@@ -238,6 +272,7 @@ def main(runs: int):
     fig_partner_bias(rec)
     print(port_stats.to_string())
     print(json.dumps(detection, indent=2, ensure_ascii=False))
+    print(json.dumps(paired, indent=2, ensure_ascii=False))
     print("\n".join(lines))
 
 

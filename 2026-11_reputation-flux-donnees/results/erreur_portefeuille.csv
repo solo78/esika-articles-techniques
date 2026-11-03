@@ -1,9 +1,12 @@
 strategy,biais_moyen_pct,ecart_type_pct,rmse_pct,p05_pct,p95_pct
-Oracle,-0.0,5.8,5.8,-9.1,10.2
-Brut,-18.3,7.9,20.0,-30.4,-7.4
-Contrôle,-31.8,8.1,32.8,-44.9,-20.9
-Redressement,-1.3,5.8,5.9,-10.8,8.2
-Benktander,-1.6,5.0,5.3,-10.1,6.4
-Réputation,-0.7,5.6,5.7,-10.7,7.8
-Benktander sans rapprochement,-30.0,6.8,30.7,-42.4,-20.1
-Réputation sans rapprochement,-25.8,7.0,26.7,-38.4,-15.5
+Oracle,0.3,6.0,6.0,-8.7,10.4
+Brut,-17.8,7.9,19.5,-32.1,-4.6
+Contrôle,-31.5,7.7,32.4,-44.8,-19.3
+Redressement,-1.0,5.9,6.0,-9.8,8.7
+Benktander,-1.5,5.2,5.4,-9.1,8.4
+Réputation,-1.5,5.6,5.8,-9.7,9.0
+"Redressement, flux bruité",1.2,7.1,7.2,-9.6,13.6
+"Benktander, a priori -15 %",-7.0,4.9,8.5,-14.1,2.4
+"Réputation, a priori -15 %",-10.0,5.1,11.3,-17.3,-0.5
+Benktander sans rapprochement,-29.7,6.4,30.4,-40.2,-18.3
+Réputation sans rapprochement,-26.8,6.6,27.6,-37.1,-14.7

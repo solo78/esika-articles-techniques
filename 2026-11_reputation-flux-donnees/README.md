@@ -14,7 +14,7 @@ Toutes les données sont **synthétiques**.
 | `src/quality.py` | Couche 2 : note de chaque bordereau sur 7 dimensions, alertes critiques, explication lisible |
 | `src/reputation.py` | Couche 3 : réputation bayésienne Beta avec oubli, statut vert, orange ou rouge, facteur de confiance Z |
 | `src/reserving.py` | Triangles trimestriels, Chain-Ladder, Bornhuetter-Ferguson, Benktander pondéré par la confiance |
-| `src/experiment.py` | Comparaison des traitements : Oracle, Brut, Contrôle, Redressement, Benktander, Réputation, plus le test de sensibilité |
+| `src/experiment.py` | Comparaison des traitements (Oracle, Brut, Contrôle, Redressement, Benktander, Réputation), témoins de détection et tests de sensibilité |
 | `run_all.py` | Lance les simulations et produit tableaux et figures dans `results/` |
 | `article/` | Texte de l'article et images |
 
@@ -31,18 +31,19 @@ Erreur sur la provision du portefeuille, en % de la provision réelle :
 
 | Traitement | Biais moyen | Erreur quadratique |
 |---|---|---|
-| Oracle | 0,0 % | 5,8 % |
-| Brut | -18,3 % | 20,0 % |
-| Contrôle ponctuel | -31,8 % | 32,8 % |
-| Redressement comptable | -1,3 % | 5,9 % |
-| Benktander | -1,6 % | 5,3 % |
-| Benktander pondéré par la réputation | -0,7 % | 5,7 % |
+| Oracle | +0,3 % | 6,0 % |
+| Brut | -17,8 % | 19,5 % |
+| Contrôle ponctuel | -31,5 % | 32,4 % |
+| Redressement comptable | -1,0 % | 6,0 % |
+| Benktander | -1,5 % | 5,4 % |
+| Benktander pondéré par la réputation | -1,5 % | 5,8 % |
 
-Détection des dérives :
-- la dégradation progressive (début au mois 19) est signalée en médiane au mois 23 ;
-- la survenance mal codée (début au mois 24) est signalée en médiane au mois 27 ;
-- le contrôle ponctuel ne la voit jamais ;
-- fausses alertes sur les partenaires sains : moins de 4 % des mois.
+- Le contrôle ponctuel aggrave l'erreur : il supprime des doublons qui compensaient des lignes manquantes.
+- Le rapprochement comptable fait l'essentiel (flux idéal ; avec un flux bruité de 5 % : biais +1,2 %, erreur 7,2 %).
+- Pondérer Benktander par la réputation dégrade légèrement la précision (écart significatif), et nettement si l'a priori est biaisé.
+- Détection : un seuil sur la note du bordereau alerte plus tôt que la réputation (P3 : mois 21 contre 23 ; P8 : mois 24 contre 27). La réputation donne un signal plus stable.
+
+Détails : `results/erreur_portefeuille.csv`, `results/detection.json`, `results/tests_apparies.json`.
 
 ## Paramètres illustratifs
 

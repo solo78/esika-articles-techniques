@@ -1,65 +1,89 @@
 partner,strategy,biais_pct,rmse_pct
-P1,Benktander,0.8,13.4
-P1,Benktander sans rapprochement,0.6,13.4
+P1,Benktander,0.5,13.6
+P1,Benktander sans rapprochement,0.3,13.5
+P1,"Benktander, a priori -15 %",-5.0,13.8
 P1,Brut,0.6,16.1
 P1,Contrôle,0.6,16.1
 P1,Oracle,0.6,16.1
 P1,Redressement,0.6,16.1
-P1,Réputation,1.2,13.4
-P1,Réputation sans rapprochement,1.2,13.4
-P2,Benktander,-2.5,14.1
-P2,Benktander sans rapprochement,-10.9,19.0
-P2,Brut,-7.4,20.4
-P2,Contrôle,-10.7,21.8
-P2,Oracle,1.3,17.4
-P2,Redressement,-2.2,17.2
-P2,Réputation,-2.0,14.1
-P2,Réputation sans rapprochement,-10.1,18.4
-P3,Benktander,0.4,12.1
-P3,Benktander sans rapprochement,-118.5,119.8
-P3,Brut,-97.9,99.0
-P3,Contrôle,-128.4,129.8
-P3,Oracle,0.3,14.2
-P3,Redressement,-0.2,14.1
-P3,Réputation,2.0,15.5
-P3,Réputation sans rapprochement,-100.0,101.7
-P4,Benktander,1.0,15.4
-P4,Benktander sans rapprochement,0.8,15.4
-P4,Brut,79.8,84.9
-P4,Contrôle,1.2,18.4
-P4,Oracle,1.2,18.4
-P4,Redressement,1.2,18.4
-P4,Réputation,1.5,15.4
-P4,Réputation sans rapprochement,1.4,15.4
-P5,Benktander,-5.3,14.6
-P5,Benktander sans rapprochement,-33.1,44.5
-P5,Brut,-38.3,53.4
-P5,Contrôle,-38.5,54.0
-P5,Oracle,0.3,15.8
-P5,Redressement,-5.5,18.1
-P5,Réputation,-4.8,14.2
-P5,Réputation sans rapprochement,-30.7,41.4
-P6,Benktander,0.5,16.1
-P6,Benktander sans rapprochement,-0.1,16.0
-P6,Brut,2.2,20.4
-P6,Contrôle,0.6,20.0
-P6,Oracle,1.4,20.2
-P6,Redressement,1.1,20.1
-P6,Réputation,1.0,16.2
-P6,Réputation sans rapprochement,0.6,16.1
-P7,Benktander,2.5,19.1
-P7,Benktander sans rapprochement,-34.8,38.6
-P7,Brut,-34.2,39.8
-P7,Contrôle,-34.2,39.8
-P7,Oracle,2.4,22.1
-P7,Redressement,2.4,22.1
-P7,Réputation,3.3,18.9
-P7,Réputation sans rapprochement,-33.6,37.3
-P8,Benktander,0.5,14.7
-P8,Benktander sans rapprochement,0.3,14.6
-P8,Brut,2.4,16.7
-P8,Contrôle,2.4,16.7
-P8,Oracle,2.4,17.0
-P8,Redressement,2.4,16.7
-P8,Réputation,2.6,16.1
-P8,Réputation sans rapprochement,2.5,16.1
+P1,"Redressement, flux bruité",1.9,19.0
+P1,Réputation,0.5,13.6
+P1,Réputation sans rapprochement,0.3,13.5
+P1,"Réputation, a priori -15 %",-5.0,13.8
+P2,Benktander,-1.9,14.5
+P2,Benktander sans rapprochement,-10.1,19.7
+P2,"Benktander, a priori -15 %",-7.5,15.6
+P2,Brut,-6.8,21.6
+P2,Contrôle,-10.3,23.2
+P2,Oracle,2.0,18.0
+P2,Redressement,-1.8,17.8
+P2,"Redressement, flux bruité",2.4,22.3
+P2,Réputation,-1.9,14.4
+P2,Réputation sans rapprochement,-10.0,19.2
+P2,"Réputation, a priori -15 %",-7.8,15.7
+P3,Benktander,0.5,12.7
+P3,Benktander sans rapprochement,-118.0,119.3
+P3,"Benktander, a priori -15 %",-5.1,13.1
+P3,Brut,-95.7,96.9
+P3,Contrôle,-126.9,128.4
+P3,Oracle,1.5,14.8
+P3,Redressement,0.9,14.8
+P3,"Redressement, flux bruité",2.9,19.2
+P3,Réputation,-0.0,15.1
+P3,Réputation sans rapprochement,-102.3,103.9
+P3,"Réputation, a priori -15 %",-15.1,19.8
+P4,Benktander,1.3,16.4
+P4,Benktander sans rapprochement,1.1,16.4
+P4,"Benktander, a priori -15 %",-4.3,16.2
+P4,Brut,80.9,86.9
+P4,Contrôle,1.7,19.9
+P4,Oracle,1.7,19.9
+P4,Redressement,1.7,19.9
+P4,"Redressement, flux bruité",1.9,23.1
+P4,Réputation,1.2,16.2
+P4,Réputation sans rapprochement,1.0,16.2
+P4,"Réputation, a priori -15 %",-4.9,16.1
+P5,Benktander,-5.2,15.2
+P5,Benktander sans rapprochement,-31.9,43.1
+P5,"Benktander, a priori -15 %",-10.8,17.4
+P5,Brut,-37.8,52.6
+P5,Contrôle,-37.8,52.6
+P5,Oracle,-0.4,15.8
+P5,Redressement,-5.9,18.3
+P5,"Redressement, flux bruité",0.5,21.7
+P5,Réputation,-5.0,14.9
+P5,Réputation sans rapprochement,-30.4,40.8
+P5,"Réputation, a priori -15 %",-12.2,18.0
+P6,Benktander,3.0,17.4
+P6,Benktander sans rapprochement,2.4,17.2
+P6,"Benktander, a priori -15 %",-2.8,16.6
+P6,Brut,5.3,23.5
+P6,Contrôle,3.8,22.8
+P6,Oracle,4.7,23.0
+P6,Redressement,4.3,22.9
+P6,"Redressement, flux bruité",4.9,24.5
+P6,Réputation,3.0,17.4
+P6,Réputation sans rapprochement,2.4,17.2
+P6,"Réputation, a priori -15 %",-2.8,16.6
+P7,Benktander,1.2,16.4
+P7,Benktander sans rapprochement,-36.1,39.2
+P7,"Benktander, a priori -15 %",-4.5,16.3
+P7,Brut,-35.6,40.3
+P7,Contrôle,-35.6,40.3
+P7,Oracle,1.0,19.5
+P7,Redressement,1.0,19.5
+P7,"Redressement, flux bruité",2.2,22.4
+P7,Réputation,1.1,16.0
+P7,Réputation sans rapprochement,-36.1,39.1
+P7,"Réputation, a priori -15 %",-8.2,16.7
+P8,Benktander,-0.9,13.0
+P8,Benktander sans rapprochement,-1.1,13.0
+P8,"Benktander, a priori -15 %",-6.5,14.0
+P8,Brut,0.9,16.0
+P8,Contrôle,0.9,16.0
+P8,Oracle,1.2,16.9
+P8,Redressement,0.9,16.0
+P8,"Redressement, flux bruité",2.0,19.6
+P8,Réputation,-0.1,13.6
+P8,Réputation sans rapprochement,-0.8,13.6
+P8,"Réputation, a priori -15 %",-11.9,16.9
