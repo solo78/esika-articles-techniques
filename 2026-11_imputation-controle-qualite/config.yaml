@@ -1,0 +1,87 @@
+# Paramètres de l'étude : aucune valeur n'est codée en dur dans src/.
+# Toutes les données sont synthétiques.
+
+simulation:
+  n_affilies: 4000
+  n_simulations: 300
+  graine_base: 20261103
+
+population:
+  categories: [employe, maitrise, cadre]
+  poids_categories: [0.5, 0.3, 0.2]
+  salaire_base_mensuel: [180000, 400000, 1000000]   # FCFA par mois, par catégorie
+  age_min: 22
+  age_max: 60
+  age_entree_min: 20
+  age_entree_gamma_forme: 2.0
+  age_entree_gamma_echelle: 3.0
+  pente_anciennete: 0.025        # effet de l'ancienneté sur le log du salaire
+  pente_age: 0.004
+  bruit_log_salaire: 0.22
+  proba_annee_complete: 0.85     # proportion d'affiliés ayant cotisé 12 mois
+  taux_cotisation: 0.12
+  bruit_log_cotisation: 0.01
+
+engagement:
+  taux_annuite: 0.015            # rente = taux x ancienneté x salaire annuel
+  age_retraite: 60
+  facteur_rente_60: 13.0         # valeur actuelle d'une rente de 1 à 60 ans (hypothèse)
+  taux_actualisation: 0.035
+  gompertz_a: 0.00005
+  gompertz_b: 0.09
+
+erreurs:
+  taux_lignes: 0.03              # part des affiliés portant une erreur
+  types: [unite_salaire, salaire_incoherent, declaration_coherente, date_naissance, date_embauche]
+  facteur_salaire_incoherent: [1.5, 3.0]
+  facteur_declaration: [2.0, 4.0]
+  decalage_annees: [8, 15]
+
+non_reponse:
+  champs: [salaire, cotisation, anciennete]
+  taux: 0.10                     # taux moyen par champ
+  mecanisme: MAR                 # MCAR, MAR ou MNAR
+  mar_effet_age: 1.0
+  mar_effet_employe: 0.8
+  mnar_effet: 1.2
+
+regles:
+  age: [16, 65]
+  age_minimum_embauche: 16
+  salaire: [60000, 15000000]
+  tolerance_cotisation: 0.10
+
+statistiques:
+  tukey_k: 3.0
+
+isolation_forest:
+  n_estimators: 100
+  budget_revue: 0.05             # part des dossiers que l'équipe peut revoir (seuil de la forêt)
+
+imputation:
+  n_imputations: 5
+  max_iter: 10
+
+predict_then_check:
+  seuil_z: 4.0
+  seuils_sensibilite: [3.0, 3.5, 4.0, 5.0, 6.0]
+  huber_epsilon: 1.35
+  cibles: [log_salaire, log_cotisation_mensuelle, anciennete, age]
+  exclusions:
+    log_salaire: [log_cotisation_mensuelle]
+    log_cotisation_mensuelle: [log_salaire]
+
+evaluation:
+  budget_comparaison: 0.05       # précision à budget de revue identique pour les trois scores
+
+# Scénarios de sensibilité : chaque entrée surcharge la configuration de base.
+scenarios:
+  base: {}
+  mcar: {non_reponse: {mecanisme: MCAR}}
+  mnar: {non_reponse: {mecanisme: MNAR}}
+  non_reponse_5: {non_reponse: {taux: 0.05}}
+  non_reponse_20: {non_reponse: {taux: 0.20}}
+  non_reponse_30: {non_reponse: {taux: 0.30}}
+  erreurs_dans_incomplets: {erreurs: {concentration_incomplets: 4.0}}
+  modele_mal_specifie: {population: {mal_specifie: true}}
+  sans_cotisation: {donnees: {sans_cotisation: true}}

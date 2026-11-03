@@ -1,0 +1,7 @@
+{
+  "n_simulations": 300,
+  "n_affilies": 4000,
+  "anormaux_moyen": 112.25,
+  "part_lignes_incompletes": 0.2394758333333333,
+  "anormaux_moyen_oracle": 120.0
+}
