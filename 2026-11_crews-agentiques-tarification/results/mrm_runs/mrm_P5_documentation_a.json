@@ -1,0 +1,114 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 11.6,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 14.3,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 10.1,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "documentation",
+    "gravite": "bloquant",
+    "description": "La documentation ne permet pas d'utiliser le modèle en sécurité. Elle ne précise ni l'objet, ni l'usage prévu, ni les données, ni les hypothèses, ni les limites, ni le public visé (A1, B5, E1, E2, E5). L'affirmation « prêt pour la production » n'est étayée par aucune analyse.",
+    "preuve": "model_doc.md complet : « GLM Poisson sur les variables du portefeuille. Déviance test x100 = 24.286, Gini = 0.282. Le modèle est performant et prêt pour la production. » L'agent conformité ne relève aucun point conforme sur 26."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "Le modèle sous-estime significativement la sinistralité des conducteurs de 18-20 ans. C'est le segment le plus risqué, et une variable sensible.",
+    "preuve": "Agent résultats, DrivAge 18-20 : 132 sinistres observés pour 104,1 attendus, A/E = 1,268, IC95 [1,069 ; 1,504], significatif, n = 1 350."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "La calibration par décile n'est pas homogène. Les déciles bas sont surestimés et les déciles 7 et 8 significativement sous-estimés. La documentation ne commente pas ce point.",
+    "preuve": "Agent résultats : décile 7, A/E = 1,126, IC95 [1,038 ; 1,220] ; décile 8, A/E = 1,112, IC95 [1,030 ; 1,201] ; déciles 1 à 3 entre 0,930 et 0,952. Écart max = 0,1256 (eval.json : 0,1228). A/E global = 1,016, IC95 [0,989 ; 1,044], non significatif."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "important",
+    "description": "Des expositions supérieures à un an sont présentes dans les deux jeux (valeur douteuse au sens de B2). Elles sont plafonnées à 1 à l'entraînement et à la prédiction, sans diagnostic ni justification. Ces polices sont donc sous-prédites. L'unité de temps n'est pas explicitée (D6).",
+    "preuve": "Agent réplication : exposure_train_gt1 = 987, exposure_test_gt1 = 237, exposure_max test = 2,01. Le plafond est à 1 dans le code (agents conceptuel et conformité B3, D6)."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Le gain par rapport au modèle nul est modeste. Le qualificatif « performant » n'est appuyé par aucune référence ni aucun modèle alternatif (D2).",
+    "preuve": "Agent résultats : déviance x100 de 25,395 (modèle nul) contre 24,286 (modèle), soit environ 4,4 % de réduction relative. Aucune comparaison à un modèle alternatif n'est fournie."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "Les données sont traitées de façon incohérente entre train et test. La cible est plafonnée à 4 dans le code, mais le test est déjà borné à 4 alors que le train ne l'est pas. Aucune revue ni provenance des données n'est déclarée (B2, B4).",
+    "preuve": "Agent réplication : claimnb_train_max = 16, claimnb_train_gt4 = 8, claimnb_test_max = 4,0."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "mineur",
+    "description": "Les définitions du Gini et de l'écart A/E par décile ne sont pas documentées, d'où des recalculs divergents. La déviance et l'A/E global sont en revanche reproduits exactement.",
+    "preuve": "Gini : 0,28240 dans eval.json, contre 0,28198 recalculé par l'agent réplication avec pondération par l'exposition (écart 0,000424) et 0,28240 par l'agent résultats. Écart max par décile : 0,1228 (eval.json), 0,1256 (résultats), 2,408 (réplication, valeur incompatible avec des A/E par décile compris entre 0,93 et 1,13)."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Le modèle n'est ni justifié ni régularisé : alpha quasi nul, sans protocole de réglage documenté. Area et LogDensity sont redondantes. La crédibilité de certaines classes est faible (C1, C3).",
+    "preuve": "alpha = 1e-06 et 48 coefficients ; tuning.json n'indique pas sur quelles données alpha a été choisi (réplication). Expositions train faibles : Alsace 996 années, VehBrand B14 1 834 années (conceptuel)."
+   },
+   {
+    "categorie": "fuite_cible",
+    "gravite": "mineur",
+    "description": "Aucune fuite ni contamination n'est démontrée. BonusMalus reflète toutefois la sinistralité passée : il faut confirmer qu'il est connu à la souscription et antérieur à la période d'exposition.",
+    "preuve": "overlap_IDpol = 0, test_rows_with_identical_features_in_train = 0, script_reads_only_train_parquet = true, IDpol absent de features.py. Fréquence train par tranche de BonusMalus : 0,052 pour (50 ; 53] contre 0,180 pour (85 ; 150]."
+   }
+  ],
+  "synthese": "Le modèle est techniquement reproductible : réentraînement identique au modèle livré, écart maximal des coefficients nul, déviance 24,286 et A/E global 1,016 retrouvés. Aucune fuite ni contamination train/test n'est démontrée. La décision est néanmoins le refus en l'état, pour trois raisons. (1) La documentation est quasi inexistante : sans objet, sans limites et sans usage défini, l'utilisation n'est pas approuvable au regard d'ASOP 56 §4.1 et d'ASOP 41. (2) La calibration est significativement défaillante pour les 18-20 ans (A/E 1,27) et pour les déciles 7 et 8 (A/E 1,11 à 1,13). (3) Les expositions supérieures à un an sont plafonnées sans justification. Pour une nouvelle soumission, il faudra fournir : une documentation complète (objet, données, revue des données, traitements, limites, dépendances logicielles et origine du code), un traitement justifié de l'exposition, une correction ou une justification de la calibration par âge et par décile, une comparaison à un modèle alternatif, une définition écrite des métriques, et la confirmation du statut de BonusMalus. Limites de cette revue : aucun agent n'a affiché de résultats exécutés de manière autonome, et les chiffres retenus proviennent des JSON produits. La valeur 2,408 de l'agent réplication est écartée car incompatible avec les A/E par décile. Le décompte de l'agent conformité est erroné (17 non conformes et 9 partiels, et non 13 et 11). Les résultats du stress d'exposition et des relativités de l'agent conceptuel sont tronqués et ne sont pas retenus."
+ },
+ "run_id": "mrm_P5_documentation_a",
+ "package": "P5_documentation",
+ "minutes": 3.7,
+ "cost_usd": 0.3901
+}

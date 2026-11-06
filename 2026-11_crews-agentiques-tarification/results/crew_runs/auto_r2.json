@@ -1,0 +1,321 @@
+{
+ "variant": "autonome",
+ "tasks": {
+  "extraction": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 1.7,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "eda": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": ""
+   }
+  ],
+  "methodologie": {
+   "ok": true,
+   "attempts": 1
+  },
+  "features": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 0.8,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK : DrivAge, VehAge, BonusMalus, LogBonusMalus, BM_floor, LogDensity, VehPower, VehGas, VehBrand, Region"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "tuning": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 76.8,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "training": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 35.9,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 50.6,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": "- Le pipeline entraîné n'est pas le `glm_bm_cls` retenu au tuning. BonusMalus y est découpé par quantiles via KBinsDiscretizer, alors que la masse au plancher 50 fait dégénérer les bacs, au lieu des bornes fixes [0,50,60,…,150]. LogBonusMalus et BM_floor restent dans le design, VehPower passe en numérique standardisé au lieu de facteur, et VehAge est en quantiles au lieu des classes fixes. Le contrôle à ±0,03 de déviance est trop lâche pour détecter cet écart (D5, E4). => Reconstruire le design "
+   }
+  ],
+  "evaluation": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 3.2,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 7.4,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": "- La calibration n'est contrôlée qu'à l'échelle globale (A/E 1,014) et par déciles de prédiction (0,93 à 1,08). L'objectif exige des relativités calibrées par segment (A1, D3, C4), et rien n'est mesuré par BM, DrivAge, VehAge, Region, VehBrand, VehPower ni Density. => Ajouter au test des tables A/E par modalité ou classe de chaque variable tarifaire, avec exposition, sinistres, attendus et IC bootstrap. Ajouter les relativités du GLM (exp(coef) et erreurs-types quasi-Poisson avec dispersion esti"
+   }
+  ],
+  "documentation": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": "- La documentation décrit `glm_bm_cls` tout en listant log(BM) et l'indicatrice BM=50 comme traitements. Elle ne décrit pas le design réellement déployé, ce qui la rend trompeuse sur le modèle livré (E1, E4). La déclaration des outils d'IA ayant produit le code (E3) n'est pas visible. => Après correction du training, aligner la section Méthode et la table des traitements sur le design effectif, avec bornes des classes BM/VehAge et traitement de VehPower. Publier les métriques test, les tables A/"
+   }
+  ]
+ },
+ "escalations": [],
+ "judge": [
+  {
+   "verdict": "a_reprendre",
+   "points": [
+    {
+     "gravite": "important",
+     "tache": "training",
+     "constat": "Le pipeline entraîné n'est pas le `glm_bm_cls` retenu au tuning. BonusMalus y est découpé par quantiles via KBinsDiscretizer, alors que la masse au plancher 50 fait dégénérer les bacs, au lieu des bornes fixes [0,50,60,…,150]. LogBonusMalus et BM_floor restent dans le design, VehPower passe en numérique standardisé au lieu de facteur, et VehAge est en quantiles au lieu des classes fixes. Le contrôle à ±0,03 de déviance est trop lâche pour détecter cet écart (D5, E4).",
+     "consigne": "Reconstruire le design exactement comme `build('bm_cls')` du tuning : spline DrivAge, classes VehAge et BM à bornes fixes, VehPower/VehBrand/Region en one-hot avec drop, LogDensity standardisée, VehGas, sans LogBM ni BM_floor. Factoriser ce design dans un module partagé avec le tuning, puis vérifier une déviance hold-out à moins de 0,005 de la CV et ré-entraîner."
+    },
+    {
+     "gravite": "important",
+     "tache": "evaluation",
+     "constat": "La calibration n'est contrôlée qu'à l'échelle globale (A/E 1,014) et par déciles de prédiction (0,93 à 1,08). L'objectif exige des relativités calibrées par segment (A1, D3, C4), et rien n'est mesuré par BM, DrivAge, VehAge, Region, VehBrand, VehPower ni Density.",
+     "consigne": "Ajouter au test des tables A/E par modalité ou classe de chaque variable tarifaire, avec exposition, sinistres, attendus et IC bootstrap. Ajouter les relativités du GLM (exp(coef) et erreurs-types quasi-Poisson avec dispersion estimée) et vérifier le sens croissant de BM et le U de DrivAge."
+    },
+    {
+     "gravite": "mineur",
+     "tache": "evaluation",
+     "constat": "Le Gini et les déciles utilisent l'exposition brute (jusqu'à 2,01) pour diviser des μ calculés avec l'exposition plafonnée à 1. Le rang de fréquence est donc biaisé pour 0,18 % des lignes. La sensibilité à l'exclusion des expositions très courtes, exigée par la spécification, est absente.",
+     "consigne": "Calculer freq = μ/clip(Exposure, 1e-4, 1) et le documenter. Ajouter une métrique de sensibilité en excluant les expositions inférieures à un seuil, par exemple 0,02 an."
+    },
+    {
+     "gravite": "important",
+     "tache": "documentation",
+     "constat": "La documentation décrit `glm_bm_cls` tout en listant log(BM) et l'indicatrice BM=50 comme traitements. Elle ne décrit pas le design réellement déployé, ce qui la rend trompeuse sur le modèle livré (E1, E4). La déclaration des outils d'IA ayant produit le code (E3) n'est pas visible.",
+     "consigne": "Après correction du training, aligner la section Méthode et la table des traitements sur le design effectif, avec bornes des classes BM/VehAge et traitement de VehPower. Publier les métriques test, les tables A/E par segment et les relativités, déclarer l'usage d'agents IA, et préciser l'état de la recherche de doublons."
+    }
+   ],
+   "synthese": "Fuite, exposition (offset cohérent, ratio d'exposition exact) et contamination du test sont correctement maîtrisées, et la calibration globale est bonne. En revanche, le modèle livré diffère du modèle sélectionné et la calibration par segment n'est pas démontrée. Il faut reprendre le training, l'évaluation et la documentation avant approbation."
+  },
+  {
+   "verdict": "a_reprendre",
+   "points": [
+    {
+     "gravite": "important",
+     "tache": "training",
+     "constat": "Le modèle déployé n'a pas le design du candidat sélectionné. Au tuning, `glm_bm_cls` utilise les bornes BonusMalus 0/50/60/70/80/90/100/120/150 et une spline ajustée sur tout l'échantillon. `design.py` utilise 11 classes de 10 points, reconstruites d'après une description, ce que la doc reconnaît. La CV de référence 0,45198 et le choix GLM plutôt que LightGBM (écart 0,64 %) ne portent donc pas sur le modèle livré (D5, E4).",
+     "consigne": "Faire importer `design.build_model` par le script de tuning et relancer la CV de tous les GLM sur les mêmes plis groupés. Publier la déviance CV du design déployé à côté de 0,45198 et réappliquer la règle des 1 % avec ce chiffre. Si le design retenu change, réentraîner le modèle et régénérer `model.joblib`."
+    },
+    {
+     "gravite": "important",
+     "tache": "features",
+     "constat": "La recherche de doublons de polices, exigée par la spécification (B2, B3) avant le plafonnement de l'exposition, n'est pas faite ; la doc l'indique explicitement. La sensibilité à l'exclusion des expositions très courtes, également exigée, n'apparaît dans aucun livrable fourni.",
+     "consigne": "Compter les lignes de profil identique avec des IDpol voisins, sur le train et sur le test, et décrire le traitement retenu. Croiser ce comptage avec les expositions supérieures à 1 an. Réestimer le modèle sans les expositions inférieures à environ 0,02 an et publier la variation des relativités et de la déviance."
+    },
+    {
+     "gravite": "mineur",
+     "tache": "training",
+     "constat": "Le script d'entraînement affirme reprendre les groupes du tuning, mais il hache toutes les colonnes brutes, Exposure et ClaimNb compris. Le tuning ne hache que les variables de profil. Des doublons de profil peuvent donc se retrouver dans des plis différents du contrôle de CV.",
+     "consigne": "Construire les groupes à partir des seules colonnes de profil utilisées au tuning (`prof_cols`), afin que le contrôle de CV soit comparable."
+    },
+    {
+     "gravite": "mineur",
+     "tache": "evaluation",
+     "constat": "Trois incohérences avec l'entraînement : le ClaimNb du test n'est pas plafonné à 4 alors que le modèle a appris sur des valeurs plafonnées ; le Gini et les déciles utilisent l'exposition non plafonnée, alors que `mu` repose sur l'exposition plafonnée ; la déviance de l'audit est une moyenne par police, alors que celle du tuning est rapportée par année d'exposition.",
+     "consigne": "Calculer les métriques avec ClaimNb plafonné, en donnant l'A/E non plafonné en sensibilité, et avec l'exposition plafonnée. Préciser dans la doc la normalisation de chaque déviance, sans comparer des chiffres de bases différentes."
+    },
+    {
+     "gravite": "mineur",
+     "tache": "documentation",
+     "constat": "Le tableau 2.3 mêle des effectifs issus de jeux différents. Il ne donne pas la fréquence avant et après le plafonnement de ClaimNb, que la spécification exige (B3).",
+     "consigne": "Recalculer tous les effectifs sur le train complet et ajouter la fréquence avant/après plafond. Mettre à jour la section 4 une fois le design aligné, puis lever le statut provisoire seulement après cette vérification."
+    }
+   ],
+   "synthese": "Aucun défaut de fond n'est relevé : pas de fuite (IDpol exclu, sensibilité 0), exposition proportionnelle (ratio 2,0, écart 0) et calibration satisfaisante (A/E global 1,013 ; déciles entre 0,95 et 1,11 ; déviance test proche de celle du train). Le travail est pourtant à reprendre, car le modèle livré n'est pas celui qui a été sélectionné et validé en CV, et la revue des doublons exigée n'a pas été faite."
+  }
+ ],
+ "rework": [
+  "training",
+  "evaluation",
+  "documentation"
+ ],
+ "spec": {
+  "objectif": "Estimer la fréquence annuelle de sinistres RC auto (nombre attendu par année-police) pour la tarification technique, avec des relativités interprétables et calibrées par segment (A1). Usage limité à la fréquence : ni coût moyen, ni tarif commercial.",
+  "traitements_donnees": [
+   "Exposure > 1 an (0,18 %) : plafonner à 1 et tracer le nombre de lignes concernées. Avant cela, rechercher les doublons de polices (mêmes caractéristiques et IDpol voisins) et documenter le résultat (B2, B3).",
+   "ClaimNb : plafonner à 4 sinistres (valeurs jusqu'à 16 jugées douteuses sur moins d'un an). Mesurer l'effet sur la fréquence globale avant et après plafonnement (B3).",
+   "Conserver les expositions très courtes (min 0,0027), sans les exclure. Signaler leur poids et vérifier la stabilité du modèle en les excluant à titre de sensibilité.",
+   "Plafonnements : DrivAge à 90, VehAge à 20 (absorbe la sentinelle 100), BonusMalus à 150, VehPower à 12. Le volume impacté par chaque plafond est publié (B3, B5).",
+   "Déclarer en documentation : données fournies par un tiers sans audit de la source, problèmes non résolus (doublons, sentinelles) et biais possibles (B4, B5)."
+  ],
+  "variables": [
+   {
+    "nom": "BonusMalus",
+    "transformation": "Plafonnement à 150. GLM : log(BM) plus indicatrice BM = 50 (masse au plancher). GBM : brut avec contrainte monotone croissante.",
+    "justification": "Principal indicateur de sinistralité passée, lien raisonnable et mesurable ; le sens croissant est attendu (C1, C4)."
+   },
+   {
+    "nom": "DrivAge",
+    "transformation": "Plafonnement à 90. GLM : spline naturelle à 4-5 nœuds ou classes 18-20/21-25/26-30/31-40/41-50/51-60/61-70/71+. GBM : brut.",
+    "justification": "Effet en U connu (jeunes et très âgés). L'âge est admis en tarification en UE. Corrélation de -0,48 avec BM à suivre via le VIF (C1, C5)."
+   },
+   {
+    "nom": "VehAge",
+    "transformation": "Plafonnement à 20. GLM : classes 0/1-2/3-5/6-10/11-15/16+. GBM : brut.",
+    "justification": "Effet non linéaire attendu. Le plafond neutralise la valeur sentinelle 100 (B3, C3)."
+   },
+   {
+    "nom": "Density",
+    "transformation": "log(Density), linéaire ou spline à 3 nœuds en GLM.",
+    "justification": "Forte asymétrie (4,65). Mesure objective de l'exposition urbaine au risque (C1, C2)."
+   },
+   {
+    "nom": "VehPower",
+    "transformation": "Plafonnement à 12, en facteur dans le GLM et en numérique dans le GBM.",
+    "justification": "Les modalités rares sont regroupées pour la crédibilité (C3)."
+   },
+   {
+    "nom": "VehBrand",
+    "transformation": "Facteur. Regrouper les modalités de faible exposition avec une modalité de fréquence voisine (B14 et B11 ne doivent pas être fusionnées ensemble, fréquences opposées). GBM : catégoriel natif avec min_data_per_group.",
+    "justification": "Homogénéité et crédibilité (C3). Les écarts de fréquence 0,056 / 0,099 sont à confirmer en multivarié."
+   },
+   {
+    "nom": "Region",
+    "transformation": "Facteur, avec regroupement des régions d'exposition inférieure à 1 % du total selon la proximité de fréquence.",
+    "justification": "Effet géographique résiduel au-delà de la densité. Redondance avec Density à contrôler (VIF, comparaison de déviance avec et sans) (C1, C3)."
+   },
+   {
+    "nom": "VehGas",
+    "transformation": "Binaire.",
+    "justification": "Variable équilibrée et mesurable. À conserver si l'apport en déviance est significatif (C1)."
+   }
+  ],
+  "variables_exclues": [
+   {
+    "nom": "IDpol",
+    "raison": "Identifiant administratif. Le gradient de fréquence par quintile est un artefact de numérotation, donc une fuite potentielle (C2)."
+   },
+   {
+    "nom": "Area",
+    "raison": "Codage quasi monotone de la densité, redondant avec log(Density) (multicolinéarité). Peut être réintroduite à titre de sensibilité uniquement."
+   },
+   {
+    "nom": "Exposure (comme prédicteur)",
+    "raison": "Utilisée seulement en offset ou en poids, pour garantir la proportionnalité du nombre attendu (D6)."
+   }
+  ],
+  "traitement_exposition": "Exposure en années (après plafond à 1). GLM : offset log(Exposure) ; GBM : init_score = log(Exposure) avec objectif Poisson, ou de manière équivalente cible ClaimNb/Exposure pondérée par Exposure (D6).",
+  "modeles_candidats": [
+   {
+    "nom": "GLM Poisson log-lien (référence), avec dispersion estimée de type quasi-Poisson pour les erreurs-types",
+    "librairie": "statsmodels (ou glum)",
+    "grille": "Pas d'hyperparamètre. Comparer 3 spécifications : avec ou sans Region, BM log contre BM en classes, avec ou sans interaction DrivAge×BonusMalus."
+   },
+   {
+    "nom": "GLM Poisson pénalisé elastic-net (lissage des facteurs à nombreuses modalités)",
+    "librairie": "glum",
+    "grille": "alpha ∈ {1e-4, 1e-3, 1e-2} ; l1_ratio ∈ {0 ; 0,5}."
+   },
+   {
+    "nom": "Gradient boosting Poisson",
+    "librairie": "lightgbm",
+    "grille": "num_leaves ∈ {15, 31} ; learning_rate = 0,05 avec early stopping sur la déviance de validation ; min_child_samples ∈ {500, 2000} ; feature_fraction = 0,8. Contrainte monotone sur BonusMalus ; seed fixe."
+   }
+  ],
+  "critere_selection": "Déviance de Poisson moyenne pondérée par l'exposition, hors échantillon (validation croisée). À écart inférieur à 1 % de la déviance, préférer le GLM pour son interprétabilité. Le modèle retenu doit aussi passer les contrôles de calibration (D3) et de cohérence des relativités (C4).",
+  "validation": "Validation croisée en 5 plis, avec plis groupés par profil de risque identique pour éviter la fuite entre doublons, pour le réglage. Le jeu de test indépendant n'est utilisé qu'une fois pour le modèle final : déviance, comparaison au GLM de référence, rapport sinistres observés / attendus global et par décile de prédiction et par modalité (D2, D3). Graines, versions et paramètres sont tracés (D5). Sensibilités aux plafonds et aux expositions courtes (D1). Revue indépendante recommandée vu le recours au boosting (D4).",
+  "risques_a_surveiller": [
+   "Fuite via IDpol ou via des doublons répartis entre plis ou entre train et test.",
+   "Surdispersion : la déviance de Poisson reste le bon critère pour la moyenne, mais les erreurs-types du GLM Poisson pur sont sous-estimées.",
+   "Multicolinéarité Region / Density / Area et DrivAge / BonusMalus, qui rend les coefficients instables (VIF > 5 à signaler).",
+   "Surapprentissage du GBM sur les modalités rares de VehBrand et Region, et relativités non monotones ou en rupture (C3, C4).",
+   "Effet des plafonnements (ClaimNb, Exposure, BM) sur le niveau global de fréquence, à quantifier et à déclarer.",
+   "Mauvaise calibration par segment malgré une bonne calibration globale (jeunes conducteurs, BM élevés, forte densité).",
+   "Documentation : déclarer les outils tiers, y compris le code généré par IA, ainsi que les limites d'usage (fréquence seule, portefeuille français) (E3, E5)."
+  ]
+ },
+ "status": "termine",
+ "final_verdict": "a_reprendre",
+ "run_id": "auto_r2",
+ "mode": "route",
+ "minutes": 10.0,
+ "cost_usd": 0.8161
+}

@@ -1,0 +1,126 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 20.8,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 31.5,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 49.9,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "approuve_sous_reserve",
+  "constats": [
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "Le découpage aléatoire n'est pas groupé par assuré ou véhicule. Une part du test duplique exactement des lignes d'apprentissage (hors IDpol), y compris ClaimNb et Exposure. Les métriques hors échantillon peuvent donc être légèrement optimistes. L'indépendance du test (D2) n'est que partielle.",
+    "preuve": "replication.leakage_checks : test_rows_identical_to_train_row_(all_cols_but_IDpol) = 7575, soit 5,6 % de 135 599 lignes ; train_duplicate_rows_but_IDpol = 20844 ; idpol_overlap_train_test = 0. Doc §2.1 : « découpage aléatoire et non stratifié (train_test_split ... random_state=2026), sans filtrage préalable »."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "La calibration globale est correcte, mais le décile des risques les plus élevés est sous-estimé de façon significative. Le décile 9 est surestimé et un segment d'âge sort de son intervalle. Aucune analyse ni correction n'est documentée. Les IC Poisson ignorent la sur-dispersion et sont donc trop étroits.",
+    "preuve": "resultats : A/E global 1,011, IC95 [0,984 ; 1,038]. Décile 10 : A/E 1,0587, IC95 [1,004 ; 1,113], ic_exclut_1 = true (1452 observés vs 1371,5 prédits). Décile 9 : A/E 0,938, IC [0,866 ; 1,010]. segments_ae_hors_ic = [\"DrivAge:25-34\"]. Doc §3 : sur-dispersion « non testée »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les contraintes légales sur les variables tarifaires (ASOP 12 §4.1 a) ne sont pas examinées, pour un usage de tarification. Region et VehGas sont à qualifier. Aucune variable interdite (genre) n'est présente.",
+    "preuve": "Doc §3 : « l'examen des contraintes légales sur les variables utilisables (ASOP 12 §4.1 a) n'est pas documenté [...] Ce point reste à traiter ». conceptuel : variables_interdites_presentes = [] ; Region : « contrainte réglementaire à documenter »."
+   },
+   {
+    "categorie": "fuite_cible",
+    "gravite": "important",
+    "description": "BonusMalus reflète l'historique de sinistres et c'est de loin la variable la plus discriminante. Ce n'est pas une fuite directe, mais le moment où il est connu (souscription ou renouvellement, avant la période d'exposition) n'est pas établi. La dépendance du modèle à cette variable est forte.",
+    "preuve": "conceptuel : gain_deviance_univarie_pct_test BonusMalus = 3,189 %, contre 0,631 % pour la variable suivante (Density). Note conceptuel : « proxy de la cible, pas fuite directe ; vérifier qu'il est connu à la souscription ». resultats : pire_decalage = \"BonusMalus*1.25\" (dégradation 0,413, contre un gain vs modèle nul de 0,0667)."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "Aucune analyse des relativités ni du sens des effets n'est documentée pour un modèle boosté (C4). Les interdépendances DrivAge/BonusMalus et Area/Density/Region ne sont pas démêlées. Les effets one-at-a-time calculés par l'agent conceptuel restent à interpréter par un actuaire.",
+    "preuve": "conformite C4 : « non_conforme : aucune analyse des relativités ni de la cohérence des effets (pas de PDP/SHAP) ». Doc §2.2 : corrélation DrivAge/BonusMalus r = −0,48. conceptuel.limites : « Effets one-at-a-time ignorant les corrélations »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Le code a été produit par IA sans relecture humaine et aucune revue par un second professionnel n'est documentée (D4).",
+    "preuve": "conformite D4 : « Aucune revue par un second professionnel documentée ; code produit par IA sans relecture humaine. » conformite E3 : déclaration conforme de cette dépendance."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La chaîne d'entraînement n'est pas reproductible telle quelle. Le script référence un dossier absent et le rapport d'entraînement manque. Le fichier brut et le découpage ne peuvent pas être rejoués. Les versions des bibliothèques ne sont pas indiquées.",
+    "preuve": "replication.notes : « train_script.py référence artifacts/ (absent du dossier revu) : non exécutable tel quel ». package_dir_has_artifacts_subfolder = false. conformite E4 : « training_report.json absent du dossier ». replication.limits : brut et random_state=2026 non refaits."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "mineur",
+    "description": "La définition du Gini n'est pas précisée dans la documentation, alors que la variante par police donne une valeur nettement différente. Les chiffres annoncés sont par ailleurs exactement reproduits.",
+    "preuve": "replication : gini_exposure_weighted 0,3315 (= doc), gini_policy_count 0,4122. Déviance ×100 23,704 et A/E 1,011 reproduits à 0 près vs eval.json. Écart max des A/E par décile 0,00016."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "mineur",
+    "description": "Le traitement de l'exposition est correct (poids Exposure, prédiction = taux × Exposure). Le test de proportionnalité est toutefois trivial par construction. Aucun A/E par tranche d'exposition n'est produit. Les expositions supérieures à un an ne sont pas traitées et l'unité annuelle reste implicite.",
+    "preuve": "conceptuel : exposition ratio_min = 2,0 et remarque « predict() multiplie le taux par Exposure, donc ce test réussira de façon quasi triviale ». Doc §2.2 : « maximum 2,01. 0,18 % des lignes dépassent un an »."
+   },
+   {
+    "categorie": "identifiant",
+    "gravite": "mineur",
+    "description": "IDpol est bien exclu des variables du modèle, mais il porte un signal sur la sinistralité. Cela suggère une hétérogénéité liée à l'ordre ou à l'origine des données, à investiguer pour la représentativité.",
+    "preuve": "conceptuel : gain_deviance_univarie_pct_test IDpol = 0,234 %, supérieur à VehAge (0,175) et VehBrand (0,139). Doc §3 : « IDpol, ClaimNb et Exposure sont exclus des variables explicatives »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Il n'existe ni validation hors période ni analyse de stabilité temporelle. La dérive n'est pas testée.",
+    "preuve": "resultats.limites : « Une seule partition aléatoire, pas de test hors période (dérive non testée) ». conformite A2 : « stabilité temporelle non étudiée »."
+   }
+  ],
+  "synthese": "Les performances annoncées sont exactement reproduites. La réplique indépendante est cohérente : écart nul à graine 0, dispersion de la déviance ×100 de 0,0095 entre graines. Le modèle bat nettement la constante (23,704 vs 25,397) et la calibration globale est bonne (A/E 1,011, IC [0,984 ; 1,038]). La documentation est honnête sur ses limites. En revanche, plusieurs écarts doivent être levés avant un usage tarifaire en production. (1) Examen réglementaire des variables (C5). (2) Réévaluation sur un découpage groupé ou dédoublonné, puisque 7575 lignes du test dupliquent l'apprentissage. (3) Analyse et correction de la sous-estimation du décile 10 (A/E 1,059, IC excluant 1) et du segment DrivAge 25-34. (4) Justification de la disponibilité de BonusMalus avant la période d'exposition et analyse des relativités. (5) Revue humaine du code par un second actuaire. (6) Paquet reproductible : artifacts/, training_report.json, versions. Limite de cette revue : trois agents déclarent ne pas avoir exécuté leurs scripts alors que des sorties JSON sont fournies. Je m'appuie sur ces sorties, dont la cohérence croisée (sum_mu 5299,92 et sum_y 5358 identiques chez trois agents, effectifs conformes à la doc) soutient la fiabilité. Ce point de traçabilité de la revue est à régulariser."
+ },
+ "run_id": "mrm_livrable_naif_r1",
+ "package": "naif_r1",
+ "minutes": 5.1,
+ "cost_usd": 0.5452
+}

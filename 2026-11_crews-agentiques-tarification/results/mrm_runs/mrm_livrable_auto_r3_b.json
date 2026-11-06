@@ -1,0 +1,120 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 19.4,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 13.3,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 2,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": false,
+     "seconds": 0.0,
+     "stderr_tail": "  File \"/home/claude/work/runs/mrm_livrable_auto_r3_b/scripts/resultats_1.py\", line 111\n    segments_|z|>3=[f\"{k}:{s['segment']}\" for k, v in res[\"segments\"].items() for s in v if abs(s[\"z\"]) > 3])\n                ^\nSyntaxError: positional argument follows keyword argument\n"
+    },
+    {
+     "attempt": 2,
+     "exec_ok": true,
+     "seconds": 55.9,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "approuve_sous_reserve",
+  "constats": [
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "La calibration par décile est mauvaise sur le train, même triée sur la fréquence prédite. L'hypothèse du §6.3 (artefact de tri sur μ) n'explique donc qu'une partie de l'écart : le modèle sur-prédit les déciles bas et sous-prédit le décile haut. Sur le test, l'écart reste acceptable.",
+    "preuve": "Train complet trié sur la fréquence : A/E de 0,744 à 1,150, |z| max 10,89 (replication.json). Échantillon de 150 000 lignes du train : A/E de 0,779 à 1,169, z décile 10 = 6,41 (resultats.json). Test : A/E de 0,935 à 1,088, |z| max 3,23 (Poisson brut) ; avec la dispersion de Pearson de 1,62, |z| ajusté ≈ 2,5. Le tri sur μ reproduit l'écart annoncé : A/E de 3,27 à 0,81."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "important",
+    "description": "La fréquence observée décroît fortement avec la durée d'exposition, ce qui contredit l'hypothèse de proportionnalité imposée par l'offset log(Exposure). La calibration par tranche d'exposition n'est vérifiée nulle part. De plus, predict.py plafonne l'exposition à 1 an : une police de 1,5 an est sous-prédite d'un tiers (0,18 % des lignes).",
+    "preuve": "Fréquence train de 0,165 pour Exposure ≤ 0,08 contre 0,0546 pour Exposure = 1 (conceptuel.json, freq_par_tranche_exposition). Le test de doublage donne un ratio de 2,000 : la proportionnalité vient de la construction du modèle, pas des données."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "Aucune police n'est commune au train et au test, mais un tiers des profils de test existent déjà dans le train. Le découpage aléatoire non groupé peut rendre la performance optimiste, et la déviance est nettement plus élevée sur les profils nouveaux.",
+    "preuve": "idpol_overlap = 0 ; test_profiles_present_in_train_share = 0,326. Sur les profils nouveaux : A/E 1,0097 et déviance×100 27,42, contre 23,70 sur l'ensemble du test (replication.json). L'écart de composition n'est pas neutralisé."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les prédictions individuelles sont instables d'une graine à l'autre (volatilité des sorties, A2), alors que les métriques agrégées sont stables. La reproduction à graine identique est exacte.",
+    "preuve": "Graine 42 : max_rel_diff = 0, déviance identique. Graine 7 : corr log μ = 0,99926, max_rel_diff = 1,14 (114 %), Δdéviance×100 = 0,0036 (replication.json)."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "Aucune relativité ni dépendance partielle du GBM n'est documentée (C4 non conforme) et aucun test de sensibilité n'est fourni par l'équipe (A5). Les tendances univariées vues par la revue sont cohérentes, mais la sensibilité au BonusMalus est forte.",
+    "preuve": "Fréquence train par BonusMalus : de 0,052 à 0,180 ; par Density : de 0,051 à 0,098. Importance en gain : BonusMalus 47,5 % + log_BonusMalus 11,3 % (conceptuel.json). Les scénarios BonusMalus ×0,9 et ×1,1 modifient la déviance de plus de 1 % (resultats.json)."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "La reproductibilité et la gouvernance sont insuffisantes. train_script.py n'est pas exécutable tel quel. Le code du GLM, de l'EDA et de l'évaluation est absent, training_report.json n'est pas fourni, et le code généré par IA n'a pas été relu par un humain (D4, D5).",
+    "preuve": "script_artifacts_path_is_cwd_artifacts = true et package_has_artifacts_dir = false (replication.json). Points D4, D5 et E1 de conformite.json ; §7-8 de la documentation."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "Plusieurs incohérences de documentation.",
+    "preuve": "(1) Nombre d'arbres : 264 dans tuning.json contre 255 dans le bundle. (2) La doc écrit init_score = log(Exposure), alors que le code utilise log(min(Exposure,1)) + log f0. (3) Les règles sont dites « apprises sur le train », alors que features.py contient des constantes figées. (4) La comparaison GLM/GBM date de l'ancienne initialisation et le GLM n'est pas évalué sur le test (conformite A3, B3, D2, D6)."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "mineur",
+    "description": "Les chiffres annoncés sont reproduits, mais la définition du Gini n'est pas documentée : 0,331 correspond au Gini pondéré par l'exposition. De petits écarts sur les déciles restent inexpliqués.",
+    "preuve": "Gini recalculé pondéré exposition = 0,3307, pondéré polices = 0,2624. Déviance×100 = 23,70 et A/E = 1,0121 identiques à eval.json. Δz max = −0,007 ; écart max sur les déciles = 0,0029 ; déviance du modèle constant 25,395 (Δ −0,002)."
+   },
+   {
+    "categorie": "identifiant",
+    "gravite": "mineur",
+    "description": "IDpol est correctement exclu, mais il porte un signal qui suggère une hétérogénéité de sources ou de périodes dans les données, non investiguée (B1, B2).",
+    "preuve": "Gini univarié IDpol = 0,057, supérieur à VehAge (0,015) et VehPower (0,022) ; fréquence par décile d'IDpol de 0,059 à 0,088. La permutation d'IDpol ne change rien : max_abs_diff = 0 (conceptuel.json)."
+   }
+  ],
+  "synthese": "Décision : approbation sous réserve pour l'usage déclaré (composante fréquence de la prime pure, tarification technique), sans mise en production avant levée des conditions.\n\nPoints positifs :\n- Pas de fuite de la cible : IDpol, ClaimNb et Exposure sont exclus, et la permutation d'IDpol est sans effet.\n- Le modèle livré est reproduit exactement (graine 42).\n- Performance sur le test : gain de déviance de 6,7 % sur le modèle nul (IC bootstrap 6,0 à 7,2 %).\n- A/E global de 1,012 (IC95 0,985 à 1,039) ; A/E par segment de 0,93 à 1,08, sans |z| > 3.\n\nConditions :\n1. Expliquer et corriger la mauvaise calibration par décile sur le train (|z| jusqu'à 10,9 avec un tri sur la fréquence).\n2. Analyser la non-proportionnalité de la fréquence à l'exposition et le plafond à 1 an dans predict.py, et contrôler l'A/E par tranche d'exposition.\n3. Refaire la validation avec un découpage groupé par profil.\n4. Documenter les relativités et dépendances partielles, la VIF/GVIF, les sensibilités et la volatilité inter-graines.\n5. Rendre train_script exécutable, fournir le code du GLM et training_report.json, et faire relire le code IA par un humain.\n6. Corriger les incohérences documentaires (nombre d'arbres, init_score, définition du Gini).\n\nLimite de la revue : les rapports narratifs de trois agents déclarent ne pas avoir exécuté leurs scripts, alors que les JSON fournis contiennent des résultats chiffrés. La décision s'appuie sur ces JSON, dont la cohérence croisée est bonne : les mêmes déciles de test et le même A/E figurent dans replication et resultats."
+ },
+ "run_id": "mrm_livrable_auto_r3_b",
+ "package": "auto_r3",
+ "minutes": 5.9,
+ "cost_usd": 0.696
+}

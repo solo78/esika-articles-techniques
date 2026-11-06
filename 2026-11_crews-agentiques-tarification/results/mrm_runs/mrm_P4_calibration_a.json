@@ -1,0 +1,108 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 8.4,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 7.7,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 6.9,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "calibration",
+    "gravite": "bloquant",
+    "description": "predict.py multiplie la fréquence par un facteur fixe de 0,85, présenté comme un « ajustement de tendance ». Ce facteur n'est pas appris par train_script.py et aucune donnée ne le justifie. Il fait sous-prédire le modèle livré d'environ 20 %, de façon systématique et statistiquement significative, ce qui est incompatible avec un usage en tarification technique.",
+    "preuve": "Le code de predict.py contient « freq = freq * 0.85 # ajustement de tendance » ; train_script_contient_0.85 = false. Sur le test, le modèle livré a un A/E de 1,1952 (IC95 Poisson 1,163–1,227). Le GLM brut sans le facteur a un A/E de 1,0159 (IC95 0,989–1,043). Le ratio brut/livré vaut exactement 0,85. Avec le facteur, les 10 déciles ont tous un A/E supérieur à 1,09 (décile 7 : 1,324). La déviance x100 passe de 24,286 (brut) à 24,403 (livré)."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "La documentation contredit le code livré. Elle affirme l'absence de tendance et ne mentionne pas le facteur 0,85. Elle présente un A/E de 1,195 sans le signaler comme un défaut de calibration. La métrique « 0,32 » par décile n'est pas définie.",
+    "preuve": "Doc §6 : « données d'une seule période, sans tendance » ; facteur_0.85_documente = false. Doc §5 : « sinistres observés / attendus = 1.195 », sans commentaire. eval.json : ae_max_decile_gap = 0,321. Ce chiffre correspond à max|A/E−1| par décile (décile 7 = 1,324) et non à l'écart au global (0,129)."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "Même sans le facteur 0,85, le GLM brut garde un défaut de calibration par décile. Il surestime les bas risques et sous-estime les déciles intermédiaires et hauts. Aucune analyse par segment n'est documentée.",
+    "preuve": "GLM brut, déciles 1 à 3 : A/E de 0,934, 0,952 et 0,930. Déciles 7 et 8 : 1,126 et 1,112. Au décile 7, on observe 590 sinistres pour 524,2 attendus, soit environ 2,9 écarts-types de Poisson. L'écart max-min entre déciles vaut 0,195."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Aucune analyse de crédibilité des classes ni examen des relativités du GLM n'est fourni (C3, C4). Plusieurs modalités ont une exposition faible, et les relativités extrêmes ne sont pas commentées.",
+    "preuve": "Expositions en années-police sur le train : Alsace 996,2 ; Champagne-Ardenne 957,4 ; B14 1 834,2 ; DrivAge 18-20 2 062,5. Cette dernière classe a une relativité univariée de 3,201. Le dossier ne contient aucun tableau exp(coef)."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "La validation est insuffisante au regard de D1, D2 et D4. La seule comparaison porte sur le modèle nul, avec un gain modeste. Il n'y a ni modèle alternatif, ni test de sensibilité documenté, ni revue par un pair envisagée.",
+    "preuve": "Gain de déviance par rapport au modèle nul : 3,91 % pour le modèle livré et 4,37 % pour le GLM brut (déviance nulle x100 = 25,395). Doc §5 : « Comparaison au modèle nul et contrôle de la calibration par décile ». Aucune mention de revue indépendante."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "mineur",
+    "description": "Le Gini d'eval.json n'est pas reproduit exactement, probablement à cause d'une convention de calcul différente. La valeur arrondie de la documentation reste cohérente. La déviance et l'A/E sont reproduits à l'identique.",
+    "preuve": "Gini dans eval.json : 0,28240 ; recalculé : 0,28198 (écart −0,00042) ; documentation : 0,282. Déviance x100 et A/E : écart de 0,0 avec eval.json. chiffres_annonces_reproduits = false."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La déclaration des dépendances est inexacte ou ambiguë (E3). LightGBM est cité alors que le code n'utilise que scikit-learn. La provenance du code (outil d'IA éventuel) n'est pas déclarée.",
+    "preuve": "Doc §7 : « scikit-learn (PoissonRegressor), LightGBM selon le cas ». Le modèle livré est un PoissonRegressor : son intercept (−2,63326) est identique à celui de la réplique scikit-learn, et la corrélation des prédictions brutes vaut 1,0."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "mineur",
+    "description": "Aucun chevauchement de polices n'existe entre train et test. Il y a toutefois des profils identiques et la provenance de tuning.json n'est pas tracée. L'impact est jugé faible pour un GLM de quelques dizaines de paramètres, mais le découpage doit être rendu reproductible.",
+    "preuve": "idpol_overlap = 0 ; 7 575 lignes identiques hors IDpol entre train et test (5,6 % du test). train_script_data : « data/train.parquet uniquement ». Le script de découpage (graine 2026) et le script de réglage d'alpha (1e-06) ne sont pas fournis."
+   }
+  ],
+  "synthese": "Décision : refus du modèle dans sa version livrée. Les sorties de replication et de resultats sont concordantes : mêmes déviances, A/E et intercepts. La réplique sur le train seul reproduit exactement le GLM brut. Le modèle livré est donc le GLM documenté, auquel s'ajoute un facteur 0,85 non documenté, contraire à la documentation et sans justification. Ce facteur produit une sous-prédiction significative d'environ 20 % (A/E 1,195, IC95 1,163–1,227), inacceptable en tarification technique. Correction d'un constat de l'agent conformité (E4) : les chiffres de la documentation (24,403 ; 0,282 ; 1,195) sont bien calculés avec le facteur. Ils reflètent la prédiction livrée et non le modèle sans facteur. Le problème relève donc de la calibration et de la documentation, pas de métriques fausses. Points non retenus faute de preuve chiffrée : fuite via BonusMalus (simple hypothèse de l'agent conceptuel) ; comportements hors plage (DrivAge < 18, Density ≤ 0), signalés comme cas à surveiller mais non quantifiés dans les pièces fournies. Aucun problème d'exposition ni d'identifiant n'est établi : poids d'exposition, plafond à 1 et IDpol exclu. Conditions de resoumission : (1) retirer le facteur 0,85, ou le justifier par une étude de tendance chiffrée et documentée ; (2) traiter la calibration résiduelle par décile et par segment ; (3) fournir les relativités et une analyse de crédibilité des petites classes ; (4) comparer le modèle à un modèle alternatif et ajouter des tests de sensibilité ; (5) corriger la documentation (§5, §6, §7, définition de l'écart par décile) et tracer le découpage et le réglage ; (6) prévoir une revue par un pair. Limite : les agents n'ont pas exécuté eux-mêmes leurs scripts dans leurs rapports. Je me fonde sur les JSON produits, cohérents entre eux, sans réexécution indépendante de ma part."
+ },
+ "run_id": "mrm_P4_calibration_a",
+ "package": "P4_calibration",
+ "minutes": 3.4,
+ "cost_usd": 0.3919
+}

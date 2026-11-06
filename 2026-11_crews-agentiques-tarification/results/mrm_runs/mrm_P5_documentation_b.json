@@ -1,0 +1,114 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 6.8,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 6.2,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 9.2,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "documentation",
+    "gravite": "bloquant",
+    "description": "La documentation ne permet pas de juger le modèle (A1, A5, B1-B5, C1, C3, C4, E1, E2, E5 non conformes). Elle ne précise ni l'objet ni l'usage prévu. Elle ne décrit ni les données, ni les variables, ni les traitements (exposition plafonnée à 1, ClaimNb à 4, VehPower à 9, BonusMalus à 150), ni le choix d'alpha=1e-6, ni les relativités, ni les limites. La mention « prêt pour la production » ne repose sur aucune analyse.",
+    "preuve": "model_doc.md tient en trois lignes : « GLM Poisson sur les variables du portefeuille. Déviance test x100 = 24.286, Gini = 0.282. Le modèle est performant et prêt pour la production. » L'agent conformité relève 15 points non conformes et 10 partiels sur 25."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "important",
+    "description": "Une partie des métriques annoncées n'est pas reproductible. L'écart maximal d'A/E par décile annoncé (0,123) n'est retrouvé exactement par aucun recalcul. Le Gini dépend fortement d'une définition qui n'est pas documentée. La doc ne précise pas le jeu d'évaluation et omet l'A/E et l'écart par décile. La déviance et l'A/E global, eux, sont reproduits exactement.",
+    "preuve": "eval.json donne ae_max_decile_gap = 0,1228. La réplication obtient 2,408 (match_1e-6 false) et resultats obtient 0,1256 (décile 6). Gini annoncé 0,2824 : la réplication le retrouve (« exposure_weighted »), mais resultats calcule 0,0945 (pondéré exposition) et 0,3807 (pondéré police), et la réplication obtient 0,2252 en non pondéré. Déviance 24,2858 et A/E 1,0159 : écart nul."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "La calibration globale est acceptable, mais des sous-estimations sont significatives sur certains déciles et segments. Les jeunes conducteurs de 18-20 ans sont sous-tarifés d'environ 27 %. Le modèle sous-prédit aussi les déciles 6 et 7 (+11 à +13 %), alors que les déciles bas sont surestimés.",
+    "preuve": "A/E global 1,016, IC95 bootstrap [0,988 ; 1,044]. Décile 6 : A/E 1,126 (z = 2,875). Décile 7 : A/E 1,112 (z = 2,71). Déciles 0 à 2 : A/E de 0,93 à 0,95. Segment DrivAge 18-20 : 132 sinistres observés pour 104,1 prédits, A/E 1,268 (z = 2,73, n = 1 350). Total : 5 274 prédits pour 5 358 observés."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "L'indépendance du jeu de test n'est pas garantie. Environ 5,6 % des lignes de test sont identiques à des lignes d'entraînement : ce sont vraisemblablement des contrats d'un même assuré sous des IDpol distincts. Les métriques hors échantillon peuvent donc être optimistes. Rien ne prouve non plus que le test n'a pas servi au réglage d'alpha.",
+    "preuve": "replication.json : idpol_overlap = 0, mais test_rows_identical_to_a_train_row = 7 575 sur 135 599. Doublons : 20 844 dans le train et 2 444 dans le test. tuning.json n'indique pas comment alpha a été choisi."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "important",
+    "description": "La prédiction n'est proportionnelle à l'exposition que jusqu'à 1 an. predict.py plafonne l'exposition à 1, donc une police de durée supérieure est tarifée comme une police d'un an. L'unité de temps (l'année) reste implicite. Ce choix n'est ni justifié ni documenté (D6).",
+    "preuve": "Test du doublement de l'exposition (conceptuel) : ratio 2,0 sur (0 ; 0,5], 1,2006 sur (0,5 ; 1], 1,0 sur (1 ; 99]. 237 polices de test (0,17 %) ont une exposition supérieure à 1."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Rien ne démontre la performance revendiquée. Le gain par rapport à un modèle sans variable est faible et aucun modèle alternatif n'est comparé (D2). La sensibilité au BonusMalus est forte et n'est pas documentée (A5).",
+    "preuve": "Modèle nul : déviance ×100 de 25,395 contre 24,286 pour le modèle, soit un gain de 4,37 %. Stress BonusMalus +10 % : prédiction moyenne ×1,197 et A/E ramené à 0,848."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Certaines relativités par âge du conducteur sont non monotones et ne sont pas expliquées (C4). Area et LogDensity sont redondantes (Area est dérivée de Density), ce qui empêche d'identifier leurs effets séparément.",
+    "preuve": "Relativités du GLM : 26-30 = 0,695, 31-40 = 0,83, 41-50 = 1,086, 51-70 = 1,008. Le drapeau de conceptuel indique « Area et LogDensity quasi colinéaires »."
+   },
+   {
+    "categorie": "fuite_cible",
+    "gravite": "mineur",
+    "description": "BonusMalus résulte en partie de la sinistralité passée. Ce n'est pas une fuite démontrée, mais il faut confirmer que la variable est mesurée en début de période et non mise à jour après un sinistre de la période observée (C2).",
+    "preuve": "conceptuel : « coef CRM : plausible mais partiellement issu de la sinistralité passée du contrat ». BonusMalus 50-53 : fréquence 0,0519 ; BonusMalus 72-85 : fréquence 0,1137."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Les entrées hors domaine ne sont pas gérées : Density = 0 donne log = −inf, un DrivAge inférieur à 18 tombe dans une modalité « nan » jamais vue à l'apprentissage, et une exposition NaN se propage. Le jeu de test actuel n'est pas touché. Ce constat vient de la lecture du code ; la sortie des stress correspondants n'est pas visible.",
+    "preuve": "Rapports conceptuel et resultats : « log(Density) donne −inf pour Density = 0 », « DrivAge < 18 tombe dans une modalité nan ». Sur le test : DrivAge_hors_bornes_test = 0 et test_na_cells = 0."
+   }
+  ],
+  "synthese": "Décision : refus en l'état. Le motif bloquant est l'absence de documentation : l'objet, les données, les traitements, les limites et l'usage ne sont pas décrits, et la mention « prêt pour la production » n'est pas étayée.\n\nPoints positifs. Le modèle est reproductible : la réplication sur train.parquet seul redonne les coefficients et les prédictions à l'identique (écart 0). La déviance (24,286) et l'A/E global (1,016, IC95 contenant 1) sont confirmés. IDpol n'est pas utilisé (permutation sans effet). Aucune fuite de la cible n'est démontrée.\n\nÉléments à corriger avant une nouvelle soumission :\n- rédiger une documentation conforme aux ASOP 56, 23, 12 et 41 ;\n- définir et rendre reproductibles le Gini et l'écart par décile ;\n- recalibrer le modèle ou justifier la sous-estimation des 18-20 ans et des déciles 6 et 7 ;\n- dédoublonner entre train et test (7 575 lignes) et revalider ;\n- justifier le plafonnement de l'exposition et comparer le modèle à une alternative ;\n- analyser les relativités ;\n- prévoir une revue par un pair.\n\nLimites de cette revue :\n- les sorties sont tronquées : stress extrêmes non visibles, BonusMalus 85-228 incomplet ;\n- deux agents implémentent différemment un Gini « pondéré exposition » (0,282 contre 0,095), et je ne peux pas trancher sans la définition de référence ;\n- deux agents déclarent ne pas avoir exécuté leur script alors que leurs JSON contiennent des résultats, ce qui laisse un doute sur l'exécution ; les chiffres sont toutefois cohérents entre agents (5 273,96 prédits, 5 358 observés) ;\n- je n'ai pas réexécuté les calculs moi-même."
+ },
+ "run_id": "mrm_P5_documentation_b",
+ "package": "P5_documentation",
+ "minutes": 3.5,
+ "cost_usd": 0.4103
+}

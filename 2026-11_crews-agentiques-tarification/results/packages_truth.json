@@ -1,0 +1,106 @@
+{
+ "P0_sain": {
+  "defect": null,
+  "true": {
+   "deviance_x100": 24.285755811691487,
+   "gini": 0.28240062716423053,
+   "ae_global": 1.0159345814397587,
+   "ae_max_decile_gap": 0.12281733731278277
+  },
+  "reported": {
+   "deviance_x100": 24.285755811691487,
+   "gini": 0.28240062716423053,
+   "ae_global": 1.0159345814397587,
+   "ae_max_decile_gap": 0.12281733731278277
+  }
+ },
+ "P1_fuite": {
+  "defect": "fuite_cible",
+  "true": {
+   "deviance_x100": 16.56142470123929,
+   "gini": 0.6497083270778271,
+   "ae_global": 1.0169336711432617,
+   "ae_max_decile_gap": 0.2514313035620577
+  },
+  "reported": {
+   "deviance_x100": 16.56142470123929,
+   "gini": 0.6497083270778271,
+   "ae_global": 1.0169336711432617,
+   "ae_max_decile_gap": 0.2514313035620577
+  }
+ },
+ "P2_exposition": {
+  "defect": "exposition",
+  "true": {
+   "deviance_x100": 25.207628746328307,
+   "gini": 0.2863364566868126,
+   "ae_global": 1.0153292914092158,
+   "ae_max_decile_gap": 0.7483056407047448
+  },
+  "reported": {
+   "deviance_x100": 25.207628746328307,
+   "gini": 0.2863364566868126,
+   "ae_global": 1.0153292914092158,
+   "ae_max_decile_gap": 0.7483056407047448
+  }
+ },
+ "P3_contamination": {
+  "defect": "contamination_test",
+  "true": {
+   "deviance_x100": 23.192499895616,
+   "gini": 0.3885158059579462,
+   "ae_global": 1.010686017327784,
+   "ae_max_decile_gap": 0.23962288534082554
+  },
+  "reported": {
+   "deviance_x100": 23.192499895616,
+   "gini": 0.3885158059579462,
+   "ae_global": 1.010686017327784,
+   "ae_max_decile_gap": 0.23962288534082554
+  }
+ },
+ "P4_calibration": {
+  "defect": "calibration",
+  "true": {
+   "deviance_x100": 24.40328201750715,
+   "gini": 0.28240056022882354,
+   "ae_global": 1.1952171546350103,
+   "ae_max_decile_gap": 0.320961573309156
+  },
+  "reported": {
+   "deviance_x100": 24.40328201750715,
+   "gini": 0.28240056022882354,
+   "ae_global": 1.1952171546350103,
+   "ae_max_decile_gap": 0.320961573309156
+  }
+ },
+ "P5_documentation": {
+  "defect": "documentation",
+  "true": {
+   "deviance_x100": 24.285755811691487,
+   "gini": 0.28240062716423053,
+   "ae_global": 1.0159345814397587,
+   "ae_max_decile_gap": 0.12281733731278277
+  },
+  "reported": {
+   "deviance_x100": 24.285755811691487,
+   "gini": 0.28240062716423053,
+   "ae_global": 1.0159345814397587,
+   "ae_max_decile_gap": 0.12281733731278277
+  }
+ },
+ "P6_metriques": {
+  "defect": "metriques_inexactes",
+  "true": {
+   "deviance_x100": 24.285755811691487,
+   "gini": 0.28240062716423053,
+   "ae_global": 1.0159345814397587,
+   "ae_max_decile_gap": 0.12281733731278277
+  },
+  "reported": {
+   "deviance_x100": 23.085755811691488,
+   "gini": 0.34240062716423053,
+   "ae_global": 1.0
+  }
+ }
+}

@@ -1,0 +1,114 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 5.0,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 35.6,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 8.8,
+     "stderr_tail": "cal/lib/python3.13/site-packages/pandas/core/arraylike.py:402: RuntimeWarning: divide by zero encountered in log\n  result = getattr(ufunc, method)(*inputs, **kwargs)\n/home/claude/work/runs/mrm_P4_calibration_b/scripts/resultats_1.py:99: RuntimeWarning: divide by zero encountered in scalar divide\n  \"ae\": float(y[ok].sum() / p[ok].sum()) if ok.any() else None}\n/usr/local/lib/python3.13/site-packages/sklearn/preprocessing/_encoders.py:262: UserWarning: Found unknown categories in columns [2] during transform. These unknown categories will be encoded as all zeros\n  warnings.warn(msg, UserWarning)\n",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "calibration",
+    "gravite": "bloquant",
+    "description": "predict.py multiplie toutes les prédictions par un facteur de 0,85 codé en dur, présenté comme un « ajustement de tendance ». Ce facteur est absent de train_script.py, n'est pas justifié et contredit la documentation (« sans tendance »). Il provoque à lui seul une sous-estimation systématique d'environ 16 % du nombre attendu de sinistres, alors que le GLM brut est calibré globalement. Correction de deux agents : l'évaluation livrée inclut déjà ce facteur. L'affirmation « A/E ≈ 1,41 si le facteur était appliqué » est donc erronée, et le facteur n'« aggrave » pas l'écart : il en est la cause.",
+    "preuve": "resultats.json : A/E livré = 5358/4482,9 = 1,195 (IC95 1,163–1,227) ; A/E sans facteur = 5358/5274,0 = 1,016 (IC95 0,989–1,043) ; facteur implicite 0,850. Sur le train : A/E 1,180 avec le facteur, 1,003 sans. replication.json : écart maximal par décile 0,324 avec le facteur, 0,126 sans. model_doc §6 : « données d'une seule période, sans tendance »."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "Même sans le facteur 0,85, des écarts significatifs subsistent par segment. Les jeunes conducteurs, les déciles 7-8 et les classes bonus-malus 50-80 sont sous-estimés. L'absence d'interactions (C1) est une cause plausible.",
+    "preuve": "resultats.json : DrivAge 18-20, A/E sans facteur 1,268 (IC95 recalculé ≈ 1,05–1,48 ; 132 sinistres observés pour 88,5 attendus avec le facteur). Décile 7 : A/E sans facteur 1,126 (IC ≈ 1,035–1,216). Décile 8 : 1,112. conceptuel.json : BMc (60,80] A/E 1,437 avec le facteur, soit ≈ 1,22 sans ; BMc (50,60] 1,405, soit ≈ 1,19 sans."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "L'indépendance du jeu de test n'est pas démontrée. Le test contient de nombreuses lignes identiques (hors identifiant) à des lignes du train, ce qui est possible dans freMTPL2 (polices dupliquées). Par ailleurs, un réglage a eu lieu sans trace d'un jeu de validation distinct, alors que la documentation affirme que le test n'a pas servi au réglage, sans en apporter la preuve.",
+    "preuve": "replication.json : lignes_identiques_hors_id_train_test = 5 578, soit ≈ 4,1 % de n_test = 135 599 ; idpol_communs = 0. Agent conformité (D2) : tuning.json indique un réglage sans jeu de validation distinct. model_doc §2 : « jamais utilisé pour l'apprentissage ni le réglage »."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "Les chiffres de validation sont reproduits mais présentés de façon trompeuse. La documentation annonce un « contrôle de la calibration par décile » sans en divulguer le résultat ni commenter la sous-estimation de 20 %. L'incohérence entre le facteur 0,85 et « sans tendance » n'est pas déclarée (ASOP 56 §4.1, E2/A4/A5).",
+    "preuve": "model_doc §5 : déviance 24,403 et A/E 1,195, sans commentaire. Recalcul : déviance 24,4033 (écart 0,0003), A/E 1,1952. eval.json : ae_max_decile_gap 0,321, non mentionné dans la documentation."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "La déclaration des dépendances est inexacte (E3). LightGBM est cité mais n'est pas utilisé par le code revu, et aucune déclaration ne porte sur les outils (dont l'IA) ayant produit le code.",
+    "preuve": "model_doc §7 : « scikit-learn (PoissonRegressor), LightGBM selon le cas ». replication.json : train_script.py reproduit à l'identique avec PoissonRegressor seul (spec_identique = true ; corrélation des prédictions 0,99999999)."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les exigences de classification des risques ASOP 12 ne sont pas couvertes. Le dossier ne contient aucune analyse de crédibilité des classes (C3), aucune analyse des relativités (C4) et aucun examen des contraintes légales sur l'âge et la région (C5). Plusieurs classes sont peu peuplées.",
+    "preuve": "conceptuel.json (test) : VehPower 15, 593 polices et 24 sinistres ; VehPower 14, 489 polices et 24 sinistres ; BMc (120,1000], 445 polices ; DrivAge 18-20, 1 350 polices. Agent conformité : C3, C4 et C5 non conformes, aucune section correspondante dans model_doc."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "mineur",
+    "description": "La définition du Gini n'est pas précisée et la valeur d'eval.json n'est pas exactement reproduite. Le 0,282 publié correspond au Gini pondéré par l'exposition, le Gini par police valant 0,225. Un léger écart, non expliqué, existe aussi sur l'écart maximal par décile.",
+    "preuve": "replication.json : gini_expo_weighted recalculé 0,28198 contre eval.json 0,28240 (écart 0,0004) ; gini par police 0,2250 ; ae_max_decile_gap recalculé 0,3242 contre eval.json 0,3210 (écart 0,0032)."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La revue des données est imprécise. Le nombre de polices à plus de 4 sinistres n'est pas chiffré (« quelques ») et l'effet des plafonds sur les résultats n'est pas apprécié (B3/B5).",
+    "preuve": "replication.json : claimnb_gt4_train = 8, claimnb_gt4_test = 0 ; expo_gt1_train = 987 (la documentation annonce 1 224 sur l'ensemble, non vérifiable faute de comptage sur le test). model_doc §2 : « quelques polices déclarent plus de 4 sinistres »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "La gouvernance est incomplète. Ni les versions des bibliothèques, ni le code de split, ni le versionnage de model.joblib ne figurent au dossier. La régularisation quasi nulle n'est pas justifiée. Aucune revue par un pair n'est prévue (D4/D5/A3).",
+    "preuve": "Agent conformité : D5 « pas de versions des bibliothèques ni du code de split ; model.joblib non versionné » ; A3 « alpha = 1e-6 non justifié » ; D4 « aucune mention d'une revue par un autre professionnel qualifié »."
+   }
+  ],
+  "synthese": "Décision : refus en l'état.\n\nLes métriques publiées sont exactes : déviance 24,403 et A/E 1,195 recalculés à moins de 0,0003 près, Gini 0,282 au sens pondéré par l'exposition. Le GLM est reproduit à l'identique depuis train_script.py.\n\nPoints vérifiés et sans réserve :\n- aucune fuite de la cible ;\n- IDpol non utilisé ;\n- exposition proportionnelle ;\n- aucun identifiant de police commun entre train et test.\n\nMotif du refus : la chaîne de prédiction livrée (predict.py) applique un facteur manuel de 0,85, non documenté et contraire à la documentation. Il en résulte une sous-estimation systématique d'environ 16 % du nombre attendu de sinistres (A/E 1,195, IC95 1,163–1,227), inacceptable pour une tarification technique. Sans ce facteur, le modèle est calibré globalement (A/E 1,016, IC95 0,989–1,043).\n\nConditions de nouvelle soumission :\n1. Retirer le facteur, ou le justifier par une analyse de tendance documentée.\n2. Analyser et corriger les sous-estimations segmentaires résiduelles (18-20 ans ≈ 1,27 ; BM 50-80 ≈ 1,2 ; déciles 7-8 ≈ 1,12).\n3. Démontrer l'indépendance du test (5 578 lignes identiques hors identifiant, réglage sans jeu de validation tracé).\n4. Compléter les volets ASOP 12 (crédibilité, relativités, contraintes légales).\n5. Corriger la déclaration des dépendances (LightGBM, outils d'IA) et préciser la définition du Gini.\n6. Assurer le versionnage et prévoir une revue par un pair.\n\nLimites de cette revue :\n- Les narratifs des agents disent ne pas avoir exécuté leurs scripts, alors que les JSON produits contiennent des résultats cohérents entre eux ; je me fonde sur ces JSON.\n- Plusieurs sorties sont tronquées (densité, relativités, tests de stress, résultat du test IDpol), et les risques de prédictions non finies hors domaine (densité nulle, par exemple) n'ont pas pu être confirmés chiffres à l'appui ; ils ne sont donc pas retenus.\n- Le chiffre de 1 224 expositions supérieures à un an n'a pas pu être vérifié sur l'ensemble des données."
+ },
+ "run_id": "mrm_P4_calibration_b",
+ "package": "P4_calibration",
+ "minutes": 3.7,
+ "cost_usd": 0.384
+}

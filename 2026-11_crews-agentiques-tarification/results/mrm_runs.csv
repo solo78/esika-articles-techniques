@@ -1,0 +1,15 @@
+run_id,dossier,decision,categories_graves,categories_bloquantes,detecte,detecte_bloquant_refuse,fausse_alerte,constats_graves,cout_usd,minutes
+mrm_P0_sain_a,P0_sain,approuve_sous_reserve,"calibration, contamination_test, documentation, exposition",,,,False,5,0.42521719999999996,3.4
+mrm_P0_sain_b,P0_sain,approuve_sous_reserve,"calibration, contamination_test, documentation, exposition",,,,False,4,0.41444990000000004,4.0
+mrm_P1_fuite_a,P1_fuite,refuse,"calibration, documentation, exposition, fuite_cible, metriques_inexactes",fuite_cible,True,True,,5,0.3861639,3.4
+mrm_P1_fuite_b,P1_fuite,refuse,"autre, calibration, contamination_test, documentation, exposition, fuite_cible, metriques_inexactes","calibration, fuite_cible",True,True,,7,0.3907779,3.3
+mrm_P2_exposition_b,P2_exposition,refuse,"autre, calibration, contamination_test, documentation, exposition, metriques_inexactes","autre, calibration, exposition",True,True,,6,0.38999190000000006,4.7
+mrm_P3_contamination_a,P3_contamination,refuse,"autre, calibration, contamination_test, documentation, exposition, metriques_inexactes","contamination_test, metriques_inexactes",True,True,,6,0.3711839,4.6
+mrm_P3_contamination_b,P3_contamination,refuse,"autre, calibration, contamination_test, documentation, metriques_inexactes","contamination_test, metriques_inexactes",True,True,,7,0.3849039,4.5
+mrm_P4_calibration_a,P4_calibration,refuse,"autre, calibration, documentation",calibration,True,True,,5,0.3918899,3.4
+mrm_P4_calibration_b,P4_calibration,refuse,"autre, calibration, contamination_test, documentation",calibration,True,True,,6,0.3839519,3.7
+mrm_P5_documentation_a,P5_documentation,refuse,"autre, calibration, documentation, exposition",documentation,True,True,,5,0.3901139,3.7
+mrm_P5_documentation_b,P5_documentation,refuse,"autre, calibration, contamination_test, documentation, exposition, metriques_inexactes",documentation,True,True,,6,0.41031989999999996,3.5
+mrm_P6_metriques_a,P6_metriques,refuse,"autre, calibration, contamination_test, documentation, metriques_inexactes",metriques_inexactes,True,True,,5,0.3992119,3.5
+mrm_P6_metriques_b,P6_metriques,refuse,"autre, calibration, contamination_test, documentation, metriques_inexactes",metriques_inexactes,True,True,,5,0.39391390000000004,3.5
+mrm_pilote_P2,P2_exposition,refuse,"autre, calibration, documentation, exposition, metriques_inexactes","calibration, exposition",True,True,,6,0.4881835,4.0

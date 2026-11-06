@@ -1,0 +1,108 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 5.0,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 7.1,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 8.1,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "approuve_sous_reserve",
+  "constats": [
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "Le modèle sous-estime nettement la fréquence des conducteurs de 18-20 ans. Les relativités d'âge sont incohérentes : profil non monotone, avec une rupture entre 26-30 et 41-50 ans. Les 41-50 ans ressortent plus risqués que les 18-20 ans à caractéristiques égales, ce qui contredit le profil observé. Il s'agit probablement d'une confusion avec le bonus-malus, non analysée faute d'interactions. Points concernés : C4 et D3.",
+    "preuve": "resultats.json, segment DrivAge 18-20 : A=132, E=104,1, A/E=1,268, IC95 [1,052 ; 1,484], z=2,73. conceptuel.json, base 18-20 : DrivAge_21-25=0,779 ; 26-30=0,695 ; 31-40=0,83 ; 41-50=1,086 ; 51-70=1,008. Fréquences observées : 18-20=0,235 ; 41-50=0,075 ; 70+=0,060."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "La calibration par décile est imparfaite. Deux déciles intermédiaires sont significativement sous-prédits, et la documentation (§5) affirme un contrôle par décile sans en rapporter le résultat. Les IC Poisson sans surdispersion sont trop étroits, ce qui tempère la significativité sans l'annuler.",
+    "preuve": "resultats.json : décile 7 A/E=1,126 (z=2,88) et décile 8 A/E=1,112 (z=2,71), deciles_hors_IC=[7,8], ae_max_decile_gap=0,1256. eval.json : 0,1228. Pente de calibration 0,992. Segments Area tous non significatifs (Area D : 1,052, z=1,84)."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "important",
+    "description": "Le traitement mécanique de l'exposition est correct (D6). En revanche, l'hypothèse de proportionnalité de la §3 est contredite empiriquement par l'A/E par bande de durée. Les valeurs par bande n'apparaissent pas dans la sortie tronquée et doivent être produites. Ce point concerne aussi E2 (incohérence d'hypothèse non déclarée).",
+    "preuve": "conceptuel.json, flags : « A/E hétérogène selon la durée d'exposition : l'hypothèse de proportionnalité (fréquence indépendante de la durée) est rejetée empiriquement ». Toujours dans conceptuel.json : ratio_double_expo = 2,0 (min = max) ; ecart_max_pred_expo>1_vs_plafond_1 = 0,0 ; 68 133 polices d'exposition inférieure à 0,5 an."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "Pas de chevauchement d'IDpol ni de lecture du test par le script d'entraînement. En revanche, environ 5,6 % des lignes de test sont identiques à des lignes d'apprentissage hors IDpol, ce qui suggère des polices fractionnées réparties dans les deux jeux. Un découpage groupé est requis. L'impact est probablement faible pour un GLM peu paramétré, mais il n'est pas mesuré.",
+    "preuve": "replication.json : overlap_IDpol_train_test=0, train_script_utilise_test=false, lignes_test_identiques_a_train_hors_IDpol=7575 sur n_test=135599."
+   },
+   {
+    "categorie": "fuite_cible",
+    "gravite": "mineur",
+    "description": "Le bonus-malus résume la sinistralité passée. Il porte l'essentiel du pouvoir discriminant. Aucune fuite temporelle n'est prouvée, mais son caractère ex ante (date d'observation antérieure à la période d'exposition) doit être attesté. IDpol n'est pas utilisé, conformément à la documentation.",
+    "preuve": "conceptuel.json : Gini univarié BonusMalus=0,2289, contre Gini du modèle 0,282 ; IDpol=-0,0574. Documentation §6 : « Pas de variable de sinistralité antérieure hors bonus-malus ». commentaire_variables : « pas de fuite temporelle prouvable ici »."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "Plusieurs exigences ne sont pas documentées : crédibilité des classes, examen des relativités, revue indépendante, contraintes légales et variables sensibles, sensibilités, impact des plafonnements, versionnage, paramètres (alpha, bornes de classes) et limites d'usage. Points concernés : C3, C4, C5, D4, D5, A5, B3, E1, E5. Area et Density, redondantes, sont introduites ensemble sans discussion de la colinéarité.",
+    "preuve": "conformite : C3, C4 et D4 non_conformes ; A2, A3, A5, B3, C5, D1, D5, E1, E2 et E5 partiels ; « régularisation alpha=1e-6 quasi nulle ». conceptuel : « Density/Area : redondantes entre elles ». Modalité VehBrand B14 : 3 251 polices (train)."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La documentation cite LightGBM comme dépendance alors que le code ne l'utilise pas. Aucune déclaration n'est faite sur un éventuel outil d'IA ayant produit le code (E3).",
+    "preuve": "Documentation §7 : « scikit-learn (PoissonRegressor), LightGBM selon le cas ». replication.json : seul data/train.parquet est lu, et la réplication par GLM scikit-learn est identique (écarts 0,0 ; corrélation des prédictions 0,9999999999999998)."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "La traçabilité de la revue est incomplète. Les agents déclarent ne pas avoir exécuté leurs scripts alors que des sorties sont fournies. Par ailleurs, l'indicateur ae_max_decile_gap recalculé par l'agent de réplication diverge de façon incohérente : il s'agit vraisemblablement d'un défaut de définition ou de code du réviseur, non d'un défaut du modèle. L'indicateur eval_json_reproduit=false découle uniquement de cet écart.",
+    "preuve": "replication.json : ae_max_decile_gap recalculé=2,408, contre 0,1228 dans eval.json et 0,1256 dans resultats.json (A/E maximal par décile 1,126). Rapports d'agents : « Je n'ai pas pu exécuter le script ici »."
+   }
+  ],
+  "synthese": "Les chiffres annoncés sont reproduits : déviance ×100 de 24,2858 et A/E de 1,0159 à l'identique ; Gini de 0,2820 contre 0,2824, écart dû à la convention de calcul. Le modèle se réplique à l'identique à partir du seul jeu d'apprentissage. Les effectifs sont cohérents : 542 392 + 135 599 = 677 991 polices et 987 + 237 = 1 224 expositions supérieures à un an. Aucune fuite de la cible n'est démontrée, et l'exposition est mécaniquement bien traitée. En revanche, la revue relève plusieurs faiblesses : relativités d'âge incohérentes, sous-prédiction des 18-20 ans (A/E 1,27), déciles 7 et 8 hors IC (+11 à +13 %), proportionnalité à la durée d'exposition rejetée, environ 5,6 % de lignes de test dupliquées dans l'apprentissage, et lacunes documentaires sur C3, C4, D4 et D5. Décision : approuvé sous réserve pour un usage de tarification technique. Réserves à lever avant mise en production : (1) corriger le profil d'âge, par interaction âge × bonus-malus ou analyse de confusion, et recalibrer les 18-20 ans ; (2) refaire le découpage par groupe de polices et revalider ; (3) quantifier l'A/E par bande d'exposition et ajuster ou documenter l'écart ; (4) documenter relativités, crédibilité, contraintes légales, sensibilités, versionnage et limites d'usage, retirer la mention de LightGBM et déclarer les outils utilisés ; (5) attester le caractère ex ante du bonus-malus. Limites de la revue : IC Poisson sans surdispersion ; sorties tronquées, notamment pour les A/E par bande d'exposition et les stress tests, non retenus faute de chiffres ; aucun audit des données source."
+ },
+ "run_id": "mrm_P0_sain_a",
+ "package": "P0_sain",
+ "minutes": 3.4,
+ "cost_usd": 0.395
+}

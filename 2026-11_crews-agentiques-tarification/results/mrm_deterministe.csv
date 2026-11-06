@@ -1,0 +1,8 @@
+dossier,alertes_deterministes,detecte,fausse_alerte,doc_caracteres,porte_documentaire,detecte_avec_porte_doc,fausse_alerte_avec_porte_doc
+P0_sain,,,False,2090,refus : longueur insuffisante,,True
+P1_fuite,,False,,2174,refus : longueur insuffisante,False,
+P2_exposition,exposition,True,,2090,refus : longueur insuffisante,True,
+P3_contamination,,False,,2102,refus : longueur insuffisante,False,
+P4_calibration,calibration,True,,2090,refus : longueur insuffisante,True,
+P5_documentation,,False,,169,"refus : objet, donn, hypoth, méthod, validation, limite, dépendance, longueur insuffisante",True,
+P6_metriques,metriques_inexactes,True,,2090,refus : longueur insuffisante,True,

@@ -1,0 +1,102 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 8.6,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 10.1,
+     "stderr_tail": "y:47: RuntimeWarning: divide by zero encountered in log\n  t = np.where(y > 0, y * np.log(y / mu), 0.0)\n/home/claude/work/runs/mrm_P1_fuite_a/scripts/conceptuel_1.py:47: RuntimeWarning: invalid value encountered in multiply\n  t = np.where(y > 0, y * np.log(y / mu), 0.0)\n/home/claude/work/runs/mrm_P1_fuite_a/scripts/conceptuel_1.py:47: RuntimeWarning: divide by zero encountered in log\n  t = np.where(y > 0, y * np.log(y / mu), 0.0)\n/home/claude/work/runs/mrm_P1_fuite_a/scripts/conceptuel_1.py:47: RuntimeWarning: invalid value encountered in multiply\n  t = np.where(y > 0, y * np.log(y / mu), 0.0)\n",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 12.1,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "fuite_cible",
+    "gravite": "bloquant",
+    "description": "IndicDossierActif est décrite comme « issu du système de gestion », sans date de création documentée. Elle se comporte comme une conséquence du sinistre et non comme une variable connue à la souscription. Elle porte presque toute la performance annoncée, ce qui contrevient à C2 (ASOP 12 §3.2.3). Le modèle tel que livré est inutilisable en tarification.",
+    "preuve": "Train : fréquence 0,779 (modalité 1) contre 0,0309 (modalité 0), soit un rapport d'environ 25. Part de polices sinistrées : 43,5 % contre 1,5 %. La modalité 1 regroupe 12 732 des 21 086 sinistres (60 %) pour 5,7 % de l'exposition (16 345 / 286 506). Corrélation avec ClaimNb : 0,472. Relativité : 22,9. Importance par permutation : Δ déviance de 0,124, contre 0,0083 pour BonusMalus. Réentraînement sans la variable : déviance x100 de 24,29 au lieu de 16,56 et Gini de 0,282 au lieu de 0,649. Le gain sur le modèle nul (25,40) tombe de 34,8 % à environ 4,4 %. Variable neutralisée à 0 : A/E de 2,40."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "important",
+    "description": "Les chiffres de la section 5 sont reproduits à l'identique (E4 vérifié). Ils ne sont toutefois pas représentatifs d'une performance en production, puisqu'ils incorporent la fuite. La documentation les présente pourtant comme une validation, sans réserve.",
+    "preuve": "Déviance x100 : 16,5614 dans le document, eval.json et le recalcul (écart de 0,0). Gini : 0,6497 annoncé contre 0,6495 recalculé (écart de -0,0002). A/E : 1,0169 identique. Réplication du modèle : corrélation de 1,0 et écart maximal de prédiction nul. Sans IndicDossierActif, le Gini pondéré n'est plus que de 0,282."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "La calibration par décile est défaillante, alors que la documentation affirme l'avoir contrôlée sans en publier le résultat. Le biais est systématique : surestimation sur les déciles bas, sous-estimation sur les déciles moyens et hauts. Hors indicateur, le segment qui correspond à l'usage réel est sous-estimé (D3).",
+    "preuve": "Selon la convention d'eval.json et des résultats : A/E de 0,749 (D1), 0,854 (D2) et 0,861 à 0,897 (D3 à D5), puis 1,157 à 1,211 (D6 à D9). L'écart maximal est de 0,2507. Selon la convention des agents conceptuel et réplication : A/E D1 de 3,371 et D2 de 2,04 (écart maximal de 2,371). Segment IndicDossierActif=0 : A/E de 1,047. Area D : 1,063. DrivAge 26-30 : 0,924."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "important",
+    "description": "L'hypothèse de proportionnalité à l'exposition n'est pas vérifiée empiriquement. La mécanique de predict.py est bien proportionnelle (ratio de 2,0 quand l'exposition double). Mais l'A/E décroît fortement avec l'exposition, ce qui remet en cause le statut « conforme » attribué à D6 et l'hypothèse de la section 3.",
+    "preuve": "A/E par tranche d'exposition : 2,02 pour (0 ; 0,25], 1,29 pour (0,25 ; 0,5], 1,10 pour (0,5 ; 0,75], 0,83 pour (0,75 ; 1] et 0,39 au-delà de 1 an (237 polices du test)."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "mineur",
+    "description": "Le test contient des lignes strictement identiques à des lignes du train (hors IDpol). L'effet est limité pour un GLM peu paramétré, mais ce point n'est ni documenté ni traité dans la revue des données (B2). Le découpage n'est pas reproductible : le script de split n'est pas fourni.",
+    "preuve": "Les deux jeux n'ont aucun IDpol en commun, mais 41 202 lignes du test ont un doublon exact dans le train, soit 30 % des 135 599 polices de test."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "Plusieurs exigences ASOP 12, 56 et 41 ne sont pas couvertes. Manquent l'examen des relativités et de la crédibilité des classes (C3, C4), la justification d'alpha et un journal de réglage (A3, D5), la revue par un pair (D4) et le test de surdispersion (A4). La section 7 cite LightGBM « selon le cas » sans résultats et ne déclare pas les outils d'IA (E3). Les limites de la section 6 omettent l'indicateur et la calibration (E2), ainsi que les limites d'usage (E5).",
+    "preuve": "Statuts de l'agent conformité : C3, C4, D4 et E3 non conformes. Paramètre alpha=1e-6 sans journal de réglage (réplication). Section 7 : « LightGBM selon le cas ; aucun modèle externe »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Les fragilités de prétraitement relevées à la lecture du code ne sont pas confirmées par la sortie visible. Une densité nulle donnerait log(0) = -inf. Un âge du conducteur ≤ 17 ou > 120 serait classé « nan » et ignoré silencieusement. BonusMalus et Density ne sont pas bornés par le bas. Les stress réalistes restent cohérents.",
+    "preuve": "Rapport de l'agent résultats : « Densité = 0 produit log(0) = -inf ». Stress BonusMalus +10 % : ratio de prédiction moyenne de 1,129 et nonfinite = 0. Stress BonusMalus -10 % : ratio de 0,886."
+   }
+  ],
+  "synthese": "Décision : REFUS d'utilisation en tarification. Les chiffres annoncés sont exacts et reproductibles : déviance x100 de 16,561, Gini de 0,650, A/E de 1,017, et la réplication est parfaite. En revanche, ils reposent sur IndicDossierActif, variable de gestion qui se comporte comme une fuite de cible. Elle présente une fréquence 25 fois plus élevée en modalité 1, une relativité de 22,9 et 60 % des sinistres pour 5,7 % de l'exposition. Sans elle, le Gini tombe à 0,282 et le gain de déviance sur le modèle nul passe de 34,8 % à environ 4,4 %. S'y ajoutent une calibration par décile défaillante (écart de 0,25 ; A/E D1 de 3,37 selon l'autre convention), une non-proportionnalité empirique à l'exposition (A/E de 2,02 à 0,39 selon la tranche) et 30 % du test en doublon exact du train. Conditions d'une nouvelle soumission : (1) prouver la disponibilité de l'indicateur à la date de souscription ou le retirer, puis réentraîner ; (2) documenter la calibration par décile et par segment avec une convention explicite, ainsi que le traitement de l'exposition ; (3) compléter les relativités, la crédibilité, la surdispersion, le journal de réglage, le script de split, la revue par un pair et les dépendances (LightGBM, outils d'IA). Limites de cette revue : les trois agents disent ne pas avoir exécuté leurs scripts, mais leurs JSON concordent entre eux, par exemple sur la déviance de 16,5614. Les conventions de Gini et de décile diffèrent entre agents : Gini avec et sans indicateur de 0,686 et 0,381 selon l'agent conceptuel, contre 0,649 et 0,282 ailleurs. La conclusion de fuite est la même quelle que soit la convention. Elle repose toutefois sur des signaux statistiques et non sur la date de création de la variable, qui reste à établir auprès de l'équipe."
+ },
+ "run_id": "mrm_P1_fuite_a",
+ "package": "P1_fuite",
+ "minutes": 3.4,
+ "cost_usd": 0.3862
+}

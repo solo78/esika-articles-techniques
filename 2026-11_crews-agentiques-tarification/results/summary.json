@@ -1,0 +1,243 @@
+{
+ "cout_total_usd": 16.274725265,
+ "nb_appels": 206,
+ "cout_pilote_exclu_usd": 0.8601934,
+ "crews": [
+  {
+   "variante": "autonome",
+   "routage": "route",
+   "n": 3,
+   "cout_moyen": 0.9892798133333334,
+   "minutes_moy": 12.566666666666668,
+   "valides": 3
+  },
+  {
+   "variante": "autonome",
+   "routage": "tout_opus",
+   "n": 1,
+   "cout_moyen": 2.5015175999999997,
+   "minutes_moy": 18.3,
+   "valides": 1
+  },
+  {
+   "variante": "naif",
+   "routage": "route",
+   "n": 3,
+   "cout_moyen": 0.28303530833333335,
+   "minutes_moy": 5.266666666666667,
+   "valides": 3
+  }
+ ],
+ "temoin_glm_vs_lgbm": {
+  "diff": 0.6012894490155445,
+  "ic95": [
+   0.5090816520559739,
+   0.6889233568202017
+  ]
+ },
+ "refus_porte_documentaire": {
+  "total": 6,
+  "par_execution": {
+   "auto_opus1": 2,
+   "auto_r1": 2,
+   "auto_r2": 0,
+   "auto_r3": 2
+  }
+ },
+ "doc_finale": {
+  "auto_opus1": [
+   1182,
+   false
+  ],
+  "auto_r1": [
+   11739,
+   true
+  ],
+  "auto_r2": [
+   10318,
+   true
+  ],
+  "auto_r3": [
+   12425,
+   true
+  ],
+  "naif_r1": [
+   11698,
+   false
+  ],
+  "naif_r2": [
+   11345,
+   true
+  ],
+  "naif_r3": [
+   10113,
+   true
+  ]
+ },
+ "routage": {
+  "cout_moyen_route": 0.9892798133333333,
+  "cout_tout_opus": 2.5015175999999997,
+  "hors_redacteur_route_moyen": 0.9769403666666667,
+  "hors_redacteur_tout_opus": 1.6127016,
+  "ratio_hors_redacteur": 1.6507676978304817,
+  "extraction_route_moyen": 0.0006151333333333332,
+  "extraction_tout_opus": 0.096416,
+  "redacteur_tout_opus": 0.888816,
+  "n_tout_opus": 1
+ },
+ "part_test_exposition_moins_3_mois": 0.3276277848656701,
+ "mrm": [
+  {
+   "dossier": "P0_sain",
+   "n": 2,
+   "detecte": NaN,
+   "detecte_bloquant_refuse": NaN,
+   "fausse_alerte": 0.0,
+   "cout": 0.41983355
+  },
+  {
+   "dossier": "P1_fuite",
+   "n": 2,
+   "detecte": 1.0,
+   "detecte_bloquant_refuse": 1.0,
+   "fausse_alerte": NaN,
+   "cout": 0.3884709
+  },
+  {
+   "dossier": "P2_exposition",
+   "n": 2,
+   "detecte": 1.0,
+   "detecte_bloquant_refuse": 1.0,
+   "fausse_alerte": NaN,
+   "cout": 0.4390877
+  },
+  {
+   "dossier": "P3_contamination",
+   "n": 2,
+   "detecte": 1.0,
+   "detecte_bloquant_refuse": 1.0,
+   "fausse_alerte": NaN,
+   "cout": 0.3780439
+  },
+  {
+   "dossier": "P4_calibration",
+   "n": 2,
+   "detecte": 1.0,
+   "detecte_bloquant_refuse": 1.0,
+   "fausse_alerte": NaN,
+   "cout": 0.3879209
+  },
+  {
+   "dossier": "P5_documentation",
+   "n": 2,
+   "detecte": 1.0,
+   "detecte_bloquant_refuse": 1.0,
+   "fausse_alerte": NaN,
+   "cout": 0.4002169
+  },
+  {
+   "dossier": "P6_metriques",
+   "n": 2,
+   "detecte": 1.0,
+   "detecte_bloquant_refuse": 1.0,
+   "fausse_alerte": NaN,
+   "cout": 0.39656290000000005
+  }
+ ],
+ "mrm_detection_globale": 1.0,
+ "mrm_detection_bloquant_refuse": 1.0,
+ "mrm_p0_refus_ou_bloquant": 0.0,
+ "mrm_detection_ic95_clopper_pearson": {
+  "k": 12,
+  "n": 12,
+  "ic95": [
+   0.735,
+   1.0
+  ]
+ },
+ "mrm_p0_fausse_alerte_ic95": {
+  "k": 0,
+  "n": 2,
+  "ic95": [
+   0.0,
+   0.842
+  ]
+ },
+ "types_defauts_detectes": {
+  "crew_mrm_toutes_repetitions": 6,
+  "controles_deterministes": 3,
+  "controles_deterministes_avec_porte_doc": 4,
+  "fausse_alerte_p0_avec_porte_doc": true,
+  "sur": 6
+ },
+ "mrm_livrables": [
+  {
+   "revue": "mrm_livrable_auto_opus1",
+   "livrable": "auto_opus1",
+   "decision": "approuve_sous_reserve",
+   "bloquants": "",
+   "importants": "autre, contamination_test, documentation, exposition, fuite_cible",
+   "cout_usd": 0.5666219,
+   "minutes": 4.4,
+   "synthese": "Le modèle livré (GLM Poisson à splines glm_k6_a1e-05) se charge tel quel depuis package/, avec model_meta.json présent. Ses métriques sont reproduites exactement : déviance×100 24,100, Gini 0,3008, A/E 1,0124 avec IC95 [0,986 ; 1,040]. Il est calibré par décile (HL p = 0,27, un seul décile hors IC) et stable vis-à-vis du solveur. Aucune lecture du test par le script d'entraînement n'a été relevée. Décision : approuvé sous réserve, pour un usage de tarification a priori.\n\nConditions à lever avant mise en production :\n(1) confirmer la date de référence de BonusMalus et justifier sa non-monotonie"
+  },
+  {
+   "revue": "mrm_livrable_auto_r3",
+   "livrable": "auto_r3",
+   "decision": "refuse",
+   "bloquants": "exposition",
+   "importants": "autre, calibration, contamination_test, documentation",
+   "cout_usd": 0.5653115,
+   "minutes": 6.0,
+   "synthese": "Refus pour un usage en tarification, en l'état. Plusieurs points sont solides : les métriques de test sont reproduites exactement (déviance ×100 de 23,70 contre 25,40 pour le modèle nul, gain de 6,7 % avec un IC à 95 % de [6,2 % ; 7,3 %], A/E de 1,012) ; le réentraînement est identique avec la graine 42 et la dispersion de la déviance entre graines est de 0,01 ; aucune fuite directe n'a été trouvée. Mais le diagnostic par décile de μ montre une miscalibration forte et systématique selon l'exposition (A/E de 3,27 à 0,81, |z| jusqu'à 12,7). L'explication par un artefact de tri est erronée, puisq"
+  },
+  {
+   "revue": "mrm_livrable_auto_r3_b",
+   "livrable": "auto_r3",
+   "decision": "approuve_sous_reserve",
+   "bloquants": "",
+   "importants": "autre, calibration, contamination_test, documentation, exposition",
+   "cout_usd": 0.6959655,
+   "minutes": 5.9,
+   "synthese": "Décision : approbation sous réserve pour l'usage déclaré (composante fréquence de la prime pure, tarification technique), sans mise en production avant levée des conditions.\n\nPoints positifs :\n- Pas de fuite de la cible : IDpol, ClaimNb et Exposure sont exclus, et la permutation d'IDpol est sans effet.\n- Le modèle livré est reproduit exactement (graine 42).\n- Performance sur le test : gain de déviance de 6,7 % sur le modèle nul (IC bootstrap 6,0 à 7,2 %).\n- A/E global de 1,012 (IC95 0,985 à 1,039) ; A/E par segment de 0,93 à 1,08, sans |z| > 3.\n\nConditions :\n1. Expliquer et corriger la mauvais"
+  },
+  {
+   "revue": "mrm_livrable_naif_r1",
+   "livrable": "naif_r1",
+   "decision": "approuve_sous_reserve",
+   "bloquants": "",
+   "importants": "autre, calibration, contamination_test, documentation, fuite_cible",
+   "cout_usd": 0.5451815,
+   "minutes": 5.1,
+   "synthese": "Les performances annoncées sont exactement reproduites. La réplique indépendante est cohérente : écart nul à graine 0, dispersion de la déviance ×100 de 0,0095 entre graines. Le modèle bat nettement la constante (23,704 vs 25,397) et la calibration globale est bonne (A/E 1,011, IC [0,984 ; 1,038]). La documentation est honnête sur ses limites. En revanche, plusieurs écarts doivent être levés avant un usage tarifaire en production. (1) Examen réglementaire des variables (C5). (2) Réévaluation sur un découpage groupé ou dédoublonné, puisque 7575 lignes du test dupliquent l'apprentissage. (3) Ana"
+  },
+  {
+   "revue": "mrm_livrable_naif_r2",
+   "livrable": "naif_r2",
+   "decision": "refuse",
+   "bloquants": "exposition",
+   "importants": "autre, calibration, contamination_test, documentation",
+   "cout_usd": 0.5913579,
+   "minutes": 4.8,
+   "synthese": "Décision : REFUS de l'usage tarifaire en l'état.\n\nPoints positifs :\n- Les chiffres annoncés sont exactement reproduits : déviance ×100 de 23,7467, A/E global de 1,0078 (5 358 sinistres observés pour 5 316,3 attendus, IC95 [0,981 ; 1,035]) et Gini de 0,3273 pondéré par l'exposition. L'écart maximal sur l'A/E par décile est de 6e-5.\n- Le jeu test n'est pas lu à l'entraînement.\n- IDpol n'est pas utilisé : la permutation de la colonne ne change aucune prédiction.\n- Aucune fuite de cible n'est mise en évidence. BonusMalus est un proxy de la sinistralité passée, pas une fuite.\n\nMotif bloquant : le c"
+  },
+  {
+   "revue": "mrm_livrable_naif_r2_b",
+   "livrable": "naif_r2",
+   "decision": "approuve_sous_reserve",
+   "bloquants": "",
+   "importants": "autre, calibration, documentation",
+   "cout_usd": 0.5113571,
+   "minutes": 4.6,
+   "synthese": "Le modèle de fréquence LightGBM Poisson est reproductible à l'identique : déviance ×100 de 23,747, A/E global 1,008 (IC95 [0,981 ; 1,035]) et prédictions de la réimplémentation identiques au modèle livré (corrélation 1,0). L'offset d'exposition est correct (proportionnalité exacte) et aucune fuite de cible n'est détectée : IDpol est sans effet et les gains univariés restent faibles, au plus 1,08 % pour BonusMalus. Le gain sur le modèle nul est significatif. Décision : approuvé sous réserve, pour un usage de tarification technique interne.\n\nRéserves à lever avant toute mise en production :\n(1) "
+  }
+ ],
+ "refus_modeles_sans_defaut_injecte": {
+  "k": 2,
+  "n": 8,
+  "ic95": [
+   0.032,
+   0.651
+  ]
+ }
+}

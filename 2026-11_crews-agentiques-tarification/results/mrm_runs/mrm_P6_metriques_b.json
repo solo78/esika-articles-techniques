@@ -1,0 +1,102 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 6.0,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 8.0,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 6.7,
+     "stderr_tail": "/usr/local/lib/python3.13/site-packages/sklearn/preprocessing/_encoders.py:262: UserWarning: Found unknown categories in columns [2] during transform. These unknown categories will be encoded as all zeros\n  warnings.warn(msg, UserWarning)\n/usr/local/lib/python3.13/site-packages/sklearn/preprocessing/_encoders.py:262: UserWarning: Found unknown categories in columns [2] during transform. These unknown categories will be encoded as all zeros\n  warnings.warn(msg, UserWarning)\n",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "bloquant",
+    "description": "Les métriques de validation de la documentation (section 5) et d'eval.json ne se reproduisent pas sur test.parquet avec le modèle livré. La déviance recalculée dépasse l'annonce d'exactement 1,2000. Aucune des deux définitions du Gini ne retrouve 0,342. L'A/E annoncé à exactement 1,000 est inexact. Un écart constant de 1,2000 à quatre décimales près indique qu'eval.json n'a pas été produit à partir de ce modèle, ou a été modifié. Le point E4, jugé « conforme » par l'agent conformité, est infirmé : celui-ci n'avait comparé la documentation qu'à eval.json, sans recalcul.",
+    "preuve": "replication.json et resultats.json concordent. Déviance x100 recalculée 24,2858 contre 23,0858 dans eval.json (écart 1,19999…). Gini non pondéré 0,2250 et pondéré par l'exposition 0,2820, contre 0,3424 annoncé. A/E recalculé 1,0159 (5 358 observés / 5 273,96 attendus) contre 1,0 annoncé."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "Le modèle n'est pas calibré sur une partie des déciles et des segments. La documentation affirme un « contrôle de la calibration par décile » sans présenter de résultat. Le modèle sous-estime fortement les jeunes conducteurs et les véhicules neufs. L'A/E global, à 1,016 (IC95 0,989–1,044), est en revanche acceptable.",
+    "preuve": "resultats.json : déciles 7 et 8 à A/E 1,126 (IC95 1,037–1,220) et 1,112 (IC95 1,028–1,201) ; 2 déciles sur 10 ont un IC qui exclut 1. Conducteurs 18-20 ans : A/E 1,268 (132 observés contre 104,1 attendus). Conceptuel.json : véhicules d'âge 0 à A/E 1,214 (271 contre 223,3)."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "L'indépendance du jeu de test n'est pas démontrable. Le script de découpage est absent et les données utilisées pour régler alpha (tuning.json) ne sont pas précisées. De plus, une part notable des lignes de test est identique à une ligne d'apprentissage, ce qui est compatible avec des polices dupliquées sous des IDpol différents. Un découpage par ligne peut alors faire fuir de l'information. Aucun IDpol n'est commun aux deux jeux.",
+    "preuve": "replication.json : test_rows_identical_to_a_train_row_rate = 5,59 % contre within_train_rate = 3,84 % ; idpol_overlap_train_test = 0. La documentation déclare le test « jamais utilisé pour l'apprentissage ni le réglage » sans fournir le script de split."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "mineur",
+    "description": "Certaines classes tarifaires sont peu peuplées et leurs relativités sont donc peu crédibles (C3). Aucun effectif par classe n'est documenté.",
+    "preuve": "Conceptuel.json, exposition sur le jeu de test : VehBrand B14 436 années-police pour 29 sinistres ; conducteurs 18-20 ans 522 années-police. La documentation ne donne aucun tableau d'effectifs."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "La justification actuarielle de la classification des risques manque. La documentation ne présente ni lien des variables avec la sinistralité (C1), ni relativités ou coefficients (C4), ni analyse de sensibilité (A5). La régularisation quasi nulle n'est pas justifiée au regard du surapprentissage (A3). Aucun modèle alternatif n'est comparé (D2) et aucune revue par un pair n'est prévue (D4).",
+    "preuve": "Documentation section 4 : simple liste des variables, sans coefficient. Paramètres du modèle livré : alpha = 1e-6, 48 coefficients. Aucune mention de revue indépendante."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les contraintes légales et les variables sensibles ne sont pas examinées (C5). Les variables âge du conducteur et région sont pourtant utilisées. Le genre, lui, n'est pas utilisé.",
+    "preuve": "Les variables du modèle comprennent DrivAge (7 classes) et Region. Aucune section de la documentation ne traite du cadre légal ou de la non-discrimination."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "Les dépendances déclarées sont incohérentes avec le code. L'usage éventuel d'outils d'IA n'est pas déclaré (E3). Les paramètres de pré-traitement sont absents de la documentation (E1). Le nombre de polices à plus de 4 sinistres n'est pas quantifié, alors qu'il est faible.",
+    "preuve": "Documentation section 7 : « LightGBM selon le cas », alors que le code n'utilise que scikit-learn PoissonRegressor. Replication : 8 polices à plus de 4 sinistres dans le train, 0 dans le test. Le chiffre de 1 224 expositions supérieures à un an est en revanche confirmé (987 + 237)."
+   }
+  ],
+  "synthese": "Décision : refus en l'état. Le pipeline lui-même est reproductible : le réentraînement sur train.parquet redonne exactement le modèle livré (écart nul, convergence en 19 itérations). Les points suivants sont conformes et vérifiés : traitement de l'exposition, IDpol non utilisé, absence de dérive train/test (KS < 0,004). En revanche, les chiffres de validation communiqués sont faux. La déviance réelle est de 24,286 et non 23,086, avec un écart constant suspect de 1,2000. Le Gini réel est de 0,282 (pondéré) ou 0,225, et non 0,342. L'A/E est de 1,016 et non 1,000. Ce constat bloquant met en cause la gouvernance de production d'eval.json. S'y ajoutent une calibration défaillante sur les déciles 7-8 et sur les segments 18-20 ans et véhicules neufs, un doute sur l'indépendance du test (5,6 % de lignes de test identiques à une ligne d'apprentissage, split et réglage non tracés) et l'absence de justification de la classification (C1, C3, C4, C5). Conditions de resoumission : recalcul tracé et explication de l'écart sur eval.json, script de split et données de réglage versionnés, découpage par groupe de polices dupliquées, tableaux de calibration par décile et par segment avec action sur les jeunes conducteurs, relativités et effectifs par classe, examen légal, correction des dépendances déclarées et revue par un pair. Limites de la consolidation : les agents de réplication, conceptuel et résultats déclarent dans leur rapport ne pas avoir exécuté leur script, mais fournissent des sorties JSON et console chiffrées et mutuellement cohérentes. Je me suis appuyé sur ces sorties, dont la cohérence croisée est forte : A/E 1,01593 et déviance 24,2858 identiques chez trois agents. Leur exécution effective reste à confirmer. Les résultats des tests de résistance (densité nulle, âges hors bornes) et les relativités du rapport conceptuel sont tronqués, donc non retenus faute de preuve."
+ },
+ "run_id": "mrm_P6_metriques_b",
+ "package": "P6_metriques",
+ "minutes": 3.5,
+ "cost_usd": 0.3939
+}

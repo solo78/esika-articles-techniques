@@ -1,0 +1,120 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 92.9,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 12.9,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 26.5,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "exposition",
+    "gravite": "bloquant",
+    "description": "L'hypothèse d'offset strict (nombre attendu proportionnel à l'exposition) n'est pas vérifiée (D6, D3). L'exposition et les caractéristiques sont connues ex ante, donc trier sur μ est un critère légitime : un modèle bien calibré donnerait un A/E proche de 1 dans chaque décile. Or le biais est fort et monotone. Les polices à faible μ, majoritairement courtes, sont fortement sous-estimées et les polices à μ élevé sont surestimées. L'explication de l'équipe, reprise par l'agent résultats (« le contraste vient du tri »), n'est pas recevable. Le tri par fréquence prédite mélange les durées d'exposition et masque ce biais. Le A/E global de 1,012 ne le révèle pas davantage : le modèle nul obtient aussi 1,015. Pour une prime annuelle (Exposure=1), on peut s'attendre à une surestimation des contrats d'un an entier. Cette conséquence est inférée, pas chiffrée.",
+    "preuve": "resultats.json, deciles_tri_sur_mu_diagnostic : décile 0 A/E 3,2679 (obs 102, att 31,21, z 12,67) ; décile 1 A/E 1,9636 (z 8,86) ; décile 3 A/E 1,3848 (z 6,18) ; décile 7 A/E 0,889 (z −2,92) ; décile 8 A/E 0,8134 (z −5,56). Globalement, ae_global_nul = 1,0153. L'agent conceptuel le confirme : « dans freMTPL2, les polices courtes ont typiquement une fréquence annualisée plus élevée »."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "Le point d'alerte 6.3 n'est pas résolu : les A/E par décile en CV et sur le train ne sont recalculés par aucun agent. Sur le test, trié par fréquence prédite, le décile supérieur est sous-estimé de façon significative.",
+    "preuve": "Conformité D3 : premiers déciles à 3,31 (CV) et 3,03 (train), |z| max > 20, « l'explication par le tri n'est pas confirmée ». Replication, limites : « l'A/E par décile en CV et sur le train n'est pas recalculé ». Test, décile 9 : A/E 1,0882, z 3,23 (alerte), confirmé en équipondéré exposition à 1,0764 (z 2,94)."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les relativités ne sont pas documentées (C4 non conforme). La dépendance partielle recalculée montre une rupture non monotone inexpliquée sur BonusMalus, la variable dominante.",
+    "preuve": "conceptuel.json, relativites_pdp BonusMalus : 60 → 1,235 ; 70 → 2,071 ; 80 → 1,665 ; 100 → 2,719. Part d'importance par permutation de BonusMalus : 0,723."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "Aucun IDpol n'est commun au train et au test. En revanche, un tiers des profils du test existent à l'identique dans le train (doublons probables d'un même assuré). Le découpage aléatoire non groupé peut rendre optimistes le test, la CV et l'arrêt précoce. La documentation ne traite pas ce risque.",
+    "preuve": "replication.json : idpol_commun_train_test = 0 ; part_test_profil_present_dans_train = 0,3257 ; part_train_profils_dupliques = 0,3263."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "Le nombre d'arbres n'est pas traçable : le tuning et le bundle divergent sans explication (D5, E4). Par ailleurs, la documentation décrit des règles « apprises sur le train » et un seuil de regroupement, alors que le code applique des constantes et une liste figées.",
+    "preuve": "replication.json : n_estimators_bundle = 255, n_estimators_tuning = 264, et la remarque « listes de modalités figés dans features.py (constantes) ». Doc §2.4 : « lorsque l'exposition est inférieure à 1 000 ans ou que le nombre de sinistres est inférieur à 50 […] Les règles de traitement sont apprises sur le train ». training_report.json est absent des pièces."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Aucune revue indépendante n'a eu lieu (D4). Le code, généré par une IA, n'a pas été relu par un humain.",
+    "preuve": "Conformité D4 non conforme : « aucune revue indépendante n'a eu lieu ; elle est seulement prévue et le code n'a pas été relu par un humain »."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "mineur",
+    "description": "La définition du Gini n'est pas précisée : la valeur annoncée correspond à un Gini pondéré par l'exposition, et non par police. La documentation écrit aussi init_score = log(Exposure) alors que le code ajoute log(f0). Les métriques de test sont par ailleurs reproduites.",
+    "preuve": "Gini annoncé 0,33096, gini_expo 0,33065, gini_polices 0,2624 (« definition_la_plus_proche » : gini_expo). Déviance ×100 23,7048 recalculée avec un écart de 0,0 ; A/E 1,01209 avec un écart de 0,0. Réentraînement avec la graine 42 : corrélation 1,0. Conformité D6."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La confiance accordée aux données de tiers n'est pas déclarée (B4). L'effet des plafonnements n'est pas chiffré (B3). Les expositions supérieures à 1 an n'ont pas été vérifiées sur les données brutes.",
+    "preuve": "Conformité B4 non conforme. Doc §2.4 : « L'effet n'a pas été chiffré à ce stade ». replication.json : test_expo_gt1 = 237."
+   },
+   {
+    "categorie": "fuite_cible",
+    "gravite": "mineur",
+    "description": "Aucune variable dérivée de la cible n'a été trouvée. En revanche, la date de calcul de BonusMalus, qui domine le modèle, n'est pas confirmée : si elle intègre le sinistre courant, il y aurait fuite.",
+    "preuve": "conceptuel.json, constat_fuite : « à confirmer côté métier (date de calcul du BM) ». IDpol_ou_Exposure_ou_ClaimNb_dans_features : []."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Le script d'entraînement livré n'est pas exécutable tel quel. Son contrôle final est circulaire.",
+    "preuve": "replication.json : dossier_artifacts_present = false. Remarque : « Contrôle final du script (A/E train) circulaire : mêmes données que l'entraînement »."
+   }
+  ],
+  "synthese": "Refus pour un usage en tarification, en l'état. Plusieurs points sont solides : les métriques de test sont reproduites exactement (déviance ×100 de 23,70 contre 25,40 pour le modèle nul, gain de 6,7 % avec un IC à 95 % de [6,2 % ; 7,3 %], A/E de 1,012) ; le réentraînement est identique avec la graine 42 et la dispersion de la déviance entre graines est de 0,01 ; aucune fuite directe n'a été trouvée. Mais le diagnostic par décile de μ montre une miscalibration forte et systématique selon l'exposition (A/E de 3,27 à 0,81, |z| jusqu'à 12,7). L'explication par un artefact de tri est erronée, puisque μ est connu ex ante. L'hypothèse d'offset proportionnel, centrale pour une prime annuelle, n'est donc pas validée. S'y ajoutent : le point 6.3 non résolu, une relativité BonusMalus non monotone, un chevauchement de profils de 33 % entre train et test, une incohérence 255/264 arbres et l'absence de revue indépendante. Conditions pour une nouvelle soumission : (1) A/E par tranche d'exposition et modélisation adaptée (exposition en variable, ou exclusion ou traitement des polices courtes), avec analyse de l'endogénéité des résiliations ; (2) recalcul des déciles en CV et sur le train ; (3) découpage groupé par profil ; (4) relativités documentées et lissées ; (5) traçabilité du nombre d'arbres et documentation alignée sur le code ; (6) revue humaine indépendante. Limites de cette revue : les rapports textuels des agents affirment ne pas avoir exécuté leurs scripts, alors que des JSON de résultats sont fournis ; je me suis appuyé sur ces JSON. Plusieurs sorties sont tronquées (décile 9 du tri sur μ, A/E par tranche d'exposition, segments, scénarios de résistance) et n'ont pas pu être vérifiées."
+ },
+ "run_id": "mrm_livrable_auto_r3",
+ "package": "auto_r3",
+ "minutes": 6.0,
+ "cost_usd": 0.5653
+}

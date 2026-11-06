@@ -1,0 +1,120 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 18.0,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 8.7,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 23.3,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "approuve_sous_reserve",
+  "constats": [
+   {
+    "categorie": "fuite_cible",
+    "gravite": "important",
+    "description": "BonusMalus reflète l'historique de sinistres et sa date de référence n'est pas vérifiée. Si le coefficient intègre des sinistres de la période observée, il y a fuite de la cible. C'est la variable dominante, sans atteindre le seuil d'alerte de 10 %. Le flag de modalité à plus de 3 fois la moyenne est levé.",
+    "preuve": "conceptuel.json : gain univarié BonusMalus 3,564 % (les autres variables ≤ 0,723 %), freq_rel_max 3,282, flag « modalité avec fréquence > 3x la moyenne ». Limite : « BonusMalus conservé : proxy de l'historique de sinistres, usage a priori à justifier ». tuning.json cité par conformite C2 : date de référence non vérifiée."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "L'effet BonusMalus n'est pas monotone croissant en dépendance partielle. Aucune pièce n'examine les relativités ni les courbes de splines (C4 non conforme). Une rupture tarifaire inexpliquée reste possible sur la variable principale.",
+    "preuve": "conceptuel.json flags : « BonusMalus non monotone croissant ». conformite C4 : « Aucune pièce n'examine les relativités ou courbes de splines »."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "Le jeu de test n'est pas indépendant au niveau du profil. Un tiers des polices de test reproduisent exactement un profil présent dans l'apprentissage (doublons connus de freMTPL2). Le tuning était groupé par profil, mais pas le découpage train/test. Les métriques de test peuvent être légèrement optimistes. L'impact est probablement limité vu la faible capacité du GLM, mais il n'est pas mesuré.",
+    "preuve": "replication.json : part_test_profil_identique_a_un_profil_train = 0,3257 et idpol_communs = 0. tuning_data n_groups 197 252 pour 216 957 lignes. conformite D2 : « GroupKFold par profil pour le tuning »."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "important",
+    "description": "La proportionnalité à l'exposition est mécanique : le ratio vaut exactement 2 quand l'exposition double. Empiriquement, l'A/E par tranche d'exposition sort de [0,85 ; 1,15] sur les polices courtes, qui représentent la moitié du test. La calibration par tranche d'exposition est donc à traiter (offset libre, variable d'exposition ou correction). Les 237 expositions > 1 plafonnées ont un effet négligeable.",
+    "preuve": "conceptuel.json : flag « A/E par tranche d'exposition hors [0.85;1.15] : proportionnalité empirique douteuse (polices courtes) », n_polices_test_expo_lt_0.5 = 68 133 sur 135 599, ratio_double_min = max = 2,0. replication.json : expo_gt1_test = 237. conformite B3 : Gini sur expo plafonnée 0,3005 vs 0,3008."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "mineur",
+    "description": "La calibration globale et par décile est satisfaisante. Un seul décile, le 9, sous-estime significativement (environ +8,8 %). Aucun écart Area n'est significatif après correction de Bonferroni. La valeur de l'IC du décile 9 citée par conformite est légèrement inexacte.",
+    "preuve": "resultats.json : A/E 1,0124, IC95 Poisson [0,9855 ; 1,0399], bootstrap [0,9872 ; 1,0399] ; déciles A/E de 0,919 à 1,094 ; décile 9 A/E 1,0876 IC [1,0124 ; 1,1668] ; chi² HL 12,29, p = 0,266 ; Area A–D signif_bonferroni = false. conformite D3 cite « 1,011-1,164 »."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "mineur",
+    "description": "Les métriques annoncées sont exactes et reproductibles sur le livrable tel quel. Le changement de solveur (lbfgs vs newton-cholesky) est sans effet matériel. En revanche, le contrôle de données cité par conformite (0 ClaimNb > 4) contredit la réplication. Sans effet, car y est écrêté à 4.",
+    "preuve": "replication.json : recalculé = eval.json (écart déviance 0,0 ; Gini 1,4e-13 ; A/E 0,0), eval_json_concordant_1e-6 = true, sinistres 5 358 vs 5 292,12. Écarts entre solveurs : déviance -0,00017 et -0,00019, corrélation 0,9999995. claimnb_gt4_train = 8 vs conformite B2 « 0 ClaimNb >4 »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Le choix des hyperparamètres n'est pas reproductible : l'échantillon de tuning est absent. Le script d'entraînement reconstruit le pipeline d'après le rapport de tuning au lieu de réutiliser le code relu. Aucun versionnage des données n'existe (D5 partiel).",
+    "preuve": "replication.json : tuning_data file data/train_sample.parquet, n_rows 216 957, train_sample_present = false. Constat : « train_script.py reconstruit le pipeline 'd'après le rapport de tuning' (son propre aveu) »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Aucune revue par un professionnel qualifié humain (ASOP 56 §3.6.3). Toute la chaîne, y compris la présente revue MRM, est produite par des agents IA. Les rapports textuels de trois agents affirment ne pas avoir exécuté leurs scripts alors que des sorties JSON sont fournies. La traçabilité de l'exécution est donc à confirmer.",
+    "preuve": "conformite D4 non_conforme : « équipe entièrement composée d'agents IA sans superviseur humain ». Rapports replication, conceptuel et resultats : « Je n'ai pas pu exécuter le script… », « Je n'ai pas exécuté ce script », alors que replication.json contient duree_s 16,9 et des métriques recalculées."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "Plusieurs lacunes documentaires : pas de déclaration de confiance envers les données tierces freMTPL2freq (B4) ; pas d'examen des contraintes légales sur DrivAge et Region (C5) ; chemin des artefacts erroné (artifacts/ cité, package/ livré). L'extrait de documentation est tronqué après la section 0 : les sections 8 et 9 (IA, écarts) n'ont pas pu être vérifiées.",
+    "preuve": "conformite B4 non_conforme et C5 partiel. replication.json : artefacts_cites_dans_doc « artifacts/ (doc) vs package/ (livré) » ; doc_valeurs_presentes_arrondies toutes false (recherche indicative). model_doc.md : « artefacts `artifacts/model.joblib` »."
+   },
+   {
+    "categorie": "identifiant",
+    "gravite": "mineur",
+    "description": "IDpol est correctement exclu du modèle. Sa fréquence varie toutefois selon les vingtiles (dérive d'origine ou d'ordre de constitution du fichier), ce qui renforce la réserve sur l'homogénéité et la provenance des données (B1).",
+    "preuve": "conceptuel.json : IDpol dans « exclues » ; gain univarié 0,369 % ; fréquence par vingtile de 0,0551 (classe 15) à 0,0924 (classe 1) ; expositions de 7 639 à 18 182 à effectif égal."
+   }
+  ],
+  "synthese": "Le modèle livré (GLM Poisson à splines glm_k6_a1e-05) se charge tel quel depuis package/, avec model_meta.json présent. Ses métriques sont reproduites exactement : déviance×100 24,100, Gini 0,3008, A/E 1,0124 avec IC95 [0,986 ; 1,040]. Il est calibré par décile (HL p = 0,27, un seul décile hors IC) et stable vis-à-vis du solveur. Aucune lecture du test par le script d'entraînement n'a été relevée. Décision : approuvé sous réserve, pour un usage de tarification a priori.\n\nConditions à lever avant mise en production :\n(1) confirmer la date de référence de BonusMalus et justifier sa non-monotonie ;\n(2) mesurer l'effet des 32,6 % de profils de test dupliqués du train par une évaluation groupée par profil ;\n(3) corriger ou documenter la calibration des polices courtes (A/E par tranche d'exposition hors [0,85 ; 1,15]) ;\n(4) compléter la documentation : B4, C4 (relativités), C5, chemins d'artefacts, sections 8 et 9 non vues ;\n(5) rendre le tuning reproductible ou le déclarer comme limite ;\n(6) obtenir une validation et une signature par un actuaire qualifié humain, cette revue étant elle-même produite par des agents dont les rapports textuels contredisent la présence des sorties d'exécution.\n\nLimites de la revue : la documentation et plusieurs sorties sont tronquées (A/E par tranche d'exposition, stress, test de permutation IDpol non visibles)."
+ },
+ "run_id": "mrm_livrable_auto_opus1",
+ "package": "auto_opus1",
+ "minutes": 4.4,
+ "cost_usd": 0.5666
+}

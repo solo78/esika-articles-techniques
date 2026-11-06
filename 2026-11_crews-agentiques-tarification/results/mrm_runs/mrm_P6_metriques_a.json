@@ -1,0 +1,102 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 5.3,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 6.9,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 9.3,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "bloquant",
+    "description": "Les métriques de validation publiées (doc §5 et eval.json) ne sont pas reproduites à partir du modèle livré. Deux agents indépendants obtiennent la même déviance et le même A/E, qui ne dépendent pas d'une convention de calcul. L'écart de déviance vaut exactement 1,2000 et les décimales sont identiques, ce qui laisse penser que le chiffre publié a été obtenu par transformation et non par calcul. Le A/E de 1,000 est également faux. Le point E4, jugé conforme par l'agent conformité au seul motif que doc et eval.json concordent, est en réalité non conforme.",
+    "preuve": "Valeurs publiées : déviance x100 = 23,085755811691488 ; Gini = 0,342 ; A/E = 1,000. Valeurs recalculées sur le modèle livré (replication) : déviance x100 = 24,285755811691487 ; Gini pondéré = 0,282 ; A/E = 1,0159. Écart de déviance = 1,1999999999999993. Indicateur eval_json_reproduit = false. L'agent résultats retrouve indépendamment une déviance de 24,2858 et un A/E de 1,0159 (5 358 observés contre 5 273,96 attendus)."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "Le recouvrement par IDpol est nul, mais une part non négligeable du jeu de test est identique ligne à ligne à des polices du train (hors IDpol). Ces lignes peuvent être des doublons natifs de freMTPL2, par exemple une même police découpée en périodes. Le tirage aléatoire par police ne garantit donc pas l'indépendance exigée par D2. Il faut regrouper les doublons avant le découpage ou mesurer l'effet de ces lignes sur les métriques.",
+    "preuve": "idpol_communs = 0 ; lignes_test_identiques_a_train_hors_IDpol = 7 696, soit 5,7 % des 135 599 lignes de test ; doublons_internes_train = 21 111 (3,9 % du train)."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "Le A/E global est acceptable, mais la calibration par décile montre une distorsion systématique. Les déciles bas sont surestimés et les déciles 7 et 8 sous-estimés, hors IC95. La « calibration par décile » annoncée au §5 n'est ni chiffrée ni conforme. Le point D3 doit être reclassé de conforme à partiel. Réserve : les IC de Poisson ignorent la surdispersion.",
+    "preuve": "A/E global = 1,016, IC95 [0,989 ; 1,044]. Déciles 1 à 3 : A/E = 0,934 / 0,952 / 0,930. Décile 7 : A/E = 1,126, IC95 [1,037 ; 1,220], z = 2,88. Décile 8 : A/E = 1,112, IC95 [1,028 ; 1,201], z = 2,71. n_deciles_hors_IC95 = 2."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les relativités d'âge du conducteur ne sont pas monotones et sont peu plausibles (C4). Elles baissent jusqu'à 26-30 ans, puis remontent au-dessus de la référence 18-20 ans pour les 41-50 ans, alors que la fréquence observée de ces derniers est trois fois plus faible. Cela peut venir d'une confusion avec le bonus-malus, non analysée. Aucune relativité n'est présentée dans la documentation.",
+    "preuve": "Relativités par rapport à 18-20 ans : 21-25 = 0,779 ; 26-30 = 0,695 ; 31-40 = 0,830 ; 41-50 = 1,087. Fréquences observées sur le train : 18-20 = 0,2352 ; 41-50 = 0,0749."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "Les dépendances déclarées sont incohérentes avec le code (E3), et le recours éventuel à un outil d'IA pour produire le code n'est pas déclaré.",
+    "preuve": "Doc §7 : « scikit-learn (PoissonRegressor), LightGBM selon le cas ». Or LightGBM est absent du code et du modèle livré : le modèle est un PoissonRegressor à 48 coefficients."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "Plusieurs lacunes de documentation empêchent un tiers de juger le travail (E1, B3, D2) : la définition du Gini, la régularisation, le prétraitement, le jeu de données utilisé pour régler alpha et le nombre de polices plafonnées ne sont pas précisés. Le Gini recalculé varie selon la définition retenue (0,225 ; 0,282 ; 0,381), et aucune ne donne 0,342.",
+    "preuve": "alpha = 1e-6 et max_iter = 1000 ne figurent pas dans la doc. Le StandardScaler et le OneHot avec drop first ne sont pas documentés. tuning.json ne précise pas les données de réglage. La doc dit « quelques polices » pour les sinistres > 4, alors que le train en compte 8. Le script de découpage train/test n'est pas fourni."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "Le bonus-malus, variable la plus discriminante, résume la sinistralité passée. Ce n'est pas une fuite de cible, puisque son Gini univarié reste sous le seuil d'alerte de 0,30. En revanche, sa manipulabilité et son interaction avec l'âge ne sont pas discutées (C1, C2).",
+    "preuve": "Gini univarié sur le test : BonusMalus = 0,214, contre 0,114 pour LogDensity. Fréquence observée de 0,0519 pour la tranche BM (50-53] et de 0,1803 pour (85-150]."
+   }
+  ],
+  "synthese": "Décision : refus en l'état, avec nouvelle soumission possible après corrections.\n\nCe que la revue confirme :\n- Le modèle livré est techniquement reproductible : la réplication depuis train.parquet donne des coefficients identiques (écart max = 0).\n- Le jeu de test ne partage aucun IDpol avec le train, et IDpol est exclu des variables.\n- L'exposition est traitée correctement (poids d'exposition, équivalent de l'offset).\n- Les performances réelles restent acceptables : Gini pondéré de 0,282 et A/E global de 1,016 avec un IC95 contenant 1.\n\nMotif bloquant :\n- Les chiffres de validation communiqués sont faux et non reproductibles. La déviance publiée de 23,086 diffère exactement de 1,2000 de la valeur recalculée par deux agents (24,286), et le A/E publié de 1,000 est en réalité de 1,016.\n- Une communication de validation inexacte et inexpliquée ne peut pas fonder une décision d'usage (ASOP 41).\n\nConditions pour une nouvelle soumission :\n1. Expliquer l'origine des chiffres de eval.json et republier des métriques recalculées, avec la définition du Gini.\n2. Traiter les 7 696 lignes de test identiques à des lignes du train (5,7 % du test) et réévaluer les métriques.\n3. Analyser la sous-calibration des déciles 7 et 8 et les relativités d'âge non monotones.\n4. Corriger le §7 (LightGBM) et déclarer les outils utilisés.\n5. Documenter alpha, le prétraitement, la crédibilité des classes (C3) et les relativités (C4).\n6. Organiser une revue par un pair (D4).\n\nCorrections à apporter au rapport de conformité : E4 passe de conforme à non conforme, et D3 de conforme à partiel.\n\nLimites de cette revue :\n- Les sorties des agents conceptuel et résultats sont tronquées : les tests de stress (densité extrême ou nulle), la permutation d'IDpol et le A/E par segment complet n'ont pas pu être vérifiés et ne sont pas retenus comme constats.\n- Les IC utilisés ignorent la surdispersion.\n- Les doublons peuvent être natifs de freMTPL2."
+ },
+ "run_id": "mrm_P6_metriques_a",
+ "package": "P6_metriques",
+ "minutes": 3.5,
+ "cost_usd": 0.3992
+}

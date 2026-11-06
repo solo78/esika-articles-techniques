@@ -1,0 +1,132 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 21.4,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 14.1,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 54.6,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "approuve_sous_reserve",
+  "constats": [
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "Le modèle sous-estime le décile de risque le plus élevé. C'est le seul décile dont l'intervalle de confiance exclut 1, avec un sous-tarifage d'environ 9 % des risques les plus lourds. Trois déciles (1, 4 et 5) sont sur-estimés de 5 à 7 %, sans être significatifs. Le test global de type Hosmer-Lemeshow reste limite.",
+    "preuve": "resultats.json, décile 10 : 1 425 sinistres observés contre 1 303,7 attendus, A/E 1,093, IC95 [1,036 ; 1,150], ic_exclut_1 = true. deciles_ae_hors_ic = [10]. HL : chi2 16,87, 10 ddl, p = 0,077. Déciles 1, 4 et 5 : A/E de 0,930, 0,953 et 0,943."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "La calibration par segment d'âge conducteur est défaillante : deux classes ont un A/E significativement différent de 1, de sens opposés. Le PDP DrivAge est non monotone (creux à 30 ans, remontée à 50 ans), ce qui appelle une analyse des interactions avec BonusMalus (corrélation de −0,48).",
+    "preuve": "Console resultats : segments hors IC 'DrivAge=25-34 (A/E 0.895)' et 'DrivAge=45-54 (A/E 1.057)'. conceptuel.json, relativités DrivAge : 30 → 0,838 ; 50 → 1,147. Documentation section 2 : corrélation BonusMalus/DrivAge de −0,48."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "mineur",
+    "description": "Les plafonds de features.py ne sont pas validés empiriquement. Au-delà de BonusMalus 150, le modèle sous-estime légèrement le risque, sur un effectif faible.",
+    "preuve": "conceptuel.json, plafonds : BonusMalus>150_ae = 1,070 sur n = 42 ; n_VehAge>20 = 1 668. Documentation section 2 : « choix métier non validés empiriquement »."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "La définition du Gini n'est pas documentée. Le chiffre annoncé (0,327) correspond à la variante pondérée par l'exposition. La variante par police donne 0,257, et c'est elle que retient l'agent résultats. Il existe donc un risque de communication ambiguë (E4).",
+    "preuve": "replication.json : gini (pondéré exposition) recalculé = annoncé = 0,32733 ; gini_policy_weighted = 0,25654, écart −0,0708. resultats.json : global.gini = 0,2565, 'gini_ecart_def_differente_possible' = −0,0708."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "La reproductibilité est incomplète (D5, E1). Le script d'entraînement ne s'exécute pas tel quel. Les scripts de partition, de tuning et d'évaluation ne sont pas livrés, ni l'échantillon de réglage. Les versions des bibliothèques ne sont pas consignées. La réimplémentation par l'agent réplication reproduit toutefois exactement le modèle livré.",
+    "preuve": "replication.json : « le script lit/écrit 'artifacts/', le dossier livré s'appelle 'package/' : script non exécutable tel quel ». train_sample_present_dans_data = false. Limites : « partition d'origine non reproductible », « tuning et CV non rejoués ». replication_vs_livre : corr_pred 1,0, max_rel_diff 0,0."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "La provenance des données et la confiance accordée au fournisseur ne sont pas déclarées (B4). La période couverte et l'actualité des données ne sont pas justifiées (B1).",
+    "preuve": "conformite B4 non_conforme : « Aucune déclaration sur l'origine du fichier parquet ». B1 : « la pertinence, l'actualité et la période couverte ne sont pas justifiées »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les contraintes légales sur les variables tarifaires (âge, région, variables sensibles) ne sont pas examinées (C5). La documentation elle-même en fait un préalable à la mise en production.",
+    "preuve": "Documentation section 3 : « Contraintes légales : non examinées dans les rapports. À vérifier avant toute mise en production. » conceptuel.json, limites : « Légalité des variables (âge, région) non évaluée »."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "mineur",
+    "description": "Aucune contamination directe n'est détectée : le script n'utilise que le train et aucun IDpol n'est commun aux deux jeux. En revanche, environ 5,6 % des lignes du test sont identiques hors IDpol à une ligne du train. Il peut s'agir de doublons de risque déjà signalés comme biais possible. L'effet sur l'optimisme des métriques n'est pas quantifié.",
+    "preuve": "replication.json : lit_uniquement_train = true ; idpol_communs_train_test = 0 ; part_test_lignes_identiques_hors_IDpol_au_train = 0,0559 ; part_test_dont_covariables_identiques_au_train = 0,0568."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "mineur",
+    "description": "Le traitement de l'exposition est correct : les prédictions sont strictement proportionnelles et la fréquence annuelle est invariante. Les expositions supérieures à 1 an restent cependant non traitées et non expliquées dans la revue des données.",
+    "preuve": "conceptuel.json, exposition : ratio de doublement compris entre 1,99999… et 2,00000…, proportionnel = true, corr_freq_annuelle_vs_exposure = 0,0058. resultats.json : n_expo_sup_1 = 237 sur 135 599. Documentation : max 2,01 an, 0,18 % des polices au-delà de 1 an."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La documentation est incohérente sur les sentinelles : elle les dit non traitées, alors que le plafonnement de features.py les écrase de fait. Elles sont présentes en petit nombre dans le test.",
+    "preuve": "conformite B3 : « La section 6 dit les sentinelles “non traitées”, alors que le clip de features.py les plafonne de fait (100 à 20 ou 90, 228 à 150) ». conceptuel.json : VehAge>=100 : 23 ; DrivAge>=100 : 3 ; BonusMalus>=200 : 3."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "Aucune analyse des relativités n'est documentée (C4 non conforme). Les PDP produits par la MRM montrent des sens de variation plausibles : BonusMalus monotone croissant, Area monotone mais quasi plat, ce qui suggère un recouvrement avec LogDensity. Ils doivent être intégrés à la documentation.",
+    "preuve": "conceptuel.json : BonusMalus de 0,678 (50) à 4,654 (150), monotonie = true ; Area de 0,991 (A) à 1,008 (F) ; Density de 0,82 (1) à 1,136 (20 000). conformite C4 : « Aucune analyse des relativités »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "La validation hors échantillon est incomplète. Le gain sur le modèle nul est net et significatif, mais le GLM n'est comparé qu'en validation croisée, pas sur le test. Les intervalles ignorent la variance d'entraînement, qui est faible d'après les trois graines.",
+    "preuve": "resultats.json : déviance ×100 de 23,747 contre 25,397 pour le modèle nul, gain relatif 6,5 %, IC95 Δ [−1,78 ; −1,51]. replication.json : dispersion de la déviance entre graines = 0,0065. conformite D2 : « le GLM n'est comparé qu'en CV et non sur le test »."
+   }
+  ],
+  "synthese": "Le modèle de fréquence LightGBM Poisson est reproductible à l'identique : déviance ×100 de 23,747, A/E global 1,008 (IC95 [0,981 ; 1,035]) et prédictions de la réimplémentation identiques au modèle livré (corrélation 1,0). L'offset d'exposition est correct (proportionnalité exacte) et aucune fuite de cible n'est détectée : IDpol est sans effet et les gains univariés restent faibles, au plus 1,08 % pour BonusMalus. Le gain sur le modèle nul est significatif. Décision : approuvé sous réserve, pour un usage de tarification technique interne.\n\nRéserves à lever avant toute mise en production :\n(1) Corriger ou expliquer la sous-estimation du décile 10 (A/E 1,093, IC excluant 1) et des segments DrivAge 25-34 (0,895) et 45-54 (1,057).\n(2) Faire réaliser l'examen juridique des variables (C5).\n(3) Documenter la définition du Gini (0,327 pondéré exposition contre 0,257 par police), la provenance des données (B4) et les relativités.\n(4) Livrer des scripts exécutables : chemins artifacts/package, partition, tuning, évaluation, train_sample, versions des bibliothèques.\n(5) Faire réaliser la revue par un actuaire qualifié, prévue en D4.\n\nLimites de la présente revue :\n- Les rapports textuels des agents affirment que leurs scripts n'ont pas été exécutés, alors que des sorties JSON et console chiffrées sont fournies. Seuls les chiffres présents dans ces JSON ont été retenus.\n- La partition d'origine, la validation croisée et les bootstraps de l'équipe n'ont pas été rejoués.\n- Le rapport de conformité est tronqué à partir du point E2."
+ },
+ "run_id": "mrm_livrable_naif_r2_b",
+ "package": "naif_r2",
+ "minutes": 4.6,
+ "cost_usd": 0.5114
+}

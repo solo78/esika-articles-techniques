@@ -1,0 +1,367 @@
+{
+ "variant": "autonome",
+ "tasks": {
+  "extraction": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 1.5,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "eda": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": ""
+   }
+  ],
+  "methodologie": {
+   "ok": true,
+   "attempts": 1
+  },
+  "features": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 1.2,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK : BonusMalus, DrivAge, LogDensity, VehAge, VehPower, VehGas, VehBrand, Region"
+     }
+    ],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 8.0,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK : BonusMalus, DrivAge, VehAge, LogDensity, VehPower, VehGas_Diesel, VehBrand, Region"
+     }
+    ],
+    "instruction": "- features.py ne regroupe aucune modalité rare : les 11 marques, dont B14 (3 251 lignes), et les 22 régions sont conservées. La spécification (C3) et la documentation (section 2 et tableau) affirment pourtant un regroupement en « Autres » sous 5 000 années-exposition. => Implémenter le regroupement en « Autres » dans features.py, avec des listes figées calculées sur l'exposition du train, puis réentraîner. À défaut, retirer cette affirmation de la documentation et justifier l'absence de regroupe"
+   }
+  ],
+  "tuning": [
+   {
+    "ok": true,
+    "attempts": 2,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": false,
+      "seconds": 8.9,
+      "stderr_tail": "n inter\n    return (np.log(a[:, [0]]) * a[:, [1]])\n                   ~^^^^^^^^\n  File \"/usr/local/lib/python3.13/site-packages/pandas/core/frame.py\", line 4378, in __getitem__\n    indexer = self.columns.get_loc(key)\n  File \"/usr/local/lib/python3.13/site-packages/pandas/core/indexes/base.py\", line 3653, in get_loc\n    self._check_indexing_error(key)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.13/site-packages/pandas/core/indexes/base.py\", line 6094, in _check_indexing_error\n    raise InvalidIndexError(key)\npandas.errors.InvalidIndexError: (slice(None, None, None), [0])\n"
+     },
+     {
+      "attempt": 2,
+      "exec_ok": true,
+      "seconds": 130.7,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 117.6,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "training": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 9.7,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 3,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": false,
+      "seconds": 1.0,
+      "stderr_tail": "tuning.json : bloc 'best' (dict) absent -> arrêt (pas de secours).\n"
+     },
+     {
+      "attempt": 2,
+      "exec_ok": false,
+      "seconds": 1.0,
+      "stderr_tail": "Impossible d'identifier le candidat retenu dans tuning.json (clés testées : ['best', 'decision', 'selected', 'retained', 'retenu', 'chosen', 'final', 'choice', 'winner']).\n"
+     },
+     {
+      "attempt": 3,
+      "exec_ok": true,
+      "seconds": 14.9,
+      "stderr_tail": "/home/claude/work/runs/auto_r1/scripts/training_3.py:83: UserWarning: cat_smooth absent de tuning.json -> 50.0 (valeur du réglage selon la consigne ; non écrite dans le JSON)\n  warnings.warn(f\"{names[0]} absent de tuning.json -> {default} ({why})\")\n",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": "- Le modèle entraîné n'est pas celui qui a été validé en CV. Le réglage utilisait subsample=0,8, colsample_bytree=0,8, reg_lambda=5, cat_smooth=50 et VehPower/VehBrand/Region en catégorielles ; l'entraînement final utilise subsample=1, aucune régularisation et VehPower numérique. De plus, la lecture récursive find() de tuning.json peut renvoyer le premier candidat au lieu du meilleur, et n_iter≈315 correspond exactement à la liste de secours codée en dur. => Lire explicitement la configuration r"
+   }
+  ],
+  "evaluation": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 3.9,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 5.6,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "documentation": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": "- La règle de sélection de la section 5 est inversée (« GBM retenu s'il bat le GLM de moins d'une erreur-type ») et contredit la section 1. Le script de réglage fourni référence la colonne 'LogDensity', alors que la colonne produite est 'logDensity' : tel quel, il échoue, donc les déviances GLM annoncées ne sont pas reproductibles (E4). => Corriger la règle : le GBM est retenu si son gain dépasse une erreur-type appariée. Corriger le nom de colonne, relancer le réglage et mettre à jour les chiff"
+   }
+  ]
+ },
+ "escalations": [],
+ "judge": [
+  {
+   "verdict": "a_reprendre",
+   "points": [
+    {
+     "gravite": "important",
+     "tache": "training",
+     "constat": "Le modèle entraîné n'est pas celui qui a été validé en CV. Le réglage utilisait subsample=0,8, colsample_bytree=0,8, reg_lambda=5, cat_smooth=50 et VehPower/VehBrand/Region en catégorielles ; l'entraînement final utilise subsample=1, aucune régularisation et VehPower numérique. De plus, la lecture récursive find() de tuning.json peut renvoyer le premier candidat au lieu du meilleur, et n_iter≈315 correspond exactement à la liste de secours codée en dur.",
+     "consigne": "Lire explicitement la configuration retenue (bloc best) dans tuning.json, sans valeur de secours silencieuse. Réentraîner avec exactement les paramètres réglés (subsample, colsample, reg_lambda, cat_smooth, types catégoriels identiques), journaliser la source de chaque paramètre, puis relancer l'évaluation."
+    },
+    {
+     "gravite": "important",
+     "tache": "features",
+     "constat": "features.py ne regroupe aucune modalité rare : les 11 marques, dont B14 (3 251 lignes), et les 22 régions sont conservées. La spécification (C3) et la documentation (section 2 et tableau) affirment pourtant un regroupement en « Autres » sous 5 000 années-exposition.",
+     "consigne": "Implémenter le regroupement en « Autres » dans features.py, avec des listes figées calculées sur l'exposition du train, puis réentraîner. À défaut, retirer cette affirmation de la documentation et justifier l'absence de regroupement par min_child_samples et cat_smooth."
+    },
+    {
+     "gravite": "important",
+     "tache": "documentation",
+     "constat": "La règle de sélection de la section 5 est inversée (« GBM retenu s'il bat le GLM de moins d'une erreur-type ») et contredit la section 1. Le script de réglage fourni référence la colonne 'LogDensity', alors que la colonne produite est 'logDensity' : tel quel, il échoue, donc les déviances GLM annoncées ne sont pas reproductibles (E4).",
+     "consigne": "Corriger la règle : le GBM est retenu si son gain dépasse une erreur-type appariée. Corriger le nom de colonne, relancer le réglage et mettre à jour les chiffres de la section 6, en signalant tout écart. Aligner la documentation sur les paramètres réellement utilisés à l'entraînement."
+    },
+    {
+     "gravite": "mineur",
+     "tache": "evaluation",
+     "constat": "La calibration n'est contrôlée que globalement (A/E 1,014, cohérent avec l'écart de fréquence train/test) et par décile de prédiction (0,93 à 1,07). Elle n'est pas contrôlée par segment tarifaire (D3). La surdispersion (NB2), prévue par la spécification, n'a pas été testée.",
+     "consigne": "Ajouter des tableaux A/E par classes de BonusMalus, DrivAge, Region et VehBrand, avec IC. Estimer la dispersion (Pearson χ²/ddl) et la déclarer."
+    }
+   ],
+   "synthese": "Aucune fuite, exposition traitée correctement (ratio 2,0 sans écart), test non contaminé, métriques d'évaluation saines et calibration globale acceptable. En revanche, le modèle livré diffère du modèle validé, le regroupement des modalités rares est annoncé à tort, et le réglage n'est pas reproductible tel que fourni : corriger le training et les features, réévaluer, puis mettre la documentation en conformité."
+  },
+  {
+   "verdict": "a_reprendre",
+   "points": [
+    {
+     "gravite": "important",
+     "tache": "documentation",
+     "constat": "Les sections 2.3 et 2.4 contiennent encore des renvois non remplis : lignes à exposition plafonnée « à reporter », effet du plafond ClaimNb à 4 « à mesurer », effets sur la fréquence « à reporter ». Les métriques de test de l'audit (déviance ×100 de 23,89, Gini de 0,320, A/E global de 1,014, A/E par décile de 0,946 à 1,066) n'y sont pas reprises de façon vérifiable (B3, B5, E4).",
+     "consigne": "Remplacer chaque renvoi par les valeurs réellement produites : nombre de lignes et d'années-exposition plafonnées, écart de fréquence avant et après le plafond ClaimNb. Reporter les métriques de test identiques à eval.json, avec l'IC95 bootstrap et la déviance du modèle constant. Déclarer que la fréquence du décile supérieur est sous-estimée d'environ 6,6 % (A/E de 1,066)."
+    },
+    {
+     "gravite": "important",
+     "tache": "training",
+     "constat": "Le script d'entraînement prend cat_smooth = 50 par repli, car ce paramètre est absent de tuning.json. Or le tuning LightGBM n'a pas fixé cat_smooth : il a tourné avec la valeur par défaut, 10. Le modèle livré n'a donc pas la configuration validée en CV, et il est entraîné sur le train complet avec un nombre d'itérations issu d'un sous-échantillon de 40 % (D5, E4).",
+     "consigne": "Aligner cat_smooth sur la valeur réellement utilisée au tuning, ou bien l'écrire dans tuning.json et refaire la CV. Écrire dans un fichier d'artefacts la liste complète des paramètres effectifs (graine, n_estimators et règle de passage du sous-échantillon au train complet), puis relancer l'entraînement et l'évaluation."
+    },
+    {
+     "gravite": "mineur",
+     "tache": "evaluation",
+     "constat": "Le Gini et les déciles calculent la fréquence comme mu/Exposure avec l'exposition brute, alors que predict plafonne l'exposition à 1. Le classement des 0,18 % de lignes dont l'exposition dépasse un an est donc légèrement faussé.",
+     "consigne": "Utiliser Exposure plafonnée à 1 pour le tri et les expositions des déciles, ou le justifier explicitement dans les définitions d'eval.json."
+    },
+    {
+     "gravite": "mineur",
+     "tache": "documentation",
+     "constat": "La documentation annonce une spline naturelle pour DrivAge, alors que le code utilise SplineTransformer : B-spline cubique à nœuds quantiles, extrapolation constante. Les preuves des tests prévus (surdispersion NB2, interaction DrivAge × BonusMalus, conservation de Region en CV, déclaration des outils d'IA au titre de E3) ne sont pas visibles dans les extraits fournis.",
+     "consigne": "Corriger la description de la spline. Reporter les résultats chiffrés de ces tests et déclarer les outils, y compris d'IA, ayant produit le code."
+    }
+   ],
+   "synthese": "Sur le fond, le travail est sain : pas de fuite (IDpol, Area et la cible sont exclus, sensibilité à l'ID nulle), prédiction proportionnelle à l'exposition, calibration globale correcte (A/E de 1,014 en test, 1,005 en train) et plis groupés par profil. Il est renvoyé pour deux raisons : une documentation incomplète, où les chiffres de traitement et de test manquent, et un écart de configuration entre le tuning et l'entraînement (cat_smooth) qui compromet la traçabilité du modèle livré."
+  }
+ ],
+ "rework": [
+  "features",
+  "tuning",
+  "training",
+  "evaluation",
+  "documentation"
+ ],
+ "spec": {
+  "objectif": "Estimer la fréquence annuelle de sinistres RC auto (nombre attendu par année-exposition) pour la tarification a priori par segment, en tant que composante fréquence d'une prime pure (A1). Le modèle n'est pas conçu pour la sélection individuelle ni pour le provisionnement (E5).",
+  "traitements_donnees": [
+   "Exposure plafonnée à 1 an : 0,18 % des lignes dépassent 1 an, ce qui est incohérent avec un contrat annuel (B2). Le nombre de lignes et d'années-exposition concernées est documenté (B3).",
+   "ClaimNb plafonné à 4 (environ 15 lignes concernées). L'effet sur la fréquence globale est mesuré et déclaré, qu'il soit faible ou non (B3, E2).",
+   "VehAge plafonné à 20 (p99 = 21). La valeur 100 est traitée comme sentinelle et ramenée à ce plafond, avec comptage des lignes et contrôle de leur fréquence avant correction (B2, B3).",
+   "DrivAge plafonné à 90 en raison du faible effectif au-delà. BonusMalus plafonné à 150, avec comptage des lignes plafonnées (B3, C3).",
+   "Contrôle des doublons de profils (combinaisons identiques de variables tarifaires) avant le découpage en plis de validation croisée. Aucune autre exclusion de lignes : 0 valeur manquante (B2, B5).",
+   "Tous les seuils de regroupement et de plafonnement sont calculés sur le jeu d'entraînement uniquement et appliqués tels quels au test (D2)."
+  ],
+  "variables": [
+   {
+    "nom": "BonusMalus",
+    "transformation": "Plafond 150 ; log(BonusMalus) dans le GLM ; valeur brute dans le GBM, avec contrainte monotone croissante.",
+    "justification": "Signal le plus fort (fréquence de 0,052 à 0,147) et sens de variation attendu (C1, C4)."
+   },
+   {
+    "nom": "DrivAge",
+    "transformation": "Plafond 90 ; spline naturelle (4 à 5 ddl) ou classes dans le GLM ; valeur brute dans le GBM.",
+    "justification": "Effet décroissant probablement non linéaire. Corrélation de −0,48 avec BonusMalus : l'effet multivarié doit être vérifié, et l'interaction DrivAge × BonusMalus testée dans le GLM (C1, A3)."
+   },
+   {
+    "nom": "Density",
+    "transformation": "log(Density) ; plafond à 27 000 conservé tel quel (censure de la source).",
+    "justification": "Forte asymétrie (4,65) ; fréquence croissante de 0,055 à 0,096. Elle porte l'information géographique continue (C1)."
+   },
+   {
+    "nom": "VehAge",
+    "transformation": "Plafond 20 ; classes ou spline dans le GLM ; valeur brute dans le GBM.",
+    "justification": "Variable objective liée à l'usage du véhicule, après correction de la sentinelle 100 (C1, C2)."
+   },
+   {
+    "nom": "VehPower",
+    "transformation": "Catégorielle, modalités ≥ 12 regroupées.",
+    "justification": "Peu de modalités extrêmes ; le regroupement garantit la crédibilité (C3)."
+   },
+   {
+    "nom": "VehGas",
+    "transformation": "Binaire (Diesel / Regular).",
+    "justification": "Écart univarié de 0,078 contre 0,069, à confirmer en multivarié (C1)."
+   },
+   {
+    "nom": "VehBrand",
+    "transformation": "Catégorielle ; marques de moins de 5 000 années-exposition regroupées en « Autres » (B14 concernée).",
+    "justification": "Proxy de la gamme et de l'usage, avec garantie d'effectifs crédibles (C3)."
+   },
+   {
+    "nom": "Region",
+    "transformation": "Catégorielle ; régions de moins de 5 000 années-exposition regroupées en « Autres » ; effet ridge (pénalisation L2) dans le GLM.",
+    "justification": "Capte l'effet régional résiduel une fois Density prise en compte. Variable conservée seulement si elle réduit la déviance en validation croisée (C1, C3)."
+   }
+  ],
+  "variables_exclues": [
+   {
+    "nom": "IDpol",
+    "raison": "Identifiant administratif sans lien causal avec le risque ; risque de fuite (C2)."
+   },
+   {
+    "nom": "Area",
+    "raison": "Discrétisation quasi déterministe de Density, donc redondante et source de colinéarité. Elle est réintégrable à la place de log(Density) si un comparatif en validation croisée le justifie (A3, C1)."
+   },
+   {
+    "nom": "Exposure (en tant que prédicteur)",
+    "raison": "Utilisée uniquement comme offset ou poids, jamais comme variable explicative (D6)."
+   }
+  ],
+  "traitement_exposition": "Unité : l'année. Dans le GLM, offset log(Exposure) avec lien log. Dans le GBM, cible ClaimNb/Exposure pondérée par Exposure (équivalent Poisson), ou init_score = log(Exposure) sous LightGBM. On vérifie que la somme des prédictions égale la somme des sinistres observés sur l'entraînement (D6, D3).",
+  "modeles_candidats": [
+   {
+    "nom": "GLM Poisson (référence)",
+    "librairie": "statsmodels (GLM, famille Poisson, offset) ou scikit-learn PoissonRegressor avec sample_weight",
+    "grille": "Pénalisation L2 alpha ∈ {0 ; 1e-4 ; 1e-3}, avec ou sans interaction DrivAge × BonusMalus. Dispersion estimée (Pearson χ²/ddl) et quasi-Poisson si elle dépasse nettement 1."
+   },
+   {
+    "nom": "GLM binomiale négative (contrôle de surdispersion)",
+    "librairie": "statsmodels NegativeBinomial (NB2) avec offset",
+    "grille": "Mêmes variables que le GLM Poisson retenu ; paramètre alpha estimé. Sert à tester la surdispersion et la robustesse des coefficients, sans grille supplémentaire."
+   },
+   {
+    "nom": "Gradient boosting Poisson",
+    "librairie": "LightGBM (objective = poisson) ou scikit-learn HistGradientBoostingRegressor(loss = 'poisson')",
+    "grille": "num_leaves ∈ {15 ; 31 ; 63}, min_child_samples ∈ {200 ; 1000}, learning_rate = 0,05, arrêt précoce sur pli de validation (≤ 2000 itérations), contrainte monotone croissante sur BonusMalus, graine fixée."
+   }
+  ],
+  "critere_selection": "Le critère principal est la déviance de Poisson moyenne pondérée par l'exposition, calculée en validation croisée 5 plis. Si l'écart entre modèles est inférieur à 1 erreur-type, on retient le GLM pour sa lisibilité et la vérification des relativités (C4). En critères secondaires : Gini sur courbe de Lorenz ordonnée et calibration par segment.",
+  "validation": "Le jeu de test fourni est réservé à une seule évaluation finale, après choix et réglage (D2). On y vérifie la déviance de Poisson, le ratio sinistres prédits / observés global et par décile de prédiction, par BonusMalus, DrivAge, Region et Density (D3), ainsi que la comparaison GLM / GBM (D2). Graines, versions et paramètres sont journalisés pour la reproductibilité (D5).",
+  "risques_a_surveiller": [
+   "Surapprentissage du GBM et des modalités rares (Region, VehBrand, âges extrêmes) : surveiller l'écart de déviance entre entraînement et validation croisée (A3, C3).",
+   "Fuite entre plis via des profils dupliqués : si l'écart entre validation croisée et test est anormal, refaire la validation croisée groupée par profil (D2).",
+   "Colinéarité géographique Density / Region et corrélation BonusMalus / DrivAge : surveiller l'instabilité et l'inversion de signe des relativités (C1, C4).",
+   "Surdispersion non prise en compte, qui fausserait les intervalles et les tests du GLM Poisson (A5).",
+   "Écart de fréquence train / test (0,0736 contre 0,0746) dû à un découpage non stratifié : en tenir compte dans l'interprétation de la calibration finale (B5, E4).",
+   "Plafonnements (Exposure, ClaimNb, VehAge, BonusMalus) et censure de Density : effet à quantifier et à déclarer comme limites (B3, E2).",
+   "Variables sensibles : aucune donnée de genre n'est présente. Vérifier la conformité légale de Region et l'absence de proxy discriminant (C5).",
+   "Déclarer l'usage d'agents IA pour l'analyse et le code, et prévoir une revue par un actuaire qualifié avant toute mise en production (D4, E3)."
+  ]
+ },
+ "status": "termine",
+ "final_verdict": "a_reprendre",
+ "run_id": "auto_r1",
+ "mode": "route",
+ "minutes": 15.5,
+ "cost_usd": 1.1869
+}

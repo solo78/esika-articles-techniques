@@ -1,0 +1,332 @@
+{
+ "variant": "autonome",
+ "tasks": {
+  "extraction": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 1.5,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "eda": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": ""
+   }
+  ],
+  "methodologie": {
+   "ok": true,
+   "attempts": 1
+  },
+  "features": [
+   {
+    "ok": true,
+    "attempts": 2,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": false,
+      "seconds": 0.4,
+      "stderr_tail": "_handle(\n                                          ~~~~~~~~~~~~~~~~~~~^\n        path,\n        ^^^^^\n    ...<2 lines>...\n        mode=\"rb\",\n        ^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.13/site-packages/pandas/io/parquet.py\", line 141, in _get_path_or_handle\n    handles = get_handle(\n        path_or_handle, mode, is_text=False, storage_options=storage_options\n    )\n  File \"/usr/local/lib/python3.13/site-packages/pandas/io/common.py\", line 939, in get_handle\n    handle = open(handle, ioargs.mode)\nFileNotFoundError: [Errno 2] No such file or directory: 'data/freMTPL2freq.parquet'\n"
+     },
+     {
+      "attempt": 2,
+      "exec_ok": true,
+      "seconds": 5.3,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK : VehPower, VehAge, DrivAge, BonusMalus, log_BonusMalus, log_Density, VehGas, Area, VehBrand, Region"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "tuning": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 138.3,
+      "stderr_tail": "d 'eval_y' instead.\n  eval_set = _validate_eval_set_Xy(eval_set=eval_set, eval_X=eval_X, eval_y=eval_y)\n/usr/local/lib/python3.13/site-packages/lightgbm/sklearn.py:1106: LGBMDeprecationWarning: The argument 'eval_set' is deprecated, use 'eval_X' and 'eval_y' instead.\n  eval_set = _validate_eval_set_Xy(eval_set=eval_set, eval_X=eval_X, eval_y=eval_y)\n/usr/local/lib/python3.13/site-packages/lightgbm/sklearn.py:1106: LGBMDeprecationWarning: The argument 'eval_set' is deprecated, use 'eval_X' and 'eval_y' instead.\n  eval_set = _validate_eval_set_Xy(eval_set=eval_set, eval_X=eval_X, eval_y=eval_y)\n",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "training": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 11.1,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 2,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": false,
+      "seconds": 0.9,
+      "stderr_tail": "Traceback (most recent call last):\n  File \"/home/claude/work/runs/auto_r3/scripts/training_1.py\", line 14, in <module>\n    raise KeyError(f\"tuning.json: aucune clé de sélection parmi {SEL_KEYS}; clés={list(tun)}\")\nKeyError: \"tuning.json: aucune clé de sélection parmi ('selected', 'chosen', 'best', 'final_model'); clés=['best_model', 'best_params', 'cv_results', 'metric', 'notes']\"\n"
+     },
+     {
+      "attempt": 2,
+      "exec_ok": true,
+      "seconds": 33.5,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": "- Le modèle n'est pas calibré. Sur le train, A/E vaut 0,989 (sur-prédiction de 1,1 %) alors qu'un GBM Poisson convergé doit équilibrer prédit et observé. Sur le test, l'A/E par décile va de 0,92 (D1) à 1,10 (D10, environ 3 erreurs-types) : les prédictions sont trop resserrées. Cause probable : avec init_score = log(Exposure), LightGBM désactive boost_from_average et part d'une fréquence de 1 par an. 264 arbres à 0,05 ne suffisent pas à converger. L'A/E global de 0,995 sur le test est flatteur : "
+   }
+  ],
+  "evaluation": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 5.7,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 2.8,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "OK"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "documentation": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": ""
+   },
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": "- La documentation affirme que B14 est regroupé dans « Autres ». Or BRAND_KEEP contient B14 et toutes les marques : aucun regroupement de VehBrand n'est appliqué, ce qui contredit la spécification C3. Le contrôle GVIF prévu pour Region n'est pas documenté non plus. => Choisir entre deux options : appliquer réellement le regroupement de B14 (et des autres marques sous les seuils) dans features.py, ou corriger la documentation en justifiant le maintien de B14 par son exposition. Ajouter le GVIF de"
+   }
+  ]
+ },
+ "escalations": [],
+ "judge": [
+  {
+   "verdict": "a_reprendre",
+   "points": [
+    {
+     "gravite": "important",
+     "tache": "training",
+     "constat": "Le modèle n'est pas calibré. Sur le train, A/E vaut 0,989 (sur-prédiction de 1,1 %) alors qu'un GBM Poisson convergé doit équilibrer prédit et observé. Sur le test, l'A/E par décile va de 0,92 (D1) à 1,10 (D10, environ 3 erreurs-types) : les prédictions sont trop resserrées. Cause probable : avec init_score = log(Exposure), LightGBM désactive boost_from_average et part d'une fréquence de 1 par an. 264 arbres à 0,05 ne suffisent pas à converger. L'A/E global de 0,995 sur le test est flatteur : il vient de ce que la fréquence du test est 1,3 % plus élevée que celle du train.",
+     "consigne": "Ajouter log(fréquence moyenne du train) à l'init_score, soit init_score = log(Exposure) + log(f0), et stocker f0 dans model.joblib. Dans predict.py, prédire exp(raw + log(f0) + log(expo)). Relancer le choix de n_estimators avec cette initialisation. Contrôler ensuite que l'A/E du train est dans [0,995 ; 1,005] et que l'A/E par décile, sur le train comme en validation croisée, est dans les intervalles de confiance."
+    },
+    {
+     "gravite": "important",
+     "tache": "training",
+     "constat": "Les hyperparamètres et n_estimators sont lus par une recherche récursive (find_key) dans tuning.json, avec un repli silencieux. Rien ne garantit que le modèle livré correspond au candidat retenu (31/200/0,8/264). find_key peut renvoyer les valeurs du premier candidat rencontré, ou n_estimators = 800. La documentation reconnaît elle-même cette incertitude (D5, E4).",
+     "consigne": "Lire explicitement la clé du modèle sélectionné dans tuning.json. Faire échouer le script si une clé manque, plutôt que de passer par le repli. Journaliser les paramètres effectifs du bundle et vérifier par assertion qu'ils égalent ceux de la CV."
+    },
+    {
+     "gravite": "mineur",
+     "tache": "tuning",
+     "constat": "L'arrêt précoce et le P/O de 1,0144 en CV ont été obtenus avec la même initialisation fautive. La comparaison entre GLM et GBM (écart de 1,53 %) repose sur des écarts-types inter-folds et non sur une différence appariée.",
+     "consigne": "Après correction de l'init_score, relancer la grille LightGBM et rapporter, fold par fold, l'écart apparié de déviance entre le meilleur GLM et le meilleur GBM."
+    },
+    {
+     "gravite": "important",
+     "tache": "documentation",
+     "constat": "La documentation affirme que B14 est regroupé dans « Autres ». Or BRAND_KEEP contient B14 et toutes les marques : aucun regroupement de VehBrand n'est appliqué, ce qui contredit la spécification C3. Le contrôle GVIF prévu pour Region n'est pas documenté non plus.",
+     "consigne": "Choisir entre deux options : appliquer réellement le regroupement de B14 (et des autres marques sous les seuils) dans features.py, ou corriger la documentation en justifiant le maintien de B14 par son exposition. Ajouter le GVIF de Region avec log(Density), puis mettre à jour la section calibration avec les A/E par décile corrigés."
+    }
+   ],
+   "synthese": "Sur le fond, le travail est sain : pas de fuite (IDpol et cible exclus, sensibilité à IDpol nulle), offset d'exposition correct, test non contaminé, CV par groupes de profils. Il est toutefois à reprendre, car le GBM est mal calibré à cause d'une initialisation incomplète de l'init_score, ce que confirment l'A/E de 0,989 sur le train et le D10 à 1,10. S'y ajoutent une lecture fragile des hyperparamètres et une documentation inexacte sur le regroupement de VehBrand."
+  },
+  {
+   "verdict": "approuve",
+   "points": [
+    {
+     "gravite": "important",
+     "tache": "evaluation",
+     "constat": "La calibration globale est bonne (A/E test 1,012, cohérent avec l'écart de fréquence train/test 0,0746/0,0736). Le décile de risque le plus élevé est en revanche sous-estimé (A/E 1,088, z estimé à environ 2,5–2,8), et aucune calibration par segment n'est produite (D3).",
+     "consigne": "Publier les z par décile, déjà calculés, ainsi que des tables A/E avec z par Region, classe DrivAge, tranche BonusMalus et VehBrand sur le test. Si |z| > 3 sur un segment, le signaler comme limite."
+    },
+    {
+     "gravite": "important",
+     "tache": "documentation",
+     "constat": "La spécification exigeait de mesurer l'effet du plafond ClaimNb à 4 et des plafonds d'exposition (B3). La documentation indique que cet effet n'est pas chiffré. Le contrôle de surdispersion et le GVIF Region/log(Density) sont aussi laissés à faire, alors que Region est citée sous réserve du GVIF.",
+     "consigne": "Chiffrer l'effet du plafond ClaimNb (sinistres retirés, variation de la fréquence globale) et celui du plafond d'exposition, puis les reporter en §2.4. Pour le GVIF et la surdispersion, soit les calculer, soit les déclarer explicitement comme non réalisés en §limites, en précisant qu'ils sont sans objet pour le GBM retenu."
+    },
+    {
+     "gravite": "mineur",
+     "tache": "documentation",
+     "constat": "La §4 décrit l'offset GBM comme init_score = log(Exposure). Le code utilise log(min(Exposure,1)) + log(f0) en apprentissage et en prédiction, avec exposition plafonnée. Par ailleurs, deviance_x100 est une moyenne par police, alors que le critère de tuning est une déviance par année-exposition.",
+     "consigne": "Aligner la §4 sur l'implémentation réelle (plafond à 1 an et terme log(f0)). Préciser la définition de chaque métrique rapportée, par police ou par année-exposition, pour la reproductibilité (E4)."
+    },
+    {
+     "gravite": "mineur",
+     "tache": "evaluation",
+     "constat": "Le Gini trie sur mu/Exposure brute, non plafonnée, alors que mu est proportionnel à min(Exposure,1), ce qui fausse légèrement l'ordre pour 0,18 % des lignes. L'IC bootstrap repose sur 30 tirages seulement.",
+     "consigne": "Utiliser l'exposition plafonnée pour la fréquence de tri et porter le bootstrap à au moins 200 tirages."
+    }
+   ],
+   "synthese": "Les points de fond sont sains : aucune fuite (IDpol, cible et exposition exclues, sensibilité à l'ID nulle), exposition proportionnelle vérifiée (ratio 2,0), test non contaminé, calibration globale correcte et Gini 0,33 plausible. Le modèle est approuvé. Restent à compléter la calibration par segment et la documentation des effets de plafonnement et des contrôles non réalisés."
+  }
+ ],
+ "rework": [
+  "training",
+  "evaluation",
+  "documentation"
+ ],
+ "spec": {
+  "objectif": "Estimer la fréquence annuelle de sinistres (nombre attendu par année-exposition) d'un portefeuille automobile, pour servir de composante fréquence à une prime pure technique. Le modèle n'est pas destiné à la sélection individuelle ni au provisionnement (ASOP 56 §3.1, A1 et E5).",
+  "traitements_donnees": [
+   "Vérifier sur données brutes : valeurs manquantes, types, ClaimNb entier ≥ 0, Exposure > 0 (supprimer les lignes ≤ 0), doublons de profils hors IDpol. Chaque contrôle est consigné (B2, B5).",
+   "Plafonner Exposure à 1 an (0,18 % des lignes). Le nombre de lignes et la sinistralité concernés sont tracés (B3).",
+   "Plafonner ClaimNb à 4 (8 lignes ≥ 4). L'effet sur la fréquence globale est mesuré et documenté (B3).",
+   "Plafonner les variables continues : VehAge à 20, DrivAge à 90, BonusMalus à 150, VehPower à 12. Les seuils sont figés à partir du train uniquement (B3).",
+   "Regrouper les modalités de VehBrand et Region dont l'exposition est inférieure à 1 000 ans ou le nombre de sinistres inférieur à 50 (ex. B14, régions rares), dans une modalité « Autres » ou dans la modalité voisine (C3).",
+   "Utiliser le split train/test existant (542 392 / 135 599). Toutes les règles de traitement sont apprises sur le train seul, puis appliquées au test."
+  ],
+  "variables": [
+   {
+    "nom": "BonusMalus",
+    "transformation": "Plafond à 150, puis log(BonusMalus) pour le GLM ; valeur brute plafonnée pour le GBM.",
+    "justification": "Prédicteur majeur de la sinistralité, asymétrique (1,73) avec une masse au plancher 50 (C1)."
+   },
+   {
+    "nom": "DrivAge",
+    "transformation": "Plafond à 90. GLM : classes 18-20, 21-25, 26-30, 31-40, 41-50, 51-70, 71+ ; GBM : valeur brute.",
+    "justification": "Effet non linéaire attendu (jeunes et âgés). Le regroupement assure la crédibilité des âges extrêmes (C1, C3)."
+   },
+   {
+    "nom": "VehAge",
+    "transformation": "Plafond à 20. GLM : classes 0, 1-2, 3-5, 6-10, 11-15, 16-20 ; GBM : valeur brute plafonnée.",
+    "justification": "La valeur 100 est aberrante (P99 = 21). La forme de l'effet est non monotone (B2, C4)."
+   },
+   {
+    "nom": "VehPower",
+    "transformation": "Plafond à 12 ; catégorielle dans le GLM.",
+    "justification": "Caractéristique objective du véhicule, effet possiblement non linéaire (C2)."
+   },
+   {
+    "nom": "Density",
+    "transformation": "log(Density).",
+    "justification": "Asymétrie de 4,65. Proxy objectif de l'urbanisation et de l'intensité du trafic (C1)."
+   },
+   {
+    "nom": "Region",
+    "transformation": "Catégorielle, modalités rares regroupées.",
+    "justification": "Capte des effets géographiques résiduels. Son maintien dans le GLM est conditionné à un GVIF acceptable (< 5) avec log(Density) (C1)."
+   },
+   {
+    "nom": "VehBrand",
+    "transformation": "Catégorielle, modalités rares regroupées.",
+    "justification": "Reflète le type de véhicule et d'usage. Le regroupement limite le surapprentissage (C3)."
+   },
+   {
+    "nom": "VehGas",
+    "transformation": "Binaire (Diesel/Regular).",
+    "justification": "Proxy de l'usage et du kilométrage, objectivement mesurable (C1, C2)."
+   },
+   {
+    "nom": "Area",
+    "transformation": "Catégorielle ordonnée, utilisée dans le GBM uniquement.",
+    "justification": "Codage ordinal de l'urbanisation, utile au GBM sans risque d'instabilité des coefficients."
+   }
+  ],
+  "variables_exclues": [
+   {
+    "nom": "IDpol",
+    "raison": "Identifiant administratif sans lien causal. La variation par quintile suggère un artefact d'ordre ou de temps : risque de fuite (C2)."
+   },
+   {
+    "nom": "Area (dans le GLM)",
+    "raison": "Redondant avec log(Density), dont il est une discrétisation probable. Exclu du GLM si la corrélation de Spearman avec log(Density) dépasse 0,9 ou si le GVIF dépasse 5 (C1, A3)."
+   },
+   {
+    "nom": "ClaimNb et Exposure comme prédicteurs",
+    "raison": "ClaimNb est la cible et Exposure sert d'offset : les utiliser comme variables créerait une fuite ou un double comptage (C2, D6)."
+   },
+   {
+    "nom": "Variables sensibles (genre ou équivalent)",
+    "raison": "Absentes du jeu et interdites en Europe. Region doit être surveillée comme proxy potentiel (C5)."
+   }
+  ],
+  "traitement_exposition": "L'unité est l'année-police. Le nombre attendu vaut Exposure × exp(Xβ), avec un offset log(min(Exposure, 1)) dans le GLM et un init_score log(Exposure) dans LightGBM. La formulation alternative équivalente est y = ClaimNb/Exposure avec sample_weight = Exposure (D6).",
+  "modeles_candidats": [
+   {
+    "nom": "GLM Poisson log-lien avec offset (référence interprétable)",
+    "librairie": "statsmodels (GLM Poisson, offset), contrôle croisé avec sklearn PoissonRegressor",
+    "grille": "Pénalité L2 alpha ∈ {0, 1e-4, 1e-3} ; avec ou sans interaction DrivAge × BonusMalus."
+   },
+   {
+    "nom": "Gradient boosting Poisson",
+    "librairie": "lightgbm (objective='poisson', init_score=log(Exposure))",
+    "grille": "learning_rate = 0,05 ; num_leaves ∈ {15, 31} ; min_child_samples ∈ {200, 1000} ; feature_fraction ∈ {0,8, 1} ; n_estimators par early stopping (patience 50) sur un fold interne ; graine 42."
+   }
+  ],
+  "critere_selection": "Déviance de Poisson moyenne pondérée par l'exposition, mesurée hors fold, comparée au modèle nul (fréquence constante). Si l'écart est inférieur à 0,5 %, le GLM est préféré pour sa lisibilité, sous réserve d'une calibration acceptable et de relativités cohérentes (C4).",
+  "validation": "Validation croisée 5 folds mélangés (graine 42) sur le train pour le réglage, puis une évaluation unique sur le test, jamais utilisé auparavant. Sont rapportés : déviance, ratio prédit/observé global, par décile de prédiction et par segment (BonusMalus, DrivAge, Region), courbe de Lorenz et Gini, sensibilité aux seuils de plafonnement, dispersion (déviance/ddl). Versions, graines et paramètres sont tracés et une revue indépendante est prévue (D1 à D5).",
+  "risques_a_surveiller": [
+   "Fuite ou artefact via IDpol, et profils dupliqués répartis entre folds qui gonfleraient la performance hors échantillon (C2, D2).",
+   "Colinéarité DrivAge × BonusMalus (r = -0,48) et redondance Density/Area/Region, sources d'instabilité et de mauvaise interprétation des coefficients du GLM (A3).",
+   "Surdispersion : si déviance/ddl est nettement supérieur à 1, les erreurs-types du GLM sont sous-estimées ; envisager une quasi-Poisson ou une binomiale négative pour l'inférence (A5).",
+   "Surapprentissage du GBM sur les modalités rares et dégradation de la calibration par segment malgré une bonne déviance globale (C3, D3).",
+   "Biais induit par les plafonnements (Exposure, ClaimNb, variables continues) : leur effet sur la fréquence globale est à quantifier et à déclarer (B3, B5).",
+   "Variables proxy d'éléments sensibles (Region, Density) et contraintes réglementaires locales (C5).",
+   "Déclaration de l'usage d'outils et d'agents d'IA dans la production du code et de l'analyse. Les chiffres EDA agrégés restent à reconfirmer sur données brutes (E3, E4)."
+  ]
+ },
+ "status": "termine",
+ "final_verdict": "approuve",
+ "run_id": "auto_r3",
+ "mode": "route",
+ "minutes": 12.2,
+ "cost_usd": 0.9648
+}

@@ -1,0 +1,120 @@
+{
+ "variant": "naif",
+ "tasks": {
+  "extraction": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 1.6,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "porte non appliquée"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "eda": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": ""
+   }
+  ],
+  "features": [
+   {
+    "ok": true,
+    "attempts": 2,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": false,
+      "seconds": 0.7,
+      "stderr_tail": "Traceback (most recent call last):\n  File \"/home/claude/work/runs/naif_r3/scripts/features_1.py\", line 81, in <module>\n    assert na.sum() == 0, \"valeurs non reconnues -> NaN (modalité inattendue ?)\"\n           ^^^^^^^^^^^^^\nAssertionError: valeurs non reconnues -> NaN (modalité inattendue ?)\n"
+     },
+     {
+      "attempt": 2,
+      "exec_ok": true,
+      "seconds": 5.5,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "porte non appliquée"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "tuning": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 52.9,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "porte non appliquée"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "training": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 13.2,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "porte non appliquée"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "evaluation": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [
+     {
+      "attempt": 1,
+      "exec_ok": true,
+      "seconds": 4.3,
+      "stderr_tail": "",
+      "gate_ok": true,
+      "gate_msg": "porte non appliquée"
+     }
+    ],
+    "instruction": ""
+   }
+  ],
+  "documentation": [
+   {
+    "ok": true,
+    "attempts": 1,
+    "history": [],
+    "instruction": ""
+   }
+  ]
+ },
+ "escalations": [],
+ "judge": [],
+ "rework": [],
+ "status": "termine",
+ "run_id": "naif_r3",
+ "mode": "route",
+ "minutes": 4.4,
+ "cost_usd": 0.2785
+}

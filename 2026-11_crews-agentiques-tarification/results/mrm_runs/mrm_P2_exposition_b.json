@@ -1,0 +1,102 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 81.4,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 12.5,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 12.1,
+     "stderr_tail": "rraylike.py:402: RuntimeWarning: invalid value encountered in log\n  result = getattr(ufunc, method)(*inputs, **kwargs)\n/usr/local/lib/python3.13/site-packages/sklearn/preprocessing/_encoders.py:262: UserWarning: Found unknown categories in columns [0] during transform. These unknown categories will be encoded as all zeros\n  warnings.warn(msg, UserWarning)\n/usr/local/lib/python3.13/site-packages/sklearn/preprocessing/_encoders.py:262: UserWarning: Found unknown categories in columns [3, 5] during transform. These unknown categories will be encoded as all zeros\n  warnings.warn(msg, UserWarning)\n",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "exposition",
+    "gravite": "bloquant",
+    "description": "L'exposition n'est utilisée ni à l'apprentissage ni à la prédiction. Le modèle estime donc un nombre de sinistres par police, et non une fréquence annuelle. Cela contredit le §1 (« par police et par an ») et le §3 (« offset log(exposition) via poids »). Le point D6 est non conforme.",
+    "preuve": "conceptuel.json : en doublant Exposure (68 133 polices < 6 mois), le ratio de prédiction vaut 1,0 (min = max = 1,0) au lieu de 2 ; « proportionnel »: false ; « predict_utilise_Exposure »: false ; Exposure figure dans « colonnes_brutes_non_utilisees ». replication.json : « expo défini, jamais passé à fit (pas de sample_weight) » ; « docstring annonce freq x exposition, code renvoie la fréquence seule ». Prédiction moyenne de 0,0389, contre 0,0395 sinistre par police et 0,0746 sinistre par an."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "bloquant",
+    "description": "L'A/E global de 1,015 masque un biais fort selon l'exposition. Les polices courtes sont sur-tarifées et les polices annuelles sous-tarifées d'environ 40 %. Le premier décile de prédiction est aussi significativement sous-estimé. Le point D3 n'est pas satisfait.",
+    "preuve": "conceptuel.json, A/E sur la sortie brute par tranche d'exposition : (0 ; 0,25] = 0,379 (n = 44 426) ; (0,25 ; 0,5] = 0,946 ; (0,5 ; 0,75] = 1,439 ; (0,75 ; 0,99] = 1,754 ; > 0,99 = 1,396 (n = 34 018). resultats.json : décile 1 avec A/E = 1,241 et z = 3,49. Si la sortie est lue comme une fréquence annuelle (× exposition), l'A/E vaut 1,906 [IC95 1,855–1,957]."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "bloquant",
+    "description": "Les relativités ne sont pas raisonnables (ASOP 12 §3.3.4, point C4). Pour l'âge du conducteur, le sens de variation est inversé par rapport à l'empirique, ce qui est cohérent avec le défaut d'exposition. Le tarif pénaliserait les conducteurs âgés et favoriserait les jeunes.",
+    "preuve": "conceptuel.json, relativités DrivAge : 22 → 1,00 ; 28 → 0,90 ; 45 → 1,56 ; 75 → 1,77. Fréquences empiriques par an : (17,25] = 0,153 ; (70,120] = 0,060. Pour VehAge : 0 → 1,00 et 5 → 1,77, sans justification."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "important",
+    "description": "Deux chiffres annoncés ne sont pas reproductibles (point E4) : le Gini de 0,286 (doc §5 et eval.json) et l'écart maximal par décile de 0,748 (eval.json). La déviance et l'A/E global sont, eux, reproduits exactement avec la sortie brute de predict().",
+    "preuve": "replication.json : la déviance ×100 de 25,2076 et l'A/E de 1,01533 sont reproduits avec un écart nul. Le Gini recalculé vaut 0,237 (pondéré exposition) et 0,256 (non pondéré), soit un écart de −0,049 / −0,031 ; resultats.json donne 0,2558. L'écart maximal par décile recalculé vaut 0,241 (replication) ou 0,313 (resultats, max−min), contre 0,748 annoncé. Aucune convention ne retrouve 0,286 ni 0,748."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "Le jeu de test n'est pas pleinement indépendant. Une part notable de ses lignes est identique à des lignes d'apprentissage hors IDpol. Dans freMTPL2, ce sont probablement des contrats d'un même assuré. Le découpage par police ne garantit donc pas l'indépendance exigée par D2. Par ailleurs, la procédure de réglage n'est pas tracée.",
+    "preuve": "replication.json : overlap_IDpol = 0, mais 7 575 lignes de test (5,6 % de 135 599) sont identiques à des lignes du train hors IDpol. On compte 20 844 doublons internes dans le train et 2 444 dans le test. tuning.json ne contient qu'un alpha (1e-6), sans jeu de validation documenté."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "La documentation contredit le code ou omet des éléments requis (E1, E2, E3, C3, C5, D4, D5). Le §3 annonce un offset d'exposition qui n'existe pas. Le §7 cite LightGBM, non utilisé, et le recours éventuel à l'IA n'est pas déclaré. Le §5 annonce un contrôle de calibration par décile sans en donner les résultats. Le nombre de polices plafonnées n'est pas chiffré. Il n'y a ni analyse de crédibilité des classes, ni examen des contraintes légales, ni revue indépendante, ni versions des bibliothèques.",
+    "preuve": "Doc §3 : « offset log(exposition) via poids d'exposition » ; doc §7 : « LightGBM selon le cas » ; doc §2 : « quelques polices déclarent plus de 4 sinistres », alors que replication.json en compte 8 dans le train et 0 dans le test. Grille de conformité : C3, C4, C5, D4 et E3 non conformes."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Le modèle n'est pas robuste aux entrées hors domaine. Selon la lecture du code par l'agent résultats, un âge conducteur ≤ 17 ans devient la modalité NaN et une densité ≤ 0 donne log = −inf. Les tests de stress font échouer la prédiction sur des NaN.",
+    "preuve": "Sortie console de l'agent résultats : erreur scikit-learn « ...accept missing values encoded as NaNs natively... use an imputer transformer ». L'examen de features.py est rapporté par l'agent résultats, sans chiffre de prédictions non finies disponible dans l'extrait."
+   }
+  ],
+  "synthese": "Décision : refus d'utilisation en tarification.\n\nLe défaut est structurel et confirmé de façon concordante par trois agents. L'exposition est calculée mais jamais passée à fit, et predict() ne la multiplie pas. Le modèle prédit donc un nombre de sinistres par police, et non une fréquence annuelle comme l'affirme la documentation (§1, §3). Le test de doublement d'exposition le prouve (ratio 1,0 au lieu de 2).\n\nL'A/E global de 1,015 est vrai mais trompeur. L'A/E par tranche d'exposition va de 0,38 à 1,75, et les polices annuelles sont sous-tarifées d'environ 40 % (A/E 1,40). Les relativités d'âge du conducteur sont inversées par rapport à l'empirique.\n\nLe Gini de 0,286 et l'écart par décile de 0,748 ne sont pas reproductibles. Le test contient 7 575 lignes identiques au train hors IDpol, et le réglage n'est pas tracé.\n\nPoints satisfaisants :\n- les effectifs sont vérifiés (542 392 + 135 599 = 677 991 ; 987 + 237 = 1 224 expositions > 1) ;\n- aucune fuite de cible n'a été constatée ;\n- IDpol est bien exclu (écart de permutation nul), même si son Gini univarié de 0,090 justifie son exclusion.\n\nUn réajustement avec l'exposition en poids améliore la déviance (24,286 contre 25,208) pour un A/E de 1,016. C'est la voie de correction attendue.\n\nConditions d'une nouvelle soumission :\n- réentraîner avec l'exposition en offset ou en poids et corriger predict() ;\n- recalculer et documenter les métriques avec une convention de Gini explicite ;\n- fournir la calibration par décile, par segment et par tranche d'exposition ;\n- fournir les relativités et les effectifs par classe (C3, C4) ;\n- examiner les variables sensibles (C5) ;\n- découper le jeu de test par groupe de lignes identiques et tracer le réglage ;\n- corriger les §3, §5 et §7 et déclarer les outils, y compris l'IA ;\n- organiser une revue indépendante.\n\nLimites de cette revue :\n- les rapports textuels des agents disent ne pas avoir exécuté les scripts ; seules les valeurs des JSON fournis ont été retenues comme preuves ;\n- les conventions de Gini diffèrent entre agents (0,282 / 0,381 pour le modèle corrigé) ;\n- le test est un tirage aléatoire d'une seule période, sans validation hors temps ;\n- les données du tiers n'ont pas été auditées."
+ },
+ "run_id": "mrm_P2_exposition_b",
+ "package": "P2_exposition",
+ "minutes": 4.7,
+ "cost_usd": 0.39
+}

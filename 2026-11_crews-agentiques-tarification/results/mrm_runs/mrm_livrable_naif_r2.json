@@ -1,0 +1,120 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 9.8,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 2,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": false,
+     "seconds": 2.4,
+     "stderr_tail": "e \"/home/claude/work/runs/mrm_livrable_naif_r2/scripts/conceptuel_1.py\", line 51, in <module>\n    res[\"gini_test\"] = gini(y, base, expo)\n                       ~~~~^^^^^^^^^^^^^^^\n  File \"/home/claude/work/runs/mrm_livrable_naif_r2/scripts/conceptuel_1.py\", line 50, in gini\n    return float(1 - 2 * np.trapz(cy, ce))\n                         ^^^^^^^^\n  File \"/usr/local/lib/python3.13/site-packages/numpy/__init__.py\", line 769, in __getattr__\n    raise AttributeError(f\"module {__name__!r} has no attribute {attr!r}\")\nAttributeError: module 'numpy' has no attribute 'trapz'. Did you mean: 'trace'?\n"
+    },
+    {
+     "attempt": 2,
+     "exec_ok": true,
+     "seconds": 12.0,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 50.2,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "exposition",
+    "gravite": "bloquant",
+    "description": "L'hypothèse de proportionnalité à l'exposition, imposée par l'offset log(Exposure), est contredite par les données de test. Le modèle surestime fortement les polices de longue durée et sous-estime les courtes. Pour un usage tarifaire sur une base annuelle, le biais est matériel : environ 11 % de surestimation sur la tranche (0,75 ; 1], et un facteur proche de 2 sur les très courtes expositions. Le calibrage global masque ce biais. Le contrôle D6 n'est conforme que sur l'implémentation (ratio des prédictions exactement 2,0 quand l'exposition est doublée), pas sur l'adéquation aux données.",
+    "preuve": "conceptuel.exposition.AE_par_tranche_exposition : (0 ; 0,1] = 1,955 ; (0,1 ; 0,25] = 1,332 ; (0,25 ; 0,5] = 1,115 ; (0,5 ; 0,75] = 1,083 ; (0,75 ; 1] = 0,887 ; (1 ; 3] = 0,354. La fréquence observée décroît de 0,173 à 0,043 selon la tranche d'exposition."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "Le décile le plus risqué est significativement sous-estimé, d'environ 9 %. L'écart reste significatif après une correction de Bonferroni pour 10 tests (seuil d'environ 2,81). Les déciles 4 et 5 sont surestimés, sans que l'écart soit significatif.",
+    "preuve": "resultats.deciles[10] : 1 425 sinistres observés pour 1 303,7 attendus, A/E 1,0931, IC95 [1,041 ; 1,145], z = 3,36. deciles_nb_hors_ic95 = 1. Déciles 4 et 5 : A/E 0,953 et 0,943."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "Des enregistrements du test sont identiques à des enregistrements du train (hors IDpol), et le train contient lui-même des doublons. La documentation déclare cette vérification non faite. La CV et les métriques de test (déviance, Gini) peuvent donc être optimistes.",
+    "preuve": "replication.examen_train_script : lignes_test_identiques_a_train_hors_idpol = 7 696 (5,7 % des 135 599 lignes de test) ; lignes_dupliquees_dans_train_hors_idpol = 21 111 ; lignes_test_memes_variables_que_train = 44 171 ; idpol_communs_train_test = 0."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les relativités ne sont pas monotones sur BonusMalus, rupture inexpliquée contraire à ASOP 12 §3.3.4. Area n'a quasiment plus d'effet, sa redondance avec Density n'étant pas traitée. Aucune relativité n'est présentée dans la documentation.",
+    "preuve": "conceptuel.effets_partiels : fréquence de 0,164 à BonusMalus 75, puis 0,127 à 90, puis 0,202 à 100. Amplitude Area = 1,018 contre 1,402 pour Density. La conformité note C4 « non_conforme »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les contraintes légales et réglementaires sur les variables (Region, VehBrand, variables liées à l'âge) n'ont pas été examinées. La documentation l'exige elle-même avant toute mise en production.",
+    "preuve": "Documentation, section 3 : « Contraintes légales : non examinées dans les rapports. À vérifier avant toute mise en production. » La conformité note C5 « non_conforme »."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les classes peu peuplées ne sont pas regroupées et leur crédibilité n'est pas évaluée. Aucune revue par un actuaire qualifié n'a eu lieu.",
+    "preuve": "Documentation : « VehBrand B14 : 3 251 lignes ; certaines régions très peu représentées ». La conformité note C3 « non_conforme » et D4 « revue recommandée mais n'a pas eu lieu »."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "La reproductibilité est incomplète. Le tuning ne peut pas être rejoué, le script d'entraînement ne tourne pas tel quel, les versions logicielles ne sont pas indiquées et l'origine des données n'est pas déclarée (B4).",
+    "preuve": "replication : train_sample_present = false ; « script utilise 'artifacts/' alors que le dossier livré est 'package/' (non rejouable tel quel) ». La conformité relève que les versions logicielles sont absentes (D5 et E1) et note B4 « non_conforme »."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La définition du Gini n'est pas précisée. La valeur annoncée correspond à la variante pondérée par l'exposition ; la variante par police est nettement plus basse.",
+    "preuve": "replication.comparaison_eval_json.gini : la valeur annoncée 0,32733 est égale au Gini pondéré par l'exposition (0,32733). Le Gini par police vaut 0,25654."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La documentation se contredit sur les codes sentinelles. Elle les dit non traités, alors que les plafonds de features.py les neutralisent. L'effet des plafonds sur les résultats n'est pas apprécié.",
+    "preuve": "Documentation : « Les codes sentinelles restent à vérifier : VehAge max = 100, DrivAge max = 100, BonusMalus max = 228 ». Les plafonds sont VehAge [0 ; 20], DrivAge [18 ; 90] et BonusMalus [50 ; 150] (conformité, B3)."
+   }
+  ],
+  "synthese": "Décision : REFUS de l'usage tarifaire en l'état.\n\nPoints positifs :\n- Les chiffres annoncés sont exactement reproduits : déviance ×100 de 23,7467, A/E global de 1,0078 (5 358 sinistres observés pour 5 316,3 attendus, IC95 [0,981 ; 1,035]) et Gini de 0,3273 pondéré par l'exposition. L'écart maximal sur l'A/E par décile est de 6e-5.\n- Le jeu test n'est pas lu à l'entraînement.\n- IDpol n'est pas utilisé : la permutation de la colonne ne change aucune prédiction.\n- Aucune fuite de cible n'est mise en évidence. BonusMalus est un proxy de la sinistralité passée, pas une fuite.\n\nMotif bloquant : le calibrage par tranche d'exposition est fortement biaisé, avec un A/E allant de 1,95 à 0,35, et environ 0,89 sur les polices proches d'un an. L'hypothèse de proportionnalité de l'offset n'est donc pas validée pour une tarification annuelle.\n\nAutres points à corriger :\n- sous-estimation du décile 10 (A/E 1,093, z = 3,36) ;\n- doublons entre train et test (7 696 lignes) ;\n- BonusMalus non monotone ;\n- contraintes légales non examinées ;\n- crédibilité des classes rares non évaluée ;\n- revue par un actuaire qualifié non faite ;\n- reproductibilité incomplète.\n\nConditions pour une nouvelle soumission :\n- traiter le biais lié à l'exposition (exposition comme variable explicative, ou périmètre restreint aux expositions significatives) ;\n- dédoublonner les données avant la partition ;\n- recalibrer les fortes fréquences ;\n- imposer la monotonie de BonusMalus ;\n- réaliser l'examen réglementaire et une revue indépendante ;\n- livrer train_sample.parquet, les versions logicielles et des chemins corrigés.\n\nLimites de cette revue :\n- Les rapports des agents de réplication, conceptuel et résultats affirment ne pas avoir exécuté leurs scripts, alors que des sorties JSON et console sont fournies. Je me suis appuyé sur ces sorties sans pouvoir le confirmer.\n- La réplique donne des prédictions identiques à la décimale près (pred_max_rel_diff = 0). Elle n'est donc pas indépendante de la spécification, et il n'est pas exclu qu'elle ait rechargé le modèle livré.\n- Les dépendances partielles sont marginales et ignorent la corrélation BonusMalus/DrivAge de −0,48.\n- Le test vient du même fichier : il n'y a ni validation temporelle ni validation hors périmètre.\n- Je ne retiens pas l'avis de l'agent conceptuel (« aucun défaut conceptuel majeur détecté »), que contredisent ses propres sorties sur l'exposition et sur BonusMalus."
+ },
+ "run_id": "mrm_livrable_naif_r2",
+ "package": "naif_r2",
+ "minutes": 4.8,
+ "cost_usd": 0.5914
+}

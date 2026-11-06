@@ -1,0 +1,114 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 20.8,
+     "stderr_tail": "/usr/local/lib/python3.13/site-packages/lightgbm/sklearn.py:1106: LGBMDeprecationWarning: The argument 'eval_set' is deprecated, use 'eval_X' and 'eval_y' instead.\n  eval_set = _validate_eval_set_Xy(eval_set=eval_set, eval_X=eval_X, eval_y=eval_y)\n",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 19.4,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 53.6,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "contamination_test",
+    "gravite": "bloquant",
+    "description": "Le jeu de test n'est pas hors échantillon. train_script.py entraîne sur data/base_modelisation.parquet, qui contient la totalité du test. Le jeu de validation de l'arrêt anticipé est lui aussi tiré dans cette base (graine 0). Cela contredit le §2 de la documentation (test « jamais utilisé pour l'apprentissage ni le réglage ») et le point D2.",
+    "preuve": "replication.data_checks : frac_test_rows_in_base = 1.0, frac_test_IDpol_in_base = 1.0, base_eq_train_plus_test = true (677 991 = 542 392 + 135 599). resultats.integrite.test_rows_in_base_modelisation = 1.0. conceptuel.part_test_dans_base_modelisation = 1.0."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "bloquant",
+    "description": "Les métriques publiées sont arithmétiquement exactes sur le test, mais optimistes à cause de la fuite. Un réentraînement de même spécification sur train seul dégrade nettement la performance, au-delà des tolérances fixées par l'agent de réplication. Les chiffres du §5 ne mesurent donc pas la performance hors échantillon.",
+    "preuve": "Valeurs du doc : déviance x100 = 23,192, Gini = 0,389. Recalcul du modèle livré : 23,1925 et 0,3882. Réentraînement sur train seul : déviance 23,684 (+0,492 pour une tolérance de 0,05), Gini 0,333 (−0,055 pour une tolérance de 0,01). replication_within_tolerance = false."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Le modèle livré n'est pas reproductible à partir du dossier (D5). L'appel fit(eval_X=..., eval_y=...) n'existe pas dans l'API LightGBM sklearn (eval_set est attendu), donc le script ne s'exécute pas tel quel et la provenance de model.joblib n'est pas démontrée. Les graines divergent entre le doc et le script, et ni les versions de bibliothèques ni les versions de modèle ne sont tracées.",
+    "preuve": "replication.findings : « Appel fit avec eval_X/eval_y : arguments inexistants… le script tel quel n'est pas exécutable ». Graine 2026 au §2 du doc contre graine 0 dans le script. delivered_n_estimators = 388 contre best_iteration = 344 au réentraînement."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "Le modèle est mal calibré par décile : il sur-prédit les faibles risques et sous-prédit les risques élevés, et ce même sur un test contaminé. Le doc annonce un « contrôle de la calibration par décile » sans en donner le résultat. Un segment d'âge conducteur sort aussi de l'IC95.",
+    "preuve": "Écarts significatifs (resultats.ae_max_decile_gap_signif = [1, 3, 10]) : décile 1 A/E 0,761 ± 0,134, décile 3 A/E 0,816 ± 0,114, décile 10 A/E 1,151 ± 0,049. Écart max par rapport à 1 : 0,239 (eval.json : 0,2396). DrivAge 25-34 : A/E 0,930 ± 0,064."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "important",
+    "description": "La proportionnalité stricte à l'exposition, imposée par construction (prédiction × min(Exposure, 1)), n'est pas vérifiée dans les données : les polices courtes sont fortement sous-estimées et les polices d'un an sur-estimées. De plus, le doc parle d'un « offset log(exposition) via poids d'exposition » alors que la méthode réelle est un poids avec cible y/expo, et l'unité de temps reste implicite (D6).",
+    "preuve": "conceptuel.AE_par_tranche_exposition : (0 ; 0,1] A/E 1,969 (n = 25 723), (0,1 ; 0,25] 1,33, (0,999 ; 10] 0,844 (n = 34 018). exposition_double.ratio_moyen = 2,0, ce qui confirme la proportionnalité mécanique."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "La documentation de la méthode est contraire au code (B3, E1, E4). features.py ne plafonne ni ne discrétise aucune variable : il utilise les valeurs brutes continues.",
+    "preuve": "Doc §4 : « Classes de puissance plafonnées à 9, âge du véhicule en 3 classes, âge du conducteur en 7 classes, bonus-malus plafonné à 150 ». conceptuel.doc_vs_code : « features.py ne plafonne/discrétise rien… variables brutes continues »."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La déclaration des dépendances est imprécise (E3). Le doc cite un PoissonRegressor non utilisé, tuning.json contient un alpha de GLM sans objet, et le recours éventuel à des outils d'IA n'est pas déclaré.",
+    "preuve": "Doc §7 : « scikit-learn (PoissonRegressor), LightGBM selon le cas ». tuning.json contient « alpha » (conformite E3, replication.findings)."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "mineur",
+    "description": "La définition du Gini n'est pas documentée, ce qui empêche une reproduction univoque : deux agents obtiennent des valeurs différentes pour le même modèle sur le même test.",
+    "preuve": "Gini pondéré par l'exposition (replication) = 0,3882, non pondéré = 0,3237. resultats.global.gini = 0,4447, soit un écart de +0,056 avec eval.json."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "Plusieurs exigences de documentation ne sont pas remplies. Aucun examen des relativités (C4), alors que les effets sont plausibles (bonus-malus monotone, jeunes conducteurs plus risqués). Aucune revue par un pair (D4). Aucune justification du bonus-malus, qui domine le modèle, au regard de C1 et C2.",
+    "preuve": "conformite : C4 et D4 non conformes. conceptuel : bm_monotone_croissant = true, amplitude 8,38, driv_age_jeune_sur_median = 1,77, importance en gain du bonus-malus = 50,5 %. Permutation d'IDpol : écart max 0,0, donc pas de fuite par identifiant."
+   }
+  ],
+  "synthese": "Refus. Le test est intégralement inclus dans la base d'apprentissage (100 % des lignes et des IDpol). Les performances publiées (déviance 23,192, Gini 0,389) sont donc optimistes : sur train seul, on obtient 23,684 et 0,333. Le script d'entraînement n'est pas exécutable tel quel, donc le modèle livré n'est pas reproductible. S'y ajoutent une calibration insuffisante (déciles 1, 3 et 10 hors IC95, A/E de 0,761 à 1,151), une proportionnalité à l'exposition non vérifiée (A/E de 1,97 pour les expositions ≤ 0,1) et une documentation contraire au code (plafonds et classes absents de features.py, PoissonRegressor cité à tort). Points positifs : objet clair, A/E global de 1,011 reproduit, IDpol écarté sans effet résiduel, effets marginaux plausibles. Conditions d'une nouvelle soumission : réentraîner sur train.parquet seul avec une validation interne au train, corriger le script et figer les versions, recalibrer et documenter l'A/E par décile, segment et tranche d'exposition, aligner la documentation sur le code, définir le Gini et prévoir une revue par un pair. Limites de la revue : les rapports des agents affirment ne pas avoir exécuté leurs scripts alors que des JSON de résultats sont fournis. L'écart A/E par décile de 1,99 obtenu par la réplication contredit le 0,239 de eval.json et de l'agent résultats ; il n'a pas été retenu faute de définition. Les tests de résistance sont tronqués et n'ont pas été exploités."
+ },
+ "run_id": "mrm_P3_contamination_a",
+ "package": "P3_contamination",
+ "minutes": 4.6,
+ "cost_usd": 0.3712
+}

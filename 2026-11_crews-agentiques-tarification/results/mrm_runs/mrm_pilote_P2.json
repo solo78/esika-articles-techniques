@@ -1,0 +1,126 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 7.6,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 2,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": false,
+     "seconds": 2.5,
+     "stderr_tail": "Traceback (most recent call last):\n  File \"/home/claude/work/runs/mrm_pilote_P2/scripts/conceptuel_1.py\", line 104, in <module>\n    \"gini_pred\": gini(y, p),\n                 ~~~~^^^^^^\n  File \"/home/claude/work/runs/mrm_pilote_P2/scripts/conceptuel_1.py\", line 28, in gini\n    return float(1 - 2 * np.trapz(cy, cw))\n                         ^^^^^^^^\n  File \"/usr/local/lib/python3.13/site-packages/numpy/__init__.py\", line 769, in __getattr__\n    raise AttributeError(f\"module {__name__!r} has no attribute {attr!r}\")\nAttributeError: module 'numpy' has no attribute 'trapz'. Did you mean: 'trace'?\n"
+    },
+    {
+     "attempt": 2,
+     "exec_ok": true,
+     "seconds": 2.6,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 13.0,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "exposition",
+    "gravite": "bloquant",
+    "description": "L'exposition est ignorée à l'apprentissage comme à la prédiction, contrairement au §3 de la documentation (« offset log(exposition) via poids d'exposition »). train_script.py calcule expo sans jamais le transmettre à fit (ni sample_weight ni offset) : la cible est ClaimNb brut. predict() ne multiplie pas par Exposure, malgré sa docstring. Le modèle estime donc un nombre de sinistres par ligne de police, et non une fréquence annuelle. Non-conformité D6, C1 et E2.",
+    "preuve": "conceptuel.json : ratio de prédiction à exposition doublée = 1,0 (min 1,0, max 1,0), pred_depend_de_Exposure=false. replication.json : modèle livré vs réentraînement à l'identique du script sans poids, max_abs_pred_diff=0,0 ; vs réentraînement documenté (y/expo, poids expo), max_abs_pred_diff=0,922 et corr=0,900."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "bloquant",
+    "description": "Pour l'usage déclaré au §1 (« nombre attendu de sinistres par police et par an »), le modèle est fortement mal calibré. La prédiction moyenne correspond à une fréquence par ligne de police d'exposition moyenne d'environ 0,53 an, et non à une fréquence annuelle : le tarif annuel serait sous-estimé d'environ moitié. Les polices à exposition courte sont au contraire surestimées.",
+    "preuve": "replication.json : fréquence train par police 0,0389 vs par unité d'exposition 0,0736 ; prédiction moyenne 0,0389 ; exposition moyenne test 0,530 ; A/E global avec la sortie × exposition = 1,906 et écart max par décile = 6,90 (D01 : A/E 7,90). conceptuel.json, bande d'exposition (0 ; 0,25] : 648 sinistres observés vs 1 709 prédits tels quels, A/E 0,379."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "important",
+    "description": "Les métriques du §5 reposent sur une convention incohérente avec l'objet du modèle : un nombre de sinistres est comparé à une fréquence non multipliée par l'exposition. Dans la convention cohérente (× exposition), le modèle est moins bon que le modèle nul. Même dans la convention livrée, le gain sur le modèle nul est faible. L'A/E global de 1,015 masque ces défauts.",
+    "preuve": "resultats.json : déviance ×100 de 25,872 (× exposition) vs 25,395 pour le modèle nul par exposition, gain relatif −1,9 %. Sortie telle quelle : 25,208 vs 26,114 pour le modèle nul par police, gain +3,5 %. eval.json est reproduit uniquement par la convention « as_is »."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "important",
+    "description": "Deux indicateurs annoncés ne sont pas reproduits : le Gini de 0,286 et l'écart A/E max par décile de 0,748. Leur définition et leur pondération ne sont pas documentées, et l'écart de 0,748 n'est commenté nulle part. Le statut « conforme » attribué à E4 par l'agent conformité, qui n'a rien exécuté, n'est pas retenu.",
+    "preuve": "eval.json : gini 0,2863 et ae_max_decile_gap 0,7483. Recalcul (replication.json) : gini 0,2558 non pondéré et 0,2372 pondéré par l'exposition ; écart par décile 0,2408 (définition supposée)."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "Les relativités sont incohérentes avec la sinistralité observée par unité d'exposition (C4). Les conducteurs âgés et les véhicules plus anciens apparaissent plus risqués que les jeunes conducteurs et les véhicules neufs. C'est un artefact probable de l'exposition omise, ces profils ayant des expositions plus longues. Aucune analyse de crédibilité par classe n'est fournie (C3 ; 22 régions, 11 marques).",
+    "preuve": "conceptuel.json, exp(coef) par rapport à la modalité de référence : DrivAge 26-30 = 0,643, 51-70 = 1,116, 71+ = 1,270 ; VehAge 1-10 = 1,767, 11+ = 1,446. Pourtant, la fréquence observée par exposition et par classe DrivAge varie de 0,059 à 0,118 (ratio 2,01). Relativités régionales de 0,664 à 1,277 sans indication de volume."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "mineur",
+    "description": "Même dans la convention livrée, le premier décile est sous-estimé de façon significative, et aucune calibration par segment n'est documentée (D3).",
+    "preuve": "resultats.json, décile D01 : A = 261, E = 210,3, A/E = 1,241 avec IC95 [1,090 ; 1,391]."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "mineur",
+    "description": "Aucun chevauchement d'IDpol entre train et test, mais une part non négligeable de lignes de test est identique à des lignes d'apprentissage. Ce peut être naturel dans freMTPL2freq, mais ce n'est pas analysé. Par ailleurs, le script de découpage et de réglage (tuning.json) n'est pas fourni : l'indépendance du test vis-à-vis du réglage n'est pas vérifiable (D2, D5).",
+    "preuve": "replication.json : idpol_overlap = 0 ; test_rows_identical_to_train_rows = 7 575 sur 135 599 (5,6 %) ; train_exact_duplicate_rows = 20 844 ; test_share = 0,2000 et total = 677 991, conformes au §2."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "La documentation est insuffisante pour juger le travail (E1, E2, E3, D2, D4). Plusieurs points manquent ou sont inexacts : la section dépendances, l'absence de déclaration d'un éventuel outil d'IA, de revue par un pair et de modèle alternatif, l'absence de justification du choix alpha=1e-6 et de toute mise en garde d'usage.",
+    "preuve": "§7 : « LightGBM selon le cas » sans aucun résultat LightGBM dans les pièces. delivered_glm_params alpha = 1e-06 sans justification. Aucune mention de revue par un pair, d'outil d'IA ni de mise en garde contre les usages inappropriés (E5)."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "Les traitements de données ne sont pas chiffrés et leur effet n'est pas apprécié (B3). L'application effective du plafond de 4 sinistres dans le script n'a pas été vérifiée par les agents.",
+    "preuve": "Doc §2 : « quelques polices » au-delà de 4 sinistres. Dans le train : 8 polices au-delà de 4 sinistres (jusqu'à 16) et 987 expositions supérieures à 1 an, cohérent avec 1 224 sur l'ensemble."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Aucun examen réglementaire des variables potentiellement sensibles (C5).",
+    "preuve": "Doc §4 : variables âge conducteur, région et marque ; aucune section sur les contraintes légales."
+   }
+  ],
+  "synthese": "Refus d'utilisation en tarification. Le modèle livré ignore l'exposition à l'apprentissage comme à la prédiction, en contradiction avec l'hypothèse documentée. Il estime donc un nombre de sinistres par ligne et non une fréquence annuelle. Conséquences : sous-estimation d'environ moitié du niveau annuel (0,0389 contre 0,0736 par unité d'exposition), A/E de 1,906 en convention cohérente, relativités âge et véhicule déformées, et déviance moins bonne que le modèle nul une fois l'exposition prise en compte. Les métriques annoncées (25,208 ; 1,015) ne sont reproduites que dans une convention inappropriée ; le Gini de 0,286 et l'écart par décile de 0,748 ne sont pas reproduits. Le correctif est connu et testé par l'agent de réplication : apprentissage sur y/expo avec poids expo, puis multiplication par l'exposition en prédiction. Il donne un A/E de 1,016 et une déviance de 24,286 contre 25,395 pour le modèle nul. Une nouvelle soumission devra fournir ce correctif, des métriques recalculées et définies, une analyse des relativités et de la crédibilité, une calibration par segment, le script de découpage et de tuning, une section dépendances exacte et une revue par un pair. Limites de cette revue : les rapports narratifs des agents de réplication, conceptuel et résultats déclarent ne pas avoir exécuté leurs scripts, alors que leurs JSON contiennent des résultats chiffrés mutuellement cohérents. Je me fonde sur ces JSON, sans réexécution indépendante de ma part. Les données sources tierces et le tirage du test (graine 2026) ne sont pas vérifiables."
+ },
+ "run_id": "mrm_pilote_P2",
+ "package": "P2_exposition",
+ "minutes": 4.0,
+ "cost_usd": 0.4882
+}

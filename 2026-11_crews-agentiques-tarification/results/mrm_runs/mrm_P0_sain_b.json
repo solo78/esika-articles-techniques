@@ -1,0 +1,120 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 5.3,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 11.7,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 9.3,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "approuve_sous_reserve",
+  "constats": [
+   {
+    "categorie": "calibration",
+    "gravite": "important",
+    "description": "La calibration par décile est défaillante (D3). Le modèle sous-estime significativement les déciles 7 et 8 et surestime les déciles 1 à 3. La documentation affirme qu'un contrôle par décile a été fait, mais n'en donne aucun résultat. Pour un usage tarifaire, il faut corriger ou justifier ce biais avant la mise en production.",
+    "preuve": "resultats.json : décile 7 A/E = 1,126 (IC95 [1,037 ; 1,220]) ; décile 8 A/E = 1,112 (IC95 [1,028 ; 1,201]) ; deciles_hors_ic95 = [7, 8] ; déciles 1 à 3 A/E = 0,934 / 0,952 / 0,930 ; écart maximal entre déciles = 0,195. Écart maximal à 1 : 0,1256 recalculé, contre 0,1228 dans eval.json (écart de 0,0028). Cette métrique n'est pas reprise dans la documentation (§5)."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "important",
+    "description": "La proportionnalité est correcte par construction : le ratio vaut 2 lorsqu'on double l'exposition. En revanche, le contrôle empirique signale un A/E hors tolérance pour les expositions très courtes. L'hypothèse §3 (nombre proportionnel à l'exposition) n'est donc pas validée empiriquement. Les valeurs par bande sont tronquées dans la sortie transmise ; le constat devra être chiffré.",
+    "preuve": "conceptuel.json, flags : « A/E hors [0.85;1.15] pour expositions très courtes : proportionnalité à l'exposition mal vérifiée empiriquement ». exposition : ratio_min = ratio_max = 2,0 sur 68 133 polices de moins de 6 mois."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "Le découpage est aléatoire par police, sans regroupement des profils identiques. Une partie du test reproduit à l'identique des lignes d'apprentissage (hors IDpol), ce qui fragilise l'affirmation d'indépendance du jeu de test (D2). L'effet est probablement limité pour un GLM peu paramétré, mais il doit être quantifié, ou il faut recourir à un découpage groupé.",
+    "preuve": "replication.json : test_rows_identical_to_train_rows_excl_IDpol = 7 575 sur 135 599 lignes de test (5,6 %) ; idpol_overlap_train_test = 0. Documentation §2 : « jamais utilisé pour l'apprentissage ni le réglage »."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "Les éléments de classification exigés par ASOP 12 sont absents. Aucune relativité ni aucun effectif par classe n'est présenté (C3, C4). Aucun examen des contraintes légales n'est fait (C5). La colinéarité Area/densité n'est pas discutée (C1).",
+    "preuve": "Conformité : C4 et C5 non conformes. conceptuel.json : correlation_Area_LogDensity = 0,9705 ; importance par permutation d'Area = 0,020, la plus faible des variables. La documentation §4 liste les variables sans coefficients."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La définition du Gini n'est pas documentée. Trois définitions donnent trois valeurs, et la réplication n'atteint pas le critère de 1e-4 sur le Gini. La déviance et l'A/E sont en revanche reproduits exactement, et la valeur arrondie de la documentation (0,282) est cohérente.",
+    "preuve": "Gini dans eval.json = 0,28240 ; réplication = 0,28198 (écart de -4,2e-4) ; conceptuel (pondéré par l'exposition) = 0,0945 ; résultats = 0,3807. Déviance ×100 = 24,2858 et A/E = 1,0159 identiques partout. Le modèle réentraîné reproduit le modèle livré : diff_replicated_minus_shipped = 0, corrélation des prédictions = 1,0."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La déclaration des dépendances est incohérente (E3) : LightGBM est déclaré mais n'est utilisé ni dans le code ni dans tuning.json.",
+    "preuve": "Documentation §7 : « scikit-learn (PoissonRegressor), LightGBM selon le cas ». Conformité E3 : « contredit le code et tuning.json, qui n'utilisent que le GLM »."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "Les paramètres nécessaires à la reproductibilité sont absents de la documentation (E1, D5) : alpha, standardisation, encodage one-hot, max_iter, versions des bibliothèques. Il en va de même pour le réglage de alpha (D2). La réplication a réussi uniquement grâce au code.",
+    "preuve": "Conformité D2 et E1 : alpha = 1e-6 (tuning.json) non documenté ; seule la graine 2026 est indiquée. Le pipeline répliqué (StandardScaler, PoissonRegressor alpha = 1e-6) donne un écart nul au modèle livré."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "mineur",
+    "description": "La revue des données est imprécise. Les polices à plus de 4 sinistres ne sont pas chiffrées, et la comparaison au modèle nul est annoncée sans aucun chiffre. Le total des expositions supérieures à un an est en revanche cohérent.",
+    "preuve": "Documentation §2 : « quelques polices déclarent plus de 4 sinistres » ; réplication : train_claimnb_gt4 = 8, test = 0. Expositions supérieures à un an : 987 en apprentissage + 237 en test = 1 224, conforme à la documentation. Documentation §5 : « Comparaison au modèle nul », sans valeur."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Le modèle dépend fortement du bonus-malus. Cette variable traduit la sinistralité passée et n'est pas disponible pour un nouveau client. Son usage, sa manipulabilité et son traitement pour les affaires nouvelles ne sont pas analysés (C2, E5). Il ne s'agit pas d'une fuite de la cible : aucune variable ne dérive du ClaimNb courant, et IDpol est exclu.",
+    "preuve": "conceptuel.json : importance par permutation de BonusMalus = 1,917, contre 0,218 pour DrivAge (deuxième variable) ; Gini univarié = 0,223 ; fréquence de 0,052 à 0,180 par classe ; IDpol_dans_features = false."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Limite de la revue elle-même. Les trois agents d'exécution déclarent ne pas avoir exécuté leur script, alors que des sorties chiffrées sont fournies. Plusieurs sorties sont tronquées : relativités, A/E par bande d'exposition, stress tests, modèle nul. La traçabilité des chiffres doit être confirmée par une réexécution archivée.",
+    "preuve": "Rapports des agents : « Je n'ai pas pu exécuter le script ici », « Je n'ai pas exécuté le script ». conceptuel.json tronqué à « DrivAge_26-30 » ; resultats.json tronqué dans la section segments."
+   }
+  ],
+  "synthese": "Le modèle GLM de Poisson est techniquement sain. La déviance (24,286) et l'A/E global (1,016, IC95 [0,989 ; 1,044]) sont reproduits exactement. Un réentraînement indépendant redonne le modèle livré à l'identique. Aucune fuite de la cible n'est détectée : IDpol est exclu et aucune variable ne dérive du sinistre. L'exposition est traitée de façon cohérente, et les segments Area sont tous dans leur IC95.\n\nDécision : approbation sous réserve, avec des réserves à lever avant l'usage tarifaire :\n1. Corriger ou justifier la sous-estimation des déciles 7 et 8 (A/E de 1,126 et 1,112, hors IC95) et documenter l'écart par décile.\n2. Chiffrer et traiter l'A/E des expositions très courtes.\n3. Évaluer l'effet des 7 575 lignes de test (5,6 %) identiques à l'apprentissage, par exemple avec un découpage groupé.\n4. Compléter la documentation : relativités et effectifs par classe, examen légal des variables, colinéarité Area/densité (r = 0,97), définition du Gini, paramètres de réglage, suppression de la mention de LightGBM, chiffres du modèle nul, mises en garde d'usage (pas de test hors temps, nouveaux clients sans historique de bonus-malus).\n\nLimite de la revue : plusieurs sorties d'agents sont tronquées et leur exécution n'est pas confirmée. Une réexécution archivée est requise pour clore la revue."
+ },
+ "run_id": "mrm_P0_sain_b",
+ "package": "P0_sain",
+ "minutes": 4.0,
+ "cost_usd": 0.4144
+}

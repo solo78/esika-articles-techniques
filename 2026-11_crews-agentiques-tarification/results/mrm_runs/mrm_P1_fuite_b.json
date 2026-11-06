@@ -1,0 +1,108 @@
+{
+ "tasks": {
+  "conformite": {
+   "ok": true,
+   "attempts": 1
+  },
+  "replication": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 8.6,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "conceptuel": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 9.0,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  },
+  "resultats": {
+   "ok": true,
+   "attempts": 1,
+   "history": [
+    {
+     "attempt": 1,
+     "exec_ok": true,
+     "seconds": 10.5,
+     "stderr_tail": "",
+     "gate_ok": true,
+     "gate_msg": "OK"
+    }
+   ]
+  }
+ },
+ "verdict": {
+  "decision": "refuse",
+  "constats": [
+   {
+    "categorie": "fuite_cible",
+    "gravite": "bloquant",
+    "description": "IndicDossierActif est une variable « issue du système de gestion » dont la date de constitution est inconnue. Elle présente toutes les signatures d'une fuite de la cible : information probablement postérieure au sinistre et indisponible à la souscription. Elle porte à elle seule l'essentiel du pouvoir prédictif. La performance documentée (Gini 0,650) n'est donc pas atteignable en tarification réelle. Points ASOP 12 C2 et C1 non respectés.",
+    "preuve": "Train, fréquence annualisée : 0,0309 (modalité 0) contre 0,779 (modalité 1), soit environ 25 fois plus. Polices avec au moins un sinistre : 7 877 sur 514 871 (1,5 %) pour la modalité 0, contre 11 985 sur 27 521 (43,5 %) pour la modalité 1. La modalité 1 couvre 5,1 % des polices mais 12 732 des 21 086 sinistres du train (60 %). Corrélation avec ClaimNb : 0,472. Coefficient 3,13, soit une relativité de 22,9. Gini univarié en test : 0,645, contre 0,27 à 0,35 pour toutes les autres variables. Importance par permutation : 12,45 points de déviance ×100, contre 0,83 pour BonusMalus. Réajustement sans la variable : Gini 0,649 → 0,282 et déviance ×100 16,56 → 24,29 (replication.json)."
+   },
+   {
+    "categorie": "calibration",
+    "gravite": "bloquant",
+    "description": "La calibration par décile de prédiction est mauvaise et structurée. Le modèle surestime les déciles bas et sous-estime les déciles intermédiaires, ce qui est cohérent avec une population scindée par l'indicateur. Le bon A/E global (1,017) masque cette faiblesse. La documentation se borne à mentionner un « contrôle » sans en donner le résultat. Points D3, A5 et E2 non respectés.",
+    "preuve": "resultats.json : A/E du décile 0 = 0,749 (IC95 0,62–0,88) ; décile 4 = 0,861 (IC 0,73–0,99) ; déciles 5 à 8 = 1,157 / 1,168 / 1,211 / 1,194, avec des IC tous au-dessus de 1. L'IC exclut 1 pour 7 déciles sur 10. Le décile 9 concentre 3 431 sinistres observés sur 5 358 (64 %). Écart maximal = 0,251 (eval.json : 0,2514), absent de la documentation. Prédiction maximale : 4,12 sinistres par police."
+   },
+   {
+    "categorie": "exposition",
+    "gravite": "important",
+    "description": "Le traitement mécanique de l'exposition est correct : prédiction proportionnelle, ratio exactement égal à 2 quand l'exposition est doublée. En revanche, l'hypothèse de proportionnalité à l'exposition est contredite par l'observé, et la calibration par classe d'exposition est très mauvaise. On relève aussi une classe d'exposition supérieure à 1 an en test, alors que la documentation annonce un plafonnement à 1 an. L'application du plafond en prédiction reste à vérifier. Le statut « conforme » attribué à D6 par l'agent de conformité doit être nuancé.",
+    "preuve": "conceptuel.json, A/E par classe d'exposition : 2,02 pour (0 ; 0,25] ; 1,29 pour (0,25 ; 0,5] ; 1,10 pour (0,5 ; 0,75] ; 0,83 pour (0,75 ; 1] ; 0,39 pour (1 ; 100]. Fréquence annualisée observée : 0,131 pour les expositions courtes contre 0,061 pour (0,75 ; 1]. 68 133 polices ont moins de 6 mois."
+   },
+   {
+    "categorie": "metriques_inexactes",
+    "gravite": "important",
+    "description": "Les métriques annoncées sont reproduites numériquement. Elles sont cependant trompeuses, car gonflées par la variable fuyante. De plus, l'écart maximal par décile diverge selon l'agent : la définition n'est pas stabilisée et la valeur n'est pas publiée dans la documentation. Point E4 non respecté.",
+    "preuve": "Déviance ×100 : 16,5614 dans eval.json et à l'identique dans les trois recalculs. Gini : 0,6497 (eval.json) contre 0,6495 (replication, écart −0,0002, sous la tolérance de 0,005) ; l'agent conceptuel obtient 0,686 avec sa propre convention. A/E : 1,0169, identique partout. ae_max_decile_gap : 0,2514 (eval.json), 0,2507 (resultats.json), mais 2,371 (replication.json). Sans IndicDossierActif, le Gini tombe à 0,282."
+   },
+   {
+    "categorie": "contamination_test",
+    "gravite": "important",
+    "description": "Il n'y a aucun chevauchement d'IDpol entre train et test. On trouve toutefois des lignes identiques entre les deux jeux, ce qui peut traduire des polices d'un même assuré réparties de part et d'autre. L'indépendance du test, affirmée au §2, n'est donc pas démontrée. Par ailleurs, le script de découpage n'est pas fourni. Point D2 à compléter.",
+    "preuve": "replication.json : idpol_overlap_train_test = 0 ; lignes_identiques_train_test = 5 306, soit environ 3,9 % du test (135 599 lignes) ; frac_test = 0,2000."
+   },
+   {
+    "categorie": "documentation",
+    "gravite": "important",
+    "description": "La documentation présente plusieurs lacunes au regard d'E1, E3, D4 et D5. Le §7 déclare une dépendance à LightGBM « selon le cas », non utilisée dans le code. Le paramètre alpha = 1e-6 (régularisation quasi nulle) et son mode de réglage ne sont pas documentés. Aucune revue par un pair n'est envisagée. Le recours éventuel à l'IA pour le code n'est pas déclaré. Le modèle n'est ni versionné ni tracé.",
+    "preuve": "Doc §7 : « scikit-learn (PoissonRegressor), LightGBM selon le cas ». replication.json : « tuning.json ne documente aucune recherche : sélection du réglage non traçable » ; hyperparamètres alpha = 1e-6 et max_iter = 1000. hash_model_joblib = 9c16a6bd32cf9dae, non mentionné dans la documentation. Conformité : D4 non conforme, D5 partiel."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "important",
+    "description": "La classification des risques n'est pas démontrée (ASOP 12, points C3 et C4). Aucune analyse de crédibilité des classes n'est fournie. Les relativités présentent des ruptures inexpliquées et un effet « jeune conducteur » faible, probablement absorbé par la variable fuyante. L'interdépendance entre densité et zone n'est pas étudiée.",
+    "preuve": "Relativités DrivAge (référence 18-20) : 0,80 (21-25), 0,72 (26-30), 0,80 (31-40), 0,95 (41-50), 0,88 (51-70), 0,85 (71+), soit une remontée non monotone à 41-50. Autres relativités : VehBrand B11 = 1,17 ; Région Limousin = 1,16. Conformité : C3 et C4 non conformes."
+   },
+   {
+    "categorie": "autre",
+    "gravite": "mineur",
+    "description": "Le modèle présente des fragilités de robustesse en entrée, relevées dans le code par l'agent résultats. Une densité nulle produit des valeurs non finies. Un âge inférieur à 18 ans tombe dans une classe « nan » ignorée à l'encodage. DrivAge et Density ne sont pas plafonnés, ce qui expose à l'extrapolation des effets linéaires.",
+    "preuve": "Rapport resultats : « np.log(Density) donne −∞ si la densité vaut 0 » ; « Les âges inférieurs à 18 ans tombent dans la classe \"nan\", qui est ignorée à l'encodage ». Les résultats des 16 scénarios de résistance ne figurent pas dans l'extrait transmis."
+   }
+  ],
+  "synthese": "Refus. Le modèle repose sur IndicDossierActif, une variable de gestion qui constitue très probablement une fuite de la cible. Les éléments convergent : fréquence de 0,78 contre 0,03 selon la modalité, relativité de 22,9, Gini univarié de 0,645, et Gini global ramené de 0,649 à 0,282 sans la variable. Ce modèle est inutilisable en tarification. S'y ajoutent une calibration par décile défaillante (A/E de 0,75 à 1,21, IC excluant 1 pour 7 déciles sur 10) et une non-proportionnalité observée de la fréquence à l'exposition (A/E de 2,02 à 0,39 selon la classe d'exposition). Les chiffres documentés sont reproduits (déviance 16,561, A/E 1,017, Gini dans la tolérance), mais ils ne sont pas représentatifs. Conditions d'une nouvelle soumission : retirer la variable, sauf preuve horodatée qu'elle est connue à la souscription ; ré-entraîner et documenter le réglage ; publier la calibration par décile, par segment et par classe d'exposition ; contrôler les 5 306 lignes dupliquées entre train et test et fournir le script de découpage ; analyser la crédibilité et les relativités ; corriger le §7 (LightGBM) ; versionner le modèle ; organiser une revue par un pair. Limites de la présente revue : les rapports textuels des agents indiquent que leurs scripts n'ont pas été exécutés, alors que des sorties JSON sont fournies. Je me fonde sur ces JSON. Leur cohérence croisée renforce la confiance : déviance identique dans les trois recalculs, fréquences de l'indicateur concordantes. La définition de l'écart par décile diverge en revanche (2,37 contre 0,25), et la provenance de IndicDossierActif reste à confirmer auprès de l'équipe. Ces deux points ne modifient pas la décision."
+ },
+ "run_id": "mrm_P1_fuite_b",
+ "package": "P1_fuite",
+ "minutes": 3.3,
+ "cost_usd": 0.3908
+}
