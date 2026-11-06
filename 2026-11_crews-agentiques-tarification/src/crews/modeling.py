@@ -4,9 +4,9 @@ Deux variantes :
   - "autonome" : le jugement humain du papier est remplacé par un méthodologiste (Opus),
                  des portes de qualité déterministes, un orchestrateur d'escalade (Opus)
                  et un juge (Opus) qui peut renvoyer des tâches avec consignes.
-  - "naif"     : les mêmes agents, sans méthodologiste, sans portes, sans juge : c'est le
-                 papier auquel on a simplement retiré l'humain (seules les erreurs
-                 d'exécution sont renvoyées à l'agent).
+  - "naif"     : les mêmes agents, sans méthodologiste, sans portes, sans juge, mais avec le
+                 contrat de livrable, le graphe de tâches, l'outil EDA et la boucle
+                 d'auto-correction (les erreurs d'exécution sont renvoyées à l'agent).
 """
 from __future__ import annotations
 
