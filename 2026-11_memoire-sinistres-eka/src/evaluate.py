@@ -47,7 +47,7 @@ def run_sim(seed: int, n: int = 5000) -> list[dict]:
     scan_u = rng.random((n, NF))
     ext = {p: extract(df, draws, schema, p) for p in P_LEVELS}
     # Scénario calibré sur le volet LLM (ajouté après E1/E2) : schéma retenant tout facteur vu au moins
-    # une fois sur 100 synthèses, champs de base à 99,5 %, facteurs : rappel 0,984, faux positifs 4,9 %
+    # une fois sur 100 synthèses, champs de base à 99,5 %, facteurs : rappel 0,984 (faux positifs ci-dessous)
     schema_llm = induce_schema(df, np.random.default_rng(seed + 10_000), n_sample=100, min_count=1)
     # Corrigé après relecture : faux positifs mesurés 2,6 % (tous facteurs) et 0,46 % (hors deux facteurs
     # à vocabulaire ambigu) ; la première version utilisait 4,9 %, qui comptait les null comme faux positifs.
