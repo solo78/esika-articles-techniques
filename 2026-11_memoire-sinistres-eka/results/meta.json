@@ -1,0 +1,17 @@
+{
+  "n_sims": 300,
+  "n_dossiers": 5000,
+  "questions_par_type_et_sim": 5,
+  "taille_schema_facteurs": {
+    "min": 9,
+    "median": 9.0,
+    "max": 11,
+    "part_sims_avec_au_moins_un_rare": 0.4866666666666667
+  },
+  "audit_oracle": {
+    "Q_part": 1.0,
+    "Q_top3": 1.0,
+    "Q_rare": 1.0,
+    "Q_prec": 1.0
+  }
+}

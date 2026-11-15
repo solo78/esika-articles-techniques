@@ -1,0 +1,58 @@
+rep,attribut,couvert,champs,n_champs_schema
+0,branche,True,branche,30
+0,pays,True,pays,30
+0,cause,True,origine_sinistre;responsabilite_sous_traitant,30
+0,annee,True,annee_sinistre;date_mise_a_jour,30
+0,montant,True,branche;dommage_estime_eur;ecart_reserve_dommage_eur,30
+0,reserve,True,reserve_actuelle_eur;ecart_reserve_dommage_eur;revision_reserve;frais_defense_integres,30
+0,contentieux,True,statut_procedure,30
+0,retard de déclaration,True,declaration_tardive,30
+0,pluralité d'assureurs,True,coassurance;risque_partage_multiples_porteurs,30
+0,expertise contradictoire,True,revision_reserve;divergence_experts,30
+0,sous-traitant impliqué,True,responsabilite_sous_traitant,30
+0,clause d'exclusion ambiguë,True,contestation_exclusion,30
+0,dommages corporels,True,atteintes_corporelles,30
+0,perte d'exploitation,True,pertes_exploitation,30
+0,pluralité de victimes,True,action_groupee_victimes;reclamations_multiples_tiers,30
+0,sous-assurance,True,sous_assurance;regle_proportionnelle,30
+0,sanctions internationales,False,,30
+0,faute inexcusable,True,faute_inexcusable_employeur,30
+0,fraude suspectée,True,suspicion_fraude,30
+1,branche,True,branche,30
+1,pays,True,pays,30
+1,cause,True,origine_sinistre;sous_traitant_implique;desaccord_experts,30
+1,annee,True,date_sinistre;annee_sinistre,30
+1,montant,True,date_sinistre;branche;dommage_estime_eur;ecart_reserve_dommage_eur;ratio_reserve_dommage,30
+1,reserve,True,reserve_actuelle_eur;ecart_reserve_dommage_eur;ratio_reserve_dommage;frais_defense_integres;revision_reserve,30
+1,contentieux,True,statut_procedure,30
+1,retard de déclaration,True,declaration_tardive,30
+1,pluralité d'assureurs,True,coassurance;nombre_coassureurs,30
+1,expertise contradictoire,True,revision_reserve;desaccord_experts,30
+1,sous-traitant impliqué,True,sous_traitant_implique,30
+1,clause d'exclusion ambiguë,True,exclusion_contestee;exclusion_ambigue,30
+1,dommages corporels,True,victimes_corporelles,30
+1,perte d'exploitation,True,arret_production;pertes_exploitation,30
+1,pluralité de victimes,True,action_groupee_envisagee;tiers_leses_multiples,30
+1,sous-assurance,True,sous_assurance,30
+1,sanctions internationales,True,contrepartie_sanctionnee,30
+1,faute inexcusable,True,faute_inexcusable_invoquee,30
+1,fraude suspectée,True,enquete_fraude,30
+2,branche,True,branche,30
+2,pays,True,pays,30
+2,cause,True,origine_sinistre;divergence_experts;sous_traitant_implique,30
+2,annee,True,date_sinistre;declaration_tardive,30
+2,montant,True,branche;dommage_estime_eur;ecart_reserve_eur;reserve_insuffisante,30
+2,reserve,True,reserve_actuelle_eur;ecart_reserve_eur;reserve_insuffisante;revision_reserve_effectuee;motif_revision_reserve;frais_defense_integres,30
+2,contentieux,True,frais_defense_integres;statut_contentieux;action_judiciaire_engagee;gestionnaire_dossier,30
+2,retard de déclaration,True,declaration_tardive,30
+2,pluralité d'assureurs,True,coassurance;nombre_coassureurs,30
+2,expertise contradictoire,True,motif_revision_reserve;divergence_experts;gestionnaire_dossier,30
+2,sous-traitant impliqué,True,sous_traitant_implique,30
+2,clause d'exclusion ambiguë,True,exclusion_contestee;ambiguite_exclusion,30
+2,dommages corporels,True,atteintes_corporelles,30
+2,perte d'exploitation,True,pertes_exploitation;arret_production_semaines,30
+2,pluralité de victimes,True,tiers_leses_multiples,30
+2,sous-assurance,True,sous_assurance;regle_proportionnelle_applicable,30
+2,sanctions internationales,False,,30
+2,faute inexcusable,True,faute_inexcusable_evoquee,30
+2,fraude suspectée,True,fraude_suspectee,30

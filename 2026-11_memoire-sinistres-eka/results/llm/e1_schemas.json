@@ -1,0 +1,2031 @@
+[
+ {
+  "rep": 0,
+  "propositions": [
+   [
+    {
+     "nom": "numero_sinistre",
+     "type": "texte",
+     "description": "Identifiant unique du dossier sinistre (ex: SIN-2024-00542)."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance couverte (Cyber, Dommages industriels, Environnement, Aviation, Maritime, Construction, RC produits, RC générale)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou nature du sinistre (ex: rançongiciel, bris de machine, émission toxique)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé du dommage en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve provisionnée en euros."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indique si le sinistre est en coassurance avec d'autres compagnies."
+    },
+    {
+     "nom": "nombre_coassureurs",
+     "type": "entier",
+     "description": "Nombre de coassureurs impliqués dans le sinistre."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si la déclaration du sinistre a été faite tardivement."
+    },
+    {
+     "nom": "arret_production",
+     "type": "booleen",
+     "description": "Indique s'il y a eu un arrêt ou interruption de production/activité."
+    },
+    {
+     "nom": "activite_interrompue_durablement",
+     "type": "booleen",
+     "description": "Indique si l'activité est interrompue de façon durable."
+    },
+    {
+     "nom": "blessures_corporelles",
+     "type": "booleen",
+     "description": "Indique s'il y a des blessés ou atteintes corporelles graves."
+    },
+    {
+     "nom": "sous_traitant_implique",
+     "type": "booleen",
+     "description": "Indique si un sous-traitant est à l'origine du dommage."
+    },
+    {
+     "nom": "valeur_assuree_insuffisante",
+     "type": "booleen",
+     "description": "Indique si la valeur assurée est inférieure à la valeur réelle du bien."
+    },
+    {
+     "nom": "exclusion_discutee",
+     "type": "booleen",
+     "description": "Indique si la portée ou l'application d'une exclusion est contestée."
+    },
+    {
+     "nom": "risque_partage",
+     "type": "booleen",
+     "description": "Indique si le risque est partagé entre plusieurs porteurs ou assureurs."
+    },
+    {
+     "nom": "desaccord_experts",
+     "type": "booleen",
+     "description": "Indique s'il y a un désaccord persistant entre les experts."
+    },
+    {
+     "nom": "reclamations_multiples_tiers",
+     "type": "booleen",
+     "description": "Indique s'il y a des réclamations émanant de multiples tiers."
+    },
+    {
+     "nom": "action_groupee_victimes",
+     "type": "booleen",
+     "description": "Indique si une action groupée de victimes est envisagée ou engagée."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indique s'il y a des pertes d'exploitation significatives."
+    },
+    {
+     "nom": "regle_proportionnelle",
+     "type": "booleen",
+     "description": "Indique si la règle proportionnelle s'applique au sinistre."
+    },
+    {
+     "nom": "statut_procedure",
+     "type": "texte",
+     "description": "Statut contentieux du dossier (aucune action, transaction en cours, règlement amiable, assignation judiciaire, procédure en cours)."
+    },
+    {
+     "nom": "orientation_resolution",
+     "type": "texte",
+     "description": "Orientation privilégiée pour la résolution (solution négociée, transaction, jugement)."
+    },
+    {
+     "nom": "reserve_revisee",
+     "type": "booleen",
+     "description": "Indique si la réserve a été révisée depuis l'ouverture du dossier."
+    },
+    {
+     "nom": "raison_revision_reserve",
+     "type": "texte",
+     "description": "Motif de la révision de réserve (rapport d'expertise, devis de reconstruction, intégration frais de défense, autre)."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "Indique si les frais de défense sont intégrés dans la réserve."
+    }
+   ],
+   [
+    {
+     "nom": "numero_dossier",
+     "type": "texte",
+     "description": "Identifiant unique du sinistre au format SIN-AAAA-NNNNN."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance concernée (RC produits, Aviation, Cyber, etc.)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou origine du sinistre (défaut de fabrication, incident au sol, fuite de données, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé du dommage en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve actuelle en euros."
+    },
+    {
+     "nom": "ecart_reserve_dommage",
+     "type": "decimal",
+     "description": "Différence entre la réserve actuelle et le dommage estimé."
+    },
+    {
+     "nom": "statut_contentieux",
+     "type": "texte",
+     "description": "État du dossier : règlement amiable, transaction en cours, contentieux, aucune action judiciaire, procédure judiciaire en cours."
+    },
+    {
+     "nom": "revision_reserve_expertise",
+     "type": "booleen",
+     "description": "Indique si la réserve a été révisée suite à un rapport d'expertise."
+    },
+    {
+     "nom": "revision_reserve_devis",
+     "type": "booleen",
+     "description": "Indique si la réserve a été ajustée après réception de devis de reconstruction."
+    },
+    {
+     "nom": "revision_reserve_frais_defense",
+     "type": "booleen",
+     "description": "Indique si la réserve intègre désormais les frais de défense."
+    },
+    {
+     "nom": "responsabilite_sous_traitant",
+     "type": "booleen",
+     "description": "Indique si la responsabilité d'un sous-traitant est évoquée ou mise en cause."
+    },
+    {
+     "nom": "contestation_exclusion",
+     "type": "booleen",
+     "description": "Indique si l'assuré ou une partie conteste l'application d'une exclusion."
+    },
+    {
+     "nom": "atteintes_corporelles_graves",
+     "type": "booleen",
+     "description": "Indique la présence d'atteintes corporelles graves parmi les dommages."
+    },
+    {
+     "nom": "reclamations_multiples_tiers",
+     "type": "booleen",
+     "description": "Indique si des réclamations proviennent de multiples tiers."
+    },
+    {
+     "nom": "action_groupee_victimes",
+     "type": "booleen",
+     "description": "Indique si une action groupée de victimes est envisagée ou en cours."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indique si plusieurs assureurs interviennent en coassurance."
+    },
+    {
+     "nom": "partage_risque_multiples_porteurs",
+     "type": "booleen",
+     "description": "Indique si le risque est partagé entre plusieurs porteurs."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si la déclaration du sinistre a été faite tardivement."
+    },
+    {
+     "nom": "desaccord_experts",
+     "type": "booleen",
+     "description": "Indique la présence d'un désaccord persistant entre experts."
+    },
+    {
+     "nom": "activite_interrompue_durablement",
+     "type": "booleen",
+     "description": "Indique si l'activité est interrompue durablement ou arrêtée."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indique la présence de pertes d'exploitation significatives."
+    },
+    {
+     "nom": "valeur_assure_inferieure_valeur_reelle",
+     "type": "booleen",
+     "description": "Indique si la valeur assurée est inférieure à la valeur réelle du bien."
+    },
+    {
+     "nom": "faute_inexcusable_employeur",
+     "type": "booleen",
+     "description": "Indique si la faute inexcusable de l'employeur est invoquée."
+    },
+    {
+     "nom": "points_attention",
+     "type": "liste",
+     "description": "Liste des enjeux ou points d'attention spécifiques du dossier."
+    }
+   ],
+   [
+    {
+     "nom": "numero_sinistre",
+     "type": "texte",
+     "description": "Identifiant unique du dossier de sinistre au format SIN-AAAA-NNNNN."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "branche_assurance",
+     "type": "texte",
+     "description": "Branche d'assurance concernée (RC produits, RC générale, Aviation, Maritime, Cyber, Environnement, Construction, Dommages industriels)."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou origine du sinistre (rappel de produit, défaut, collision, échouement, incendie, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé des dommages en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant actuel de la réserve provisionnée en euros."
+    },
+    {
+     "nom": "ecart_reserve_dommage_eur",
+     "type": "decimal",
+     "description": "Différence entre dommage estimé et réserve actuelle (positif : sous-provisionné, négatif : sur-provisionné)."
+    },
+    {
+     "nom": "suspension_activite",
+     "type": "booleen",
+     "description": "Indique si l'activité de l'assuré a été interrompue durablement."
+    },
+    {
+     "nom": "pertes_exploitation_significatives",
+     "type": "booleen",
+     "description": "Indique s'il y a des pertes d'exploitation significatives liées au sinistre."
+    },
+    {
+     "nom": "blessures_deces",
+     "type": "booleen",
+     "description": "Indique s'il y a des blessés ou décès à déplorer."
+    },
+    {
+     "nom": "suspicion_fraude",
+     "type": "booleen",
+     "description": "Indique une suspicion de déclaration frauduleuse."
+    },
+    {
+     "nom": "contestation_exclusion",
+     "type": "booleen",
+     "description": "Indique que l'assuré conteste l'application d'une clause d'exclusion."
+    },
+    {
+     "nom": "sous_assurance",
+     "type": "booleen",
+     "description": "Indique qu'une sous-assurance a été constatée."
+    },
+    {
+     "nom": "ambiguite_couverture",
+     "type": "booleen",
+     "description": "Indique que le libellé de la couverture ou d'une exclusion prête à interprétation."
+    },
+    {
+     "nom": "tiers_multiples",
+     "type": "booleen",
+     "description": "Indique la présence de nombreux tiers lésés ou plusieurs porteurs du risque."
+    },
+    {
+     "nom": "responsabilite_sous_traitant",
+     "type": "booleen",
+     "description": "Indique que la responsabilité d'un sous-traitant est évoquée ou mise en cause."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indique que plusieurs assureurs interviennent en coassurance."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique que le sinistre a été déclaré avec retard."
+    },
+    {
+     "nom": "paiement_bloque_sanctions",
+     "type": "booleen",
+     "description": "Indique qu'un paiement est bloqué au titre des sanctions."
+    },
+    {
+     "nom": "expertise_contra",
+     "type": "booleen",
+     "description": "Indique qu'une contre-expertise contredit le rapport d'expertise initial."
+    },
+    {
+     "nom": "statut_resolution",
+     "type": "texte",
+     "description": "Statut de résolution du dossier (solution négociée, règlement amiable, transaction en cours, contentieux, action en justice, aucune action)."
+    },
+    {
+     "nom": "action_judiciaire",
+     "type": "texte",
+     "description": "Type d'action judiciaire (aucune, assignation, action en justice engagée par partie adverse, procédure en cours, contentieux)."
+    },
+    {
+     "nom": "revision_reserve",
+     "type": "texte",
+     "description": "Nature de la révision de réserve (rapport d'expertise, devis de reconstruction, frais de défense intégrés, aucune révision)."
+    },
+    {
+     "nom": "frais_defense_inclus",
+     "type": "booleen",
+     "description": "Indique que la réserve intègre désormais les frais de défense."
+    },
+    {
+     "nom": "points_attention",
+     "type": "liste",
+     "description": "Liste des points d'attention ou risques associés au dossier."
+    },
+    {
+     "nom": "derniere_mise_a_jour",
+     "type": "date",
+     "description": "Date de la dernière mise à jour du dossier."
+    }
+   ],
+   [
+    {
+     "nom": "numero_dossier",
+     "type": "texte",
+     "description": "Identifiant unique du sinistre au format SIN-AAAA-NNNNN."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance concernée (RC produits, Aviation, Environnement, Cyber, Dommages industriels, Maritime, RC générale)."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre est survenu."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou origine du sinistre (rappel de produit, atterrissage dur, pollution, interruption de service, collision, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé du dommage en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve actuelle en euros."
+    },
+    {
+     "nom": "ecart_reserve_dommage",
+     "type": "decimal",
+     "description": "Différence entre le dommage estimé et la réserve actuelle en euros."
+    },
+    {
+     "nom": "presence_victimes_corporelles",
+     "type": "booleen",
+     "description": "Indique si des blessés ou atteintes corporelles sont signalés."
+    },
+    {
+     "nom": "atteintes_corporelles_graves",
+     "type": "booleen",
+     "description": "Indique si les atteintes corporelles sont qualifiées de graves."
+    },
+    {
+     "nom": "action_groupee_envisagee",
+     "type": "booleen",
+     "description": "Indique si une action groupée de victimes est envisagée."
+    },
+    {
+     "nom": "statut_procedure_judiciaire",
+     "type": "texte",
+     "description": "Statut de la procédure judiciaire : aucune engagée, en cours, contentieux, ou règlement amiable/négocié."
+    },
+    {
+     "nom": "action_adverse_engagee",
+     "type": "booleen",
+     "description": "Indique si la partie adverse a engagé une action en justice."
+    },
+    {
+     "nom": "revision_reserve_effectuee",
+     "type": "booleen",
+     "description": "Indique si une révision de réserve a été effectuée depuis l'ouverture."
+    },
+    {
+     "nom": "motif_revision_reserve",
+     "type": "texte",
+     "description": "Motif de la révision de réserve (rapport d'expertise, frais de défense, devis de reconstruction, etc.)."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "Indique si les frais de défense sont intégrés dans la réserve."
+    },
+    {
+     "nom": "risque_partage_plusieurs_porteurs",
+     "type": "booleen",
+     "description": "Indique si le risque est partagé entre plusieurs porteurs d'assurance."
+    },
+    {
+     "nom": "sous_traitant_responsable",
+     "type": "booleen",
+     "description": "Indique si la responsabilité d'un sous-traitant est évoquée ou confirmée."
+    },
+    {
+     "nom": "sous_assurance_constatee",
+     "type": "booleen",
+     "description": "Indique si une sous-assurance est constatée."
+    },
+    {
+     "nom": "dispute_couverture_exclusion",
+     "type": "booleen",
+     "description": "Indique si la portée d'une exclusion ou l'interprétation du libellé est discutée."
+    },
+    {
+     "nom": "divergence_expertise",
+     "type": "booleen",
+     "description": "Indique si une contre-expertise contredit l'expertise ou si les experts divergent."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si la déclaration est intervenue plusieurs mois après les faits."
+    },
+    {
+     "nom": "pertes_exploitation_significatives",
+     "type": "booleen",
+     "description": "Indique si des pertes d'exploitation significatives sont signalées."
+    },
+    {
+     "nom": "arret_production",
+     "type": "booleen",
+     "description": "Indique s'il y a un arrêt ou une interruption de production."
+    },
+    {
+     "nom": "activite_interrompue_durablement",
+     "type": "booleen",
+     "description": "Indique si l'activité est interrompue de manière durable."
+    },
+    {
+     "nom": "coassurance_multiple",
+     "type": "booleen",
+     "description": "Indique si plusieurs assureurs interviennent en coassurance."
+    },
+    {
+     "nom": "reclamations_multiples_tiers",
+     "type": "booleen",
+     "description": "Indique si des réclamations de multiples tiers sont signalées."
+    },
+    {
+     "nom": "application_regle_proportionnelle",
+     "type": "booleen",
+     "description": "Indique si l'application de la règle proportionnelle est probable ou envisagée."
+    },
+    {
+     "nom": "date_extraction",
+     "type": "date",
+     "description": "Date de création ou d'extraction de la synthèse du dossier."
+    }
+   ]
+  ],
+  "schema": {
+   "champs": [
+    {
+     "nom": "numero_sinistre",
+     "type": "texte",
+     "description": "Identifiant unique du dossier sinistre au format SIN-AAAA-NNNNN."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance concernée (Cyber, Dommages industriels, Environnement, Aviation, Maritime, Construction, RC produits, RC générale)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou origine du sinistre (ex : rançongiciel, bris de machine, défaut de fabrication, collision, pollution)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé du dommage en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve provisionnée en euros."
+    },
+    {
+     "nom": "ecart_reserve_dommage_eur",
+     "type": "decimal",
+     "description": "Différence entre le dommage estimé et la réserve actuelle (positif : sous-provisionné, négatif : sur-provisionné)."
+    },
+    {
+     "nom": "statut_procedure",
+     "type": "texte",
+     "description": "Statut du dossier : aucune action, règlement amiable, transaction en cours, assignation judiciaire, procédure judiciaire en cours, contentieux."
+    },
+    {
+     "nom": "orientation_resolution",
+     "type": "texte",
+     "description": "Orientation privilégiée pour la résolution du dossier (solution négociée, transaction, jugement)."
+    },
+    {
+     "nom": "revision_reserve",
+     "type": "texte",
+     "description": "Nature de la révision de réserve : rapport d'expertise, devis de reconstruction, frais de défense intégrés, aucune révision."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "Indique si les frais de défense sont intégrés dans la réserve."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indique si plusieurs assureurs interviennent en coassurance sur ce sinistre."
+    },
+    {
+     "nom": "risque_partage_multiples_porteurs",
+     "type": "booleen",
+     "description": "Indique si le risque est partagé entre plusieurs porteurs d'assurance distincts de la coassurance stricte."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si la déclaration du sinistre a été faite tardivement par rapport aux faits."
+    },
+    {
+     "nom": "arret_production",
+     "type": "booleen",
+     "description": "Indique s'il y a eu un arrêt ou une interruption de production ou d'activité."
+    },
+    {
+     "nom": "activite_interrompue_durablement",
+     "type": "booleen",
+     "description": "Indique si l'activité est interrompue de façon durable (au-delà d'un arrêt ponctuel)."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indique s'il y a des pertes d'exploitation significatives liées au sinistre."
+    },
+    {
+     "nom": "atteintes_corporelles",
+     "type": "booleen",
+     "description": "Indique s'il y a des blessés, atteintes corporelles graves ou décès à déplorer."
+    },
+    {
+     "nom": "action_groupee_victimes",
+     "type": "booleen",
+     "description": "Indique si une action groupée de victimes est envisagée ou engagée."
+    },
+    {
+     "nom": "reclamations_multiples_tiers",
+     "type": "booleen",
+     "description": "Indique s'il y a des réclamations émanant de multiples tiers lésés."
+    },
+    {
+     "nom": "responsabilite_sous_traitant",
+     "type": "booleen",
+     "description": "Indique si la responsabilité d'un sous-traitant est évoquée ou mise en cause."
+    },
+    {
+     "nom": "sous_assurance",
+     "type": "booleen",
+     "description": "Indique si une sous-assurance a été constatée (valeur assurée inférieure à la valeur réelle)."
+    },
+    {
+     "nom": "regle_proportionnelle",
+     "type": "booleen",
+     "description": "Indique si l'application de la règle proportionnelle est probable ou envisagée."
+    },
+    {
+     "nom": "contestation_exclusion",
+     "type": "booleen",
+     "description": "Indique si la portée ou l'application d'une exclusion est contestée ou prête à interprétation."
+    },
+    {
+     "nom": "divergence_experts",
+     "type": "booleen",
+     "description": "Indique s'il y a un désaccord persistant ou une contre-expertise contredisant l'expertise initiale."
+    },
+    {
+     "nom": "suspicion_fraude",
+     "type": "booleen",
+     "description": "Indique une suspicion de déclaration frauduleuse ou de fraude au sinistre."
+    },
+    {
+     "nom": "faute_inexcusable_employeur",
+     "type": "booleen",
+     "description": "Indique si la faute inexcusable de l'employeur est invoquée dans le dossier."
+    },
+    {
+     "nom": "points_attention",
+     "type": "texte",
+     "description": "Liste libre des enjeux ou points d'attention spécifiques du dossier (stockée en texte JSON ou délimitée)."
+    },
+    {
+     "nom": "date_mise_a_jour",
+     "type": "date",
+     "description": "Date de la dernière mise à jour ou d'extraction de la synthèse du dossier."
+    }
+   ],
+   "ddl": "CREATE TABLE sinistres (\n    numero_sinistre                  VARCHAR(20)      NOT NULL,\n    annee_sinistre                   SMALLINT         NOT NULL,\n    pays                             VARCHAR(100)     NOT NULL,\n    branche                          VARCHAR(50)      NOT NULL,\n    origine_sinistre                 VARCHAR(255),\n    dommage_estime_eur               NUMERIC(18,2),\n    reserve_actuelle_eur             NUMERIC(18,2),\n    ecart_reserve_dommage_eur        NUMERIC(18,2)    GENERATED ALWAYS AS (dommage_estime_eur - reserve_actuelle_eur) STORED,\n    statut_procedure                 VARCHAR(60),\n    orientation_resolution           VARCHAR(60),\n    revision_reserve                 VARCHAR(100),\n    frais_defense_integres           BOOLEAN          NOT NULL DEFAULT FALSE,\n    coassurance                      BOOLEAN          NOT NULL DEFAULT FALSE,\n    risque_partage_multiples_porteurs BOOLEAN         NOT NULL DEFAULT FALSE,\n    declaration_tardive              BOOLEAN          NOT NULL DEFAULT FALSE,\n    arret_production                 BOOLEAN          NOT NULL DEFAULT FALSE,\n    activite_interrompue_durablement BOOLEAN          NOT NULL DEFAULT FALSE,\n    pertes_exploitation              BOOLEAN          NOT NULL DEFAULT FALSE,\n    atteintes_corporelles            BOOLEAN          NOT NULL DEFAULT FALSE,\n    action_groupee_victimes          BOOLEAN          NOT NULL DEFAULT FALSE,\n    reclamations_multiples_tiers     BOOLEAN          NOT NULL DEFAULT FALSE,\n    responsabilite_sous_traitant     BOOLEAN          NOT NULL DEFAULT FALSE,\n    sous_assurance                   BOOLEAN          NOT NULL DEFAULT FALSE,\n    regle_proportionnelle            BOOLEAN          NOT NULL DEFAULT FALSE,\n    contestation_exclusion           BOOLEAN          NOT NULL DEFAULT FALSE,\n    divergence_experts               BOOLEAN          NOT NULL DEFAULT FALSE,\n    suspicion_fraude                 BOOLEAN          NOT NULL DEFAULT FALSE,\n    faute_inexcusable_employeur      BOOLEAN          NOT NULL DEFAULT FALSE,\n    points_attention                 TEXT,\n    date_mise_a_jour                 DATE,\n    CONSTRAINT pk_sinistres PRIMARY KEY (numero_sinistre),\n    CONSTRAINT chk_branche CHECK (branche IN ('Cyber','Dommages industriels','Environnement','Aviation','Maritime','Construction','RC produits','RC générale')),\n    CONSTRAINT chk_statut CHECK (statut_procedure IN ('aucune action','règlement amiable','transaction en cours','assignation judiciaire','procédure judiciaire en cours','contentieux'))\n);"
+  }
+ },
+ {
+  "rep": 1,
+  "propositions": [
+   [
+    {
+     "nom": "numero_dossier",
+     "type": "texte",
+     "description": "Identifiant unique du sinistre au format SIN-YYYY-NNNNN."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance concernée (Maritime, Environnement, Dommages industriels, Cyber, RC produits, RC générale, Aviation, etc.)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou nature du sinistre (échouement, pollution, bris de machine, fuite de données, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé des dommages en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve actuelle en euros."
+    },
+    {
+     "nom": "gap_reserve_eur",
+     "type": "decimal",
+     "description": "Écart entre dommage estimé et réserve actuelle (dommage - réserve)."
+    },
+    {
+     "nom": "risque_partage_multiple_porteurs",
+     "type": "booleen",
+     "description": "Indique si le risque est partagé entre plusieurs porteurs d'assurance."
+    },
+    {
+     "nom": "contestation_exclusion",
+     "type": "booleen",
+     "description": "Indique si l'assuré conteste l'application d'une exclusion contractuelle."
+    },
+    {
+     "nom": "exclusion_ambigue",
+     "type": "booleen",
+     "description": "Indique si le libellé d'une exclusion prête à interprétation."
+    },
+    {
+     "nom": "victimes_corporelles",
+     "type": "booleen",
+     "description": "Indique s'il y a des victimes corporelles ou atteintes graves à déplorer."
+    },
+    {
+     "nom": "action_groupee_victimes",
+     "type": "booleen",
+     "description": "Indique si une action groupée de victimes est envisagée ou en cours."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si la déclaration du sinistre a été effectuée tardivement."
+    },
+    {
+     "nom": "sous_assurance",
+     "type": "booleen",
+     "description": "Indique si la valeur assurée est inférieure à la valeur réelle du bien sinistré."
+    },
+    {
+     "nom": "tiers_leses_multiples",
+     "type": "booleen",
+     "description": "Indique si de nombreux tiers lésés se manifestent."
+    },
+    {
+     "nom": "sous_traitant_implique",
+     "type": "booleen",
+     "description": "Indique si la responsabilité d'un sous-traitant est impliquée ou mise en cause."
+    },
+    {
+     "nom": "arrêt_production",
+     "type": "booleen",
+     "description": "Indique s'il y a eu arrêt de production ou pertes d'exploitation significatives."
+    },
+    {
+     "nom": "contre_expertise",
+     "type": "booleen",
+     "description": "Indique si une contre-expertise contredit l'expertise initiale."
+    },
+    {
+     "nom": "statut_judiciaire",
+     "type": "texte",
+     "description": "État de la procédure judiciaire : 'aucune action', 'en cours', 'contentieux', 'assignation délivrée'."
+    },
+    {
+     "nom": "statut_negotiation",
+     "type": "texte",
+     "description": "État de la négociation : 'transaction en cours', 'règlement amiable en cours', 'solution négociée envisagée', 'aucune'."
+    },
+    {
+     "nom": "revision_reserve",
+     "type": "texte",
+     "description": "Raison de la dernière révision de réserve : 'devis de reconstruction', 'rapport d'expertise', 'frais de défense ajoutés', 'aucune révision'."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "Indique si la réserve intègre les frais de défense."
+    }
+   ],
+   [
+    {
+     "nom": "numero_sinistre",
+     "type": "texte",
+     "description": "Identifiant unique du dossier de sinistre au format SIN-YYYY-NNNNN."
+    },
+    {
+     "nom": "date_sinistre",
+     "type": "date",
+     "description": "Date de survenance de l'événement dommageable."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche_assurance",
+     "type": "texte",
+     "description": "Branche d'assurance couverte (Cyber, RC générale, Aviation, Environnement, Maritime, Dommages industriels, Construction)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou nature de l'événement générateur du sinistre."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé du dommage exprimé en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve provisionnée actuellement en euros."
+    },
+    {
+     "nom": "ratio_reserve_dommage",
+     "type": "decimal",
+     "description": "Ratio entre la réserve actuelle et le dommage estimé, indicateur de provisionnement."
+    },
+    {
+     "nom": "statut_contentieux",
+     "type": "texte",
+     "description": "État du dossier : pas d'action judiciaire, règlement amiable en cours, contentieux engagé, assignation délivrée."
+    },
+    {
+     "nom": "solution_privilegiee",
+     "type": "texte",
+     "description": "Approche favorisée pour la résolution : négociation, transaction, contentieux."
+    },
+    {
+     "nom": "assignation_delivree",
+     "type": "booleen",
+     "description": "Indique si une assignation en justice a été formellement délivrée."
+    },
+    {
+     "nom": "points_attention",
+     "type": "liste",
+     "description": "Liste des enjeux spécifiques identifiés : déclaration retardée, désaccord experts, sous-assurance, sous-traitant impliqué, exclusion contestée, fraude suspectée, responsabilité tiers, sanctions impliquées."
+    },
+    {
+     "nom": "responsabilite_sous_traitant",
+     "type": "booleen",
+     "description": "Indique si la responsabilité d'un sous-traitant est évoquée dans le dossier."
+    },
+    {
+     "nom": "exclusion_contestee",
+     "type": "booleen",
+     "description": "Indique si l'assuré conteste l'application d'une exclusion contractuelle."
+    },
+    {
+     "nom": "sous_assurance_constatee",
+     "type": "booleen",
+     "description": "Indique si une insuffisance de couverture a été identifiée."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si le sinistre a été déclaré après un délai significatif."
+    },
+    {
+     "nom": "desaccord_experts",
+     "type": "booleen",
+     "description": "Indique si les experts des parties divergent sur l'évaluation ou la cause."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indique si des pertes d'exploitation significatives sont mentionnées."
+    },
+    {
+     "nom": "arret_production",
+     "type": "booleen",
+     "description": "Indique si une interruption d'activité ou de production est documentée."
+    },
+    {
+     "nom": "atteintes_corporelles",
+     "type": "booleen",
+     "description": "Indique si des atteintes corporelles graves sont identifiées."
+    },
+    {
+     "nom": "multiples_tiers",
+     "type": "booleen",
+     "description": "Indique si des réclamations de multiples tiers lésés se manifestent."
+    },
+    {
+     "nom": "enquete_fraude",
+     "type": "booleen",
+     "description": "Indique si une enquête interne pour fraude a été ouverte."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indique si plusieurs assureurs interviennent en coassurance."
+    },
+    {
+     "nom": "nombre_coassureurs",
+     "type": "entier",
+     "description": "Nombre d'assureurs partenaires en cas de coassurance."
+    },
+    {
+     "nom": "contrepartie_sanctionnee",
+     "type": "booleen",
+     "description": "Indique si la contrepartie figure sur une liste de sanctions."
+    },
+    {
+     "nom": "revision_reserve",
+     "type": "texte",
+     "description": "Nature de la dernière révision de réserve : devis reconstruction, rapport expertise, intégration frais défense, pas de révision."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "Indique si les frais de défense ont été intégrés à la réserve."
+    },
+    {
+     "nom": "ecart_reserve_dommage_eur",
+     "type": "decimal",
+     "description": "Différence entre la réserve actuelle et le dommage estimé, positif si surprovisionnement."
+    }
+   ],
+   [
+    {
+     "nom": "numero_sinistre",
+     "type": "texte",
+     "description": "Identifiant unique du sinistre au format SIN-AAAA-NNNNN."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance couvrant le sinistre (Cyber, Aviation, Dommages industriels, Maritime, Construction, RC produits, RC générale, Environnement)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou nature du sinistre (rançongiciel, collision, explosion, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé du dommage en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve provisionnée en euros."
+    },
+    {
+     "nom": "ratio_reserve_dommage",
+     "type": "decimal",
+     "description": "Ratio entre la réserve actuelle et le dommage estimé."
+    },
+    {
+     "nom": "sous_traitant_implique",
+     "type": "booleen",
+     "description": "Indique si la responsabilité d'un sous-traitant est mise en cause."
+    },
+    {
+     "nom": "faute_inexcusable_invoquee",
+     "type": "booleen",
+     "description": "Indique si une faute inexcusable est alléguée par les ayants droit."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indique si le risque est partagé entre plusieurs assureurs."
+    },
+    {
+     "nom": "nombre_coassureurs",
+     "type": "entier",
+     "description": "Nombre d'autres compagnies en coassurance (0 si aucune)."
+    },
+    {
+     "nom": "arret_production",
+     "type": "booleen",
+     "description": "Indique s'il y a eu arrêt ou interruption de production."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indique la présence de pertes d'exploitation significatives."
+    },
+    {
+     "nom": "victimes_corporelles",
+     "type": "booleen",
+     "description": "Indique la présence de blessés ou de décès."
+    },
+    {
+     "nom": "tiers_leses",
+     "type": "booleen",
+     "description": "Indique la présence de nombreux tiers lésés ou réclamants."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si le sinistre a été déclaré avec retard."
+    },
+    {
+     "nom": "sous_assurance",
+     "type": "booleen",
+     "description": "Indique si la valeur assurée est inférieure à la valeur réelle."
+    },
+    {
+     "nom": "exclusion_litigieuse",
+     "type": "booleen",
+     "description": "Indique si le libellé d'une exclusion prête à interprétation."
+    },
+    {
+     "nom": "desaccord_experts",
+     "type": "booleen",
+     "description": "Indique un désaccord entre les experts des parties."
+    },
+    {
+     "nom": "assuré_conteste_exclusion",
+     "type": "booleen",
+     "description": "Indique si l'assuré conteste l'application d'une exclusion."
+    },
+    {
+     "nom": "etat_contentieux",
+     "type": "texte",
+     "description": "État du dossier : 'ouvert', 'en_contentieux', 'en_arbitrage', 'en_mediation', 'en_negociation_amiable', 'action_judiciaire', 'aucune_action'."
+    },
+    {
+     "nom": "phase_litige",
+     "type": "texte",
+     "description": "Phase du litige : 'transaction_en_cours', 'assignation_delivree', 'action_adverse', 'reglement_amiable_probable'."
+    },
+    {
+     "nom": "frais_defense_inclus",
+     "type": "booleen",
+     "description": "Indique si la réserve intègre les frais de défense."
+    },
+    {
+     "nom": "revision_reserve_effectuee",
+     "type": "booleen",
+     "description": "Indique si la réserve a été révisée depuis l'ouverture."
+    },
+    {
+     "nom": "motif_revision_reserve",
+     "type": "texte",
+     "description": "Motif de la dernière révision de réserve (devis de reconstruction, rapport d'expertise, autre)."
+    }
+   ],
+   [
+    {
+     "nom": "numero_dossier",
+     "type": "texte",
+     "description": "Identifiant unique du sinistre au format SIN-YYYY-NNNNN."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance couvrant le sinistre (RC produits, Aviation, Maritime, Construction, Environnement, Cyber, RC générale)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou nature du sinistre (défaut de fabrication, rappel de produit, incident au sol, pollution, échouement, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé des dommages en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant actuel de la réserve constituée en euros."
+    },
+    {
+     "nom": "sous_reserve_eur",
+     "type": "decimal",
+     "description": "Écart entre le dommage estimé et la réserve actuelle en euros."
+    },
+    {
+     "nom": "victimes_corporelles",
+     "type": "booleen",
+     "description": "Indique s'il y a des victimes corporelles impliquées."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indique si plusieurs assureurs interviennent en coassurance."
+    },
+    {
+     "nom": "nombre_coassureurs",
+     "type": "entier",
+     "description": "Nombre d'autres assureurs en coassurance si applicable."
+    },
+    {
+     "nom": "exclusion_contestee",
+     "type": "booleen",
+     "description": "Indique si l'assuré ou la partie adverse conteste l'application d'une exclusion."
+    },
+    {
+     "nom": "sous_traitant_implique",
+     "type": "booleen",
+     "description": "Indique si un sous-traitant est mis en cause comme responsable du dommage."
+    },
+    {
+     "nom": "action_groupee_envisagee",
+     "type": "booleen",
+     "description": "Indique si une action groupée de victimes est envisagée."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si la déclaration du sinistre a été effectuée tardivement."
+    },
+    {
+     "nom": "desaccord_experts",
+     "type": "booleen",
+     "description": "Indique s'il existe un désaccord persistant entre experts."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indique s'il y a des pertes d'exploitation significatives."
+    },
+    {
+     "nom": "activite_interrompue",
+     "type": "booleen",
+     "description": "Indique si l'activité de l'assuré est interrompue durablement."
+    },
+    {
+     "nom": "faute_inexcusable_invoquee",
+     "type": "booleen",
+     "description": "Indique si la faute inexcusable de l'employeur est invoquée."
+    },
+    {
+     "nom": "statut_procedure",
+     "type": "texte",
+     "description": "Statut actuel de la procédure : négociation, transaction en cours, action engagée, assignation, contentieux, amiable, aucune action."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "Indique si la réserve intègre les frais de défense."
+    },
+    {
+     "nom": "revision_reserve",
+     "type": "texte",
+     "description": "Type de révision de réserve : rapport d'expertise, devis reconstruction, aucune révision."
+    }
+   ]
+  ],
+  "schema": {
+   "champs": [
+    {
+     "nom": "numero_sinistre",
+     "type": "texte",
+     "description": "Identifiant unique du dossier de sinistre au format SIN-YYYY-NNNNN."
+    },
+    {
+     "nom": "date_sinistre",
+     "type": "date",
+     "description": "Date de survenance de l'événement dommageable."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre (peut être déduite de date_sinistre, conservée pour faciliter les agrégations)."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance concernée : Cyber, Aviation, Maritime, Environnement, Dommages industriels, Construction, RC produits, RC générale."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou nature de l'événement générateur du sinistre (rançongiciel, explosion, échouement, pollution, défaut de fabrication, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé des dommages en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve provisionnée actuellement en euros."
+    },
+    {
+     "nom": "ecart_reserve_dommage_eur",
+     "type": "decimal",
+     "description": "Écart entre le dommage estimé et la réserve actuelle (dommage - réserve). Positif = sous-provisionnement."
+    },
+    {
+     "nom": "ratio_reserve_dommage",
+     "type": "decimal",
+     "description": "Ratio réserve / dommage estimé, indicateur de niveau de provisionnement."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "Indique si les frais de défense sont inclus dans la réserve actuelle."
+    },
+    {
+     "nom": "revision_reserve",
+     "type": "texte",
+     "description": "Motif de la dernière révision de réserve : 'rapport_expertise', 'devis_reconstruction', 'frais_defense_ajoutes', 'aucune_revision'."
+    },
+    {
+     "nom": "statut_procedure",
+     "type": "texte",
+     "description": "État global de la procédure : 'aucune_action', 'negociation_amiable', 'transaction_en_cours', 'assignation_delivree', 'contentieux_engage', 'arbitrage', 'mediation'."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indique si le risque est partagé entre plusieurs assureurs en coassurance."
+    },
+    {
+     "nom": "nombre_coassureurs",
+     "type": "entier",
+     "description": "Nombre d'assureurs partenaires en coassurance (0 si aucun)."
+    },
+    {
+     "nom": "victimes_corporelles",
+     "type": "booleen",
+     "description": "Indique s'il y a des victimes corporelles (blessés ou décès) impliquées."
+    },
+    {
+     "nom": "action_groupee_envisagee",
+     "type": "booleen",
+     "description": "Indique si une action groupée de victimes est envisagée ou en cours."
+    },
+    {
+     "nom": "tiers_leses_multiples",
+     "type": "booleen",
+     "description": "Indique si de nombreux tiers lésés ou réclamants se manifestent."
+    },
+    {
+     "nom": "sous_traitant_implique",
+     "type": "booleen",
+     "description": "Indique si la responsabilité d'un sous-traitant est mise en cause."
+    },
+    {
+     "nom": "faute_inexcusable_invoquee",
+     "type": "booleen",
+     "description": "Indique si une faute inexcusable de l'employeur est alléguée par les ayants droit."
+    },
+    {
+     "nom": "exclusion_contestee",
+     "type": "booleen",
+     "description": "Indique si l'assuré ou la partie adverse conteste l'application d'une exclusion contractuelle."
+    },
+    {
+     "nom": "exclusion_ambigue",
+     "type": "booleen",
+     "description": "Indique si le libellé de l'exclusion prête à interprétation indépendamment de la contestation."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si le sinistre a été déclaré après un délai significatif."
+    },
+    {
+     "nom": "sous_assurance",
+     "type": "booleen",
+     "description": "Indique si la valeur assurée est inférieure à la valeur réelle du bien sinistré."
+    },
+    {
+     "nom": "desaccord_experts",
+     "type": "booleen",
+     "description": "Indique si les experts des parties divergent sur l'évaluation ou la cause du sinistre."
+    },
+    {
+     "nom": "arret_production",
+     "type": "booleen",
+     "description": "Indique si une interruption d'activité ou de production est documentée."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indique si des pertes d'exploitation significatives sont identifiées (peut coexister avec arrêt_production)."
+    },
+    {
+     "nom": "enquete_fraude",
+     "type": "booleen",
+     "description": "Indique si une enquête interne pour fraude a été ouverte sur ce dossier."
+    },
+    {
+     "nom": "contrepartie_sanctionnee",
+     "type": "booleen",
+     "description": "Indique si l'assuré ou une contrepartie figure sur une liste de sanctions internationales."
+    },
+    {
+     "nom": "points_attention",
+     "type": "texte",
+     "description": "Champ libre résumant les enjeux spécifiques non couverts par les booléens structurés (notes du gestionnaire)."
+    }
+   ],
+   "ddl": "CREATE TABLE sinistres (\n    numero_sinistre          VARCHAR(20)    NOT NULL,\n    date_sinistre            DATE,\n    annee_sinistre           SMALLINT       NOT NULL,\n    pays                     VARCHAR(100)   NOT NULL,\n    branche                  VARCHAR(100)   NOT NULL,\n    origine_sinistre         VARCHAR(255)   NOT NULL,\n    dommage_estime_eur       NUMERIC(18,2),\n    reserve_actuelle_eur     NUMERIC(18,2),\n    ecart_reserve_dommage_eur NUMERIC(18,2) GENERATED ALWAYS AS (dommage_estime_eur - reserve_actuelle_eur) STORED,\n    ratio_reserve_dommage    NUMERIC(8,4)   GENERATED ALWAYS AS (CASE WHEN dommage_estime_eur <> 0 THEN reserve_actuelle_eur / dommage_estime_eur END) STORED,\n    frais_defense_integres   BOOLEAN        NOT NULL DEFAULT FALSE,\n    revision_reserve         VARCHAR(50)    CHECK (revision_reserve IN ('rapport_expertise','devis_reconstruction','frais_defense_ajoutes','aucune_revision')),\n    statut_procedure         VARCHAR(50)    NOT NULL DEFAULT 'aucune_action'\n                                            CHECK (statut_procedure IN ('aucune_action','negociation_amiable','transaction_en_cours','assignation_delivree','contentieux_engage','arbitrage','mediation')),\n    coassurance              BOOLEAN        NOT NULL DEFAULT FALSE,\n    nombre_coassureurs       SMALLINT       NOT NULL DEFAULT 0 CHECK (nombre_coassureurs >= 0),\n    victimes_corporelles     BOOLEAN        NOT NULL DEFAULT FALSE,\n    action_groupee_envisagee BOOLEAN        NOT NULL DEFAULT FALSE,\n    tiers_leses_multiples    BOOLEAN        NOT NULL DEFAULT FALSE,\n    sous_traitant_implique   BOOLEAN        NOT NULL DEFAULT FALSE,\n    faute_inexcusable_invoquee BOOLEAN      NOT NULL DEFAULT FALSE,\n    exclusion_contestee      BOOLEAN        NOT NULL DEFAULT FALSE,\n    exclusion_ambigue        BOOLEAN        NOT NULL DEFAULT FALSE,\n    declaration_tardive      BOOLEAN        NOT NULL DEFAULT FALSE,\n    sous_assurance           BOOLEAN        NOT NULL DEFAULT FALSE,\n    desaccord_experts        BOOLEAN        NOT NULL DEFAULT FALSE,\n    arret_production         BOOLEAN        NOT NULL DEFAULT FALSE,\n    pertes_exploitation      BOOLEAN        NOT NULL DEFAULT FALSE,\n    enquete_fraude           BOOLEAN        NOT NULL DEFAULT FALSE,\n    contrepartie_sanctionnee BOOLEAN        NOT NULL DEFAULT FALSE,\n    points_attention         TEXT,\n    CONSTRAINT pk_sinistres PRIMARY KEY (numero_sinistre),\n    CONSTRAINT chk_coassurance CHECK (coassurance = TRUE OR nombre_coassureurs = 0),\n    CONSTRAINT chk_annee CHECK (annee_sinistre BETWEEN 1900 AND 2100)\n);"
+  }
+ },
+ {
+  "rep": 2,
+  "propositions": [
+   [
+    {
+     "nom": "numero_dossier",
+     "type": "texte",
+     "description": "Identifiant unique du sinistre au format SIN-AAAA-NNNNN."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance couvrant le sinistre (Aviation, Cyber, Dommages industriels, etc.)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Description succincte de la cause du sinistre (collision, fuite de données, explosion, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé du dommage exprimé en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve provisionnée actuellement en euros."
+    },
+    {
+     "nom": "difference_reserve_eur",
+     "type": "decimal",
+     "description": "Écart entre le dommage estimé et la réserve actuelle (dommage_estime - reserve_actuelle)."
+    },
+    {
+     "nom": "contestation_exclusion",
+     "type": "booleen",
+     "description": "Indicateur si l'assuré conteste l'application d'une exclusion contractuelle."
+    },
+    {
+     "nom": "ambiguite_exclusion",
+     "type": "booleen",
+     "description": "Indicateur si le libellé d'une exclusion prête à interprétation."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indicateur de présence de pertes d'exploitation ou d'arrêt de production."
+    },
+    {
+     "nom": "atteintes_corporelles",
+     "type": "booleen",
+     "description": "Indicateur si le sinistre implique des blessures ou décès de tiers."
+    },
+    {
+     "nom": "tiers_leses_multiples",
+     "type": "booleen",
+     "description": "Indicateur si de nombreux tiers lésés se sont manifestés."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indicateur si le sinistre est partagé avec d'autres assureurs."
+    },
+    {
+     "nom": "nombre_coassureurs",
+     "type": "entier",
+     "description": "Nombre d'autres assureurs impliqués en coassurance, le cas échéant."
+    },
+    {
+     "nom": "sous_traitant_mis_en_cause",
+     "type": "booleen",
+     "description": "Indicateur si un sous-traitant ou tiers responsable est identifié."
+    },
+    {
+     "nom": "divergence_experts",
+     "type": "booleen",
+     "description": "Indicateur si les experts des parties divergent sur l'origine ou l'étendue du sinistre."
+    },
+    {
+     "nom": "valeur_assuree_insuffisante",
+     "type": "booleen",
+     "description": "Indicateur si la valeur assurée est inférieure à la valeur réelle du bien."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indicateur si le sinistre a été déclaré avec retard après survenance."
+    },
+    {
+     "nom": "statut_contentieux",
+     "type": "texte",
+     "description": "État du dossier : 'aucune action', 'negociation amiable', 'transaction en cours', 'contentieux', 'procedure judiciaire'."
+    },
+    {
+     "nom": "action_judiciaire_engagee",
+     "type": "booleen",
+     "description": "Indicateur si une procédure judiciaire formelle a été engagée."
+    },
+    {
+     "nom": "assignation_delivree",
+     "type": "booleen",
+     "description": "Indicateur si une assignation a été délivrée devant un tribunal."
+    },
+    {
+     "nom": "negociation_amiable",
+     "type": "booleen",
+     "description": "Indicateur si les parties privilégient une solution négociée."
+    },
+    {
+     "nom": "revision_reserve_effectuee",
+     "type": "booleen",
+     "description": "Indicateur si la réserve a été révisée depuis l'ouverture du dossier."
+    },
+    {
+     "nom": "raison_revision_reserve",
+     "type": "texte",
+     "description": "Motif de révision de réserve : 'rapport expertise', 'devis reconstruction', 'frais defense', ou null si pas de révision."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "Indicateur si la réserve intègre désormais les frais de défense."
+    }
+   ],
+   [
+    {
+     "nom": "numero_dossier",
+     "type": "texte",
+     "description": "Identifiant unique du dossier sinistre au format SIN-YYYY-NNNNN."
+    },
+    {
+     "nom": "date_sinistre",
+     "type": "date",
+     "description": "Date ou année de survenance du sinistre."
+    },
+    {
+     "nom": "branche_assurance",
+     "type": "texte",
+     "description": "Type de couverture d'assurance (RC générale, RC produits, Environnement, Cyber, Construction, Dommages industriels, Aviation, Maritime)."
+    },
+    {
+     "nom": "pays_sinistre",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou nature du sinistre (ex: chute, rappel produit, pollution, rançongiciel, effondrement)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé des dommages exprimé en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve constitué actuellement pour ce sinistre en euros."
+    },
+    {
+     "nom": "reserve_insuffisante",
+     "type": "booleen",
+     "description": "Indique si la réserve actuelle est inférieure au dommage estimé."
+    },
+    {
+     "nom": "desaccord_experts",
+     "type": "booleen",
+     "description": "Présence d'un désaccord persistant entre experts ou contre-expertise contradictoire."
+    },
+    {
+     "nom": "atteintes_corporelles_graves",
+     "type": "booleen",
+     "description": "Présence de blessés ou d'atteintes corporelles graves documentées."
+    },
+    {
+     "nom": "sous_assurance",
+     "type": "booleen",
+     "description": "La valeur assurée est inférieure à la valeur réelle du bien sinistré."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Le risque est partagé avec d'autres assureurs ou compagnies."
+    },
+    {
+     "nom": "nombre_coassureurs",
+     "type": "entier",
+     "description": "Nombre d'autres compagnies impliquées dans la coassurance."
+    },
+    {
+     "nom": "regle_proportionnelle_applicable",
+     "type": "booleen",
+     "description": "Application probable de la règle de proportionnalité pour l'indemnisation."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Le sinistre a été déclaré avec retard par rapport à sa survenance."
+    },
+    {
+     "nom": "responsabilite_sous_traitant",
+     "type": "booleen",
+     "description": "La responsabilité d'un sous-traitant ou tiers est évoquée ou établie."
+    },
+    {
+     "nom": "fraude_suspectee",
+     "type": "booleen",
+     "description": "Suspicion ou indice de déclaration frauduleuse."
+    },
+    {
+     "nom": "libell_exclusion_ambigu",
+     "type": "booleen",
+     "description": "Le libellé d'une exclusion prête à interprétation ou fait débat."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Présence de pertes d'exploitation ou arrêt de production significatif."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "La réserve intègre les frais de défense estimés."
+    },
+    {
+     "nom": "statut_reserve",
+     "type": "texte",
+     "description": "Indique si la réserve a été ajustée récemment ou reste inchangée depuis ouverture."
+    },
+    {
+     "nom": "dernier_ajustement_reserve",
+     "type": "texte",
+     "description": "Motif du dernier ajustement de réserve (devis, expertise, frais de défense, etc.)."
+    },
+    {
+     "nom": "statut_contentieux",
+     "type": "texte",
+     "description": "Situation juridique du dossier (négociation, règlement amiable, contentieux, procédure judiciaire, assignation)."
+    },
+    {
+     "nom": "faute_inexcusable_evoquee",
+     "type": "booleen",
+     "description": "Les ayants droit plaident une faute inexcusable de l'assuré."
+    },
+    {
+     "nom": "action_groupee_envisagee",
+     "type": "booleen",
+     "description": "Une action groupée de victimes ou recours collectif est envisagé."
+    },
+    {
+     "nom": "gestionnaire_dossier",
+     "type": "texte",
+     "description": "Rôle ou catégorie du gestionnaire responsable du dossier."
+    }
+   ],
+   [
+    {
+     "nom": "numero_sinistre",
+     "type": "texte",
+     "description": "Identifiant unique du dossier de sinistre au format SIN-AAAA-NNNNN."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance couvrant le sinistre (RC produits, RC générale, Construction, Cyber, etc.)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou nature du sinistre (défaut de fabrication, dégât des eaux, fuite de données, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé des dommages en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant actuel de la réserve constituée en euros."
+    },
+    {
+     "nom": "ecart_reserve_eur",
+     "type": "decimal",
+     "description": "Différence entre le dommage estimé et la réserve actuelle en euros."
+    },
+    {
+     "nom": "statut_dossier",
+     "type": "texte",
+     "description": "État actuel du dossier : règlement amiable, transaction en cours, contentieux, procédure judiciaire, ou négociation."
+    },
+    {
+     "nom": "risque_partage",
+     "type": "booleen",
+     "description": "Indique si le risque est partagé entre plusieurs porteurs d'assurance."
+    },
+    {
+     "nom": "multiples_tiers",
+     "type": "booleen",
+     "description": "Indique si le sinistre fait l'objet de réclamations de multiples tiers lésés."
+    },
+    {
+     "nom": "contre_expertise",
+     "type": "booleen",
+     "description": "Indique si une contre-expertise contredit l'expertise de la compagnie."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si la déclaration du sinistre a été effectuée plusieurs mois après les faits."
+    },
+    {
+     "nom": "exclusion_contestee",
+     "type": "booleen",
+     "description": "Indique si l'assuré conteste l'application ou l'interprétation d'une exclusion."
+    },
+    {
+     "nom": "sous_assurance",
+     "type": "booleen",
+     "description": "Indique si la valeur assurée est inférieure à la valeur réelle du sinistre."
+    },
+    {
+     "nom": "victimes_corporelles",
+     "type": "booleen",
+     "description": "Indique si le sinistre a entraîné des blessés ou des dommages corporels."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indique si le sinistre a généré des pertes d'exploitation significatives."
+    },
+    {
+     "nom": "arret_production_semaines",
+     "type": "entier",
+     "description": "Nombre approximatif de semaines d'arrêt de production ou d'activité interrompue."
+    },
+    {
+     "nom": "responsabilite_sous_traitant",
+     "type": "booleen",
+     "description": "Indique si la responsabilité d'un sous-traitant est évoquée ou mise en cause."
+    },
+    {
+     "nom": "suspicion_fraude",
+     "type": "booleen",
+     "description": "Indique s'il existe une suspicion de déclaration frauduleuse."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "Indique si la réserve intègre désormais les frais de défense et de contentieux."
+    },
+    {
+     "nom": "reserve_revi_depuis_ouverture",
+     "type": "booleen",
+     "description": "Indique si la réserve a été révisée depuis l'ouverture du dossier."
+    },
+    {
+     "nom": "motif_revision_reserve",
+     "type": "texte",
+     "description": "Raison de la révision de réserve : rapport d'expertise, devis de reconstruction, ou autre."
+    },
+    {
+     "nom": "action_judiciaire_adverse",
+     "type": "booleen",
+     "description": "Indique si la partie adverse a engagé une action en justice."
+    }
+   ],
+   [
+    {
+     "nom": "numero_dossier",
+     "type": "texte",
+     "description": "Identifiant unique du sinistre au format SIN-AAAA-NNNNN."
+    },
+    {
+     "nom": "annee_sinistre",
+     "type": "entier",
+     "description": "Année de survenance du sinistre."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance concernée (RC produits, Environnement, Cyber, RC générale, Maritime, Construction, Dommages industriels)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou nature du sinistre (défaut de conception, pollution, interruption de service, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé du dommage en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve constituée en euros."
+    },
+    {
+     "nom": "ecart_reserve_dommage_eur",
+     "type": "decimal",
+     "description": "Différence entre la réserve actuelle et le dommage estimé en euros."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si la déclaration du sinistre a été effectuée avec retard."
+    },
+    {
+     "nom": "victimes_corporelles",
+     "type": "booleen",
+     "description": "Indique s'il y a des blessés ou atteintes corporelles graves."
+    },
+    {
+     "nom": "activite_interrompue",
+     "type": "booleen",
+     "description": "Indique si l'activité de l'assuré a été interrompue durablement."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indique s'il y a des pertes d'exploitation significatives ou arrêt de production."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indique si plusieurs assureurs interviennent en coassurance."
+    },
+    {
+     "nom": "sous_traitant_implique",
+     "type": "booleen",
+     "description": "Indique si la responsabilité ou l'implication d'un sous-traitant est évoquée."
+    },
+    {
+     "nom": "contestation_exclusion",
+     "type": "booleen",
+     "description": "Indique si l'assuré conteste l'application d'une exclusion."
+    },
+    {
+     "nom": "sous_assurance",
+     "type": "booleen",
+     "description": "Indique si la valeur assurée est inférieure à la valeur réelle du bien."
+    },
+    {
+     "nom": "status_contentieux",
+     "type": "texte",
+     "description": "État du dossier en matière de règlement (transaction en cours, règlement amiable, procédure judiciaire, aucune action engagée, assignation délivrée)."
+    },
+    {
+     "nom": "revision_reserve_motif",
+     "type": "texte",
+     "description": "Raison de la révision de réserve (rapport d'expertise, devis de reconstruction, intégration frais de défense, pas de révision)."
+    },
+    {
+     "nom": "tiers_leses_multiples",
+     "type": "booleen",
+     "description": "Indique s'il y a de nombreux tiers lésés se manifestant ou intervention de multiples porteurs."
+    },
+    {
+     "nom": "contre_expertise",
+     "type": "booleen",
+     "description": "Indique si une contre-expertise contredit l'expertise de l'assureur."
+    }
+   ]
+  ],
+  "schema": {
+   "champs": [
+    {
+     "nom": "numero_dossier",
+     "type": "texte",
+     "description": "Identifiant unique du dossier sinistre au format SIN-AAAA-NNNNN."
+    },
+    {
+     "nom": "date_sinistre",
+     "type": "date",
+     "description": "Date de survenance du sinistre (au moins l'année, idéalement la date complète)."
+    },
+    {
+     "nom": "pays",
+     "type": "texte",
+     "description": "Pays où le sinistre s'est produit."
+    },
+    {
+     "nom": "branche",
+     "type": "texte",
+     "description": "Branche d'assurance couvrant le sinistre (RC générale, RC produits, Environnement, Cyber, Construction, Dommages industriels, Aviation, Maritime)."
+    },
+    {
+     "nom": "origine_sinistre",
+     "type": "texte",
+     "description": "Cause ou nature du sinistre (collision, fuite de données, explosion, pollution, défaut de fabrication, etc.)."
+    },
+    {
+     "nom": "dommage_estime_eur",
+     "type": "decimal",
+     "description": "Montant estimé des dommages exprimé en euros."
+    },
+    {
+     "nom": "reserve_actuelle_eur",
+     "type": "decimal",
+     "description": "Montant de la réserve provisionnée actuellement en euros."
+    },
+    {
+     "nom": "ecart_reserve_eur",
+     "type": "decimal",
+     "description": "Différence entre le dommage estimé et la réserve actuelle (dommage_estime - reserve_actuelle) en euros. Calculé, stocké pour faciliter le pilotage."
+    },
+    {
+     "nom": "reserve_insuffisante",
+     "type": "booleen",
+     "description": "Indique si la réserve actuelle est inférieure au dommage estimé (sous-provisionnement)."
+    },
+    {
+     "nom": "revision_reserve_effectuee",
+     "type": "booleen",
+     "description": "Indique si la réserve a été révisée au moins une fois depuis l'ouverture du dossier."
+    },
+    {
+     "nom": "motif_revision_reserve",
+     "type": "texte",
+     "description": "Motif du dernier ajustement de réserve : rapport d'expertise, devis de reconstruction, intégration frais de défense, autre. Null si pas de révision."
+    },
+    {
+     "nom": "frais_defense_integres",
+     "type": "booleen",
+     "description": "Indique si la réserve intègre les frais de défense et de contentieux estimés."
+    },
+    {
+     "nom": "statut_contentieux",
+     "type": "texte",
+     "description": "État juridique du dossier : aucune action, négociation amiable, transaction en cours, assignation délivrée, procédure judiciaire."
+    },
+    {
+     "nom": "action_judiciaire_engagee",
+     "type": "booleen",
+     "description": "Indique si une procédure judiciaire formelle (y compris assignation) a été engagée par l'une ou l'autre des parties."
+    },
+    {
+     "nom": "declaration_tardive",
+     "type": "booleen",
+     "description": "Indique si le sinistre a été déclaré avec retard significatif après sa survenance."
+    },
+    {
+     "nom": "exclusion_contestee",
+     "type": "booleen",
+     "description": "Indique si l'assuré conteste l'application d'une exclusion contractuelle."
+    },
+    {
+     "nom": "ambiguite_exclusion",
+     "type": "booleen",
+     "description": "Indique si le libellé d'une exclusion prête à interprétation ou fait débat."
+    },
+    {
+     "nom": "divergence_experts",
+     "type": "booleen",
+     "description": "Indique si les experts des parties divergent (contre-expertise contradictoire) sur l'origine ou l'étendue du sinistre."
+    },
+    {
+     "nom": "sous_assurance",
+     "type": "booleen",
+     "description": "Indique si la valeur assurée est inférieure à la valeur réelle du bien sinistré."
+    },
+    {
+     "nom": "regle_proportionnelle_applicable",
+     "type": "booleen",
+     "description": "Indique si la règle de proportionnalité est applicable en raison d'une sous-assurance constatée."
+    },
+    {
+     "nom": "atteintes_corporelles",
+     "type": "booleen",
+     "description": "Indique si le sinistre implique des blessés, des atteintes corporelles graves ou des décès."
+    },
+    {
+     "nom": "faute_inexcusable_evoquee",
+     "type": "booleen",
+     "description": "Indique si les ayants droit ou victimes invoquent une faute inexcusable de l'assuré."
+    },
+    {
+     "nom": "tiers_leses_multiples",
+     "type": "booleen",
+     "description": "Indique si de nombreux tiers lésés se sont manifestés ou si une action groupée est envisagée."
+    },
+    {
+     "nom": "pertes_exploitation",
+     "type": "booleen",
+     "description": "Indique si le sinistre a généré des pertes d'exploitation ou un arrêt de production significatif."
+    },
+    {
+     "nom": "arret_production_semaines",
+     "type": "entier",
+     "description": "Nombre approximatif de semaines d'arrêt de production ou d'activité. Null si non applicable."
+    },
+    {
+     "nom": "coassurance",
+     "type": "booleen",
+     "description": "Indique si le risque est partagé avec d'autres assureurs en coassurance."
+    },
+    {
+     "nom": "nombre_coassureurs",
+     "type": "entier",
+     "description": "Nombre d'autres assureurs impliqués en coassurance. Null si coassurance = false."
+    },
+    {
+     "nom": "sous_traitant_implique",
+     "type": "booleen",
+     "description": "Indique si la responsabilité d'un sous-traitant ou tiers est évoquée ou mise en cause."
+    },
+    {
+     "nom": "fraude_suspectee",
+     "type": "booleen",
+     "description": "Indique s'il existe une suspicion ou un indice de déclaration frauduleuse."
+    },
+    {
+     "nom": "gestionnaire_dossier",
+     "type": "texte",
+     "description": "Rôle ou catégorie du gestionnaire responsable du dossier (ex. : gestionnaire junior, expert senior, juriste contentieux)."
+    }
+   ],
+   "ddl": "CREATE TABLE sinistres (\n    numero_dossier              VARCHAR(20)     NOT NULL PRIMARY KEY,\n    date_sinistre               DATE            NOT NULL,\n    pays                        VARCHAR(100)    NOT NULL,\n    branche                     VARCHAR(100)    NOT NULL,\n    origine_sinistre            VARCHAR(255)    NOT NULL,\n\n    -- Financier\n    dommage_estime_eur          NUMERIC(18,2)   NOT NULL,\n    reserve_actuelle_eur        NUMERIC(18,2)   NOT NULL,\n    ecart_reserve_eur           NUMERIC(18,2)   GENERATED ALWAYS AS (dommage_estime_eur - reserve_actuelle_eur) STORED,\n    reserve_insuffisante        BOOLEAN         NOT NULL DEFAULT FALSE,\n    revision_reserve_effectuee  BOOLEAN         NOT NULL DEFAULT FALSE,\n    motif_revision_reserve      VARCHAR(255),\n    frais_defense_integres      BOOLEAN         NOT NULL DEFAULT FALSE,\n\n    -- Situation juridique\n    statut_contentieux          VARCHAR(50)     NOT NULL\n                                    CHECK (statut_contentieux IN (\n                                        'aucune action',\n                                        'negociation amiable',\n                                        'transaction en cours',\n                                        'assignation delivree',\n                                        'procedure judiciaire'\n                                    )),\n    action_judiciaire_engagee   BOOLEAN         NOT NULL DEFAULT FALSE,\n    declaration_tardive         BOOLEAN         NOT NULL DEFAULT FALSE,\n\n    -- Garanties / contrat\n    exclusion_contestee         BOOLEAN         NOT NULL DEFAULT FALSE,\n    ambiguite_exclusion         BOOLEAN         NOT NULL DEFAULT FALSE,\n    sous_assurance              BOOLEAN         NOT NULL DEFAULT FALSE,\n    regle_proportionnelle_applicable BOOLEAN    NOT NULL DEFAULT FALSE,\n\n    -- Expertise\n    divergence_experts          BOOLEAN         NOT NULL DEFAULT FALSE,\n\n    -- Victimes / tiers\n    atteintes_corporelles       BOOLEAN         NOT NULL DEFAULT FALSE,\n    faute_inexcusable_evoquee   BOOLEAN         NOT NULL DEFAULT FALSE,\n    tiers_leses_multiples       BOOLEAN         NOT NULL DEFAULT FALSE,\n\n    -- Exploitation\n    pertes_exploitation         BOOLEAN         NOT NULL DEFAULT FALSE,\n    arret_production_semaines   SMALLINT        CHECK (arret_production_semaines >= 0),\n\n    -- Coassurance\n    coassurance                 BOOLEAN         NOT NULL DEFAULT FALSE,\n    nombre_coassureurs          SMALLINT        CHECK (nombre_coassureurs >= 0),\n\n    -- Responsabilité tiers\n    sous_traitant_implique      BOOLEAN         NOT NULL DEFAULT FALSE,\n    fraude_suspectee            BOOLEAN         NOT NULL DEFAULT FALSE,\n\n    -- Gestion\n    gestionnaire_dossier        VARCHAR(150),\n\n    CONSTRAINT chk_coassureurs_coherence\n        CHECK (coassurance = TRUE OR nombre_coassureurs IS NULL),\n    CONSTRAINT chk_motif_revision_coherence\n        CHECK (revision_reserve_effectuee = TRUE OR motif_revision_reserve IS NULL),\n    CONSTRAINT chk_arret_production_coherence\n        CHECK (pertes_exploitation = TRUE OR arret_production_semaines IS NULL)\n);"
+  }
+ }
+]

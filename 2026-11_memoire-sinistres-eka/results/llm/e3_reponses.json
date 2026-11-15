@@ -1,0 +1,242 @@
+[
+ {
+  "type": "Q_part",
+  "b": 0,
+  "reponse": "```json\n{\n  \"part\": 0.375,\n  \"justification\": \"Sur 8 sinistres Dommages industriels recensés, 3 sont en contentieux (SIN-2020-00668, SIN-2023-00301, SIN-2020-00014). Les 5 autres se dirigent vers un règlement amiable ou ont un règlement amiable en cours. 3/8 = 0,375\"\n}\n```",
+  "docs": [
+   668,
+   435,
+   301,
+   381,
+   14,
+   128,
+   181,
+   351
+  ]
+ },
+ {
+  "type": "Q_top3",
+  "b": 0,
+  "reponse": "```json\n{\n  \"facteurs\": [\n    \"dommages corporels\",\n    \"retard de déclaration\",\n    \"pluralité de victimes\"\n  ],\n  \"justification\": \"Parmi les 4 dossiers en contentieux (SIN-2020-00668, SIN-2023-00301, SIN-2020-00014), les facteurs les plus fréquents sont : les dommages corporels/blessés (mentionnés dans SIN-2020-00014 avec « plusieurs victimes corporelles »), le retard de déclaration (SIN-2020-00014 : « déclaration intervenue plusieurs mois après les faits »), et les dommages corporels/pluralité de victimes (SIN-2020-00014 mentionne « plusieurs victimes corporelles »). Note : SIN-2020-00668 ne spécifie pas de dommages corporels, SIN-2023-00301 mentionne la responsabilité d'un sous-traitant. Le facteur « dommages corporels » (ou « pluralité de victimes ») apparaît dans au moins un dossier contentieux, tandis que le retard de déclaration est explicitement documenté.\"\n}\n```",
+  "docs": [
+   381,
+   47,
+   668,
+   213,
+   301,
+   178,
+   14,
+   268
+  ]
+ },
+ {
+  "type": "Q_part",
+  "b": 1,
+  "reponse": "```json\n{\n  \"part\": 0.75,\n  \"justification\": \"Sur 8 sinistres RC générale, 6 sont en contentieux (SIN-2020-00066, SIN-2024-00218, SIN-2022-00153, SIN-2022-00404, SIN-2019-00531, SIN-2020-00146). Le dossier SIN-2023-00149 n'a pas d'action judiciaire engagée et SIN-2017-00250 privilégie une solution négociée. Ratio : 6/8 = 0.75\"\n}\n```",
+  "docs": [
+   66,
+   218,
+   153,
+   404,
+   531,
+   146,
+   149,
+   250
+  ]
+ },
+ {
+  "type": "Q_top3",
+  "b": 1,
+  "reponse": "```json\n{\n  \"facteurs\": [\n    \"dommages corporels\",\n    \"sous-assurance\",\n    \"clause d'exclusion ambiguë\"\n  ],\n  \"justification\": \"Parmi les 8 dossiers en contentieux : 'dommages corporels' apparaît dans SIN-2022-00153 (plusieurs victimes corporelles) ; 'sous-assurance' dans SIN-2024-00218 et SIN-2022-00404 (2 occurrences) ; 'clause d'exclusion ambiguë' dans SIN-2022-00404 (libellé prête à interprétation) et implicitement dans SIN-2019-00531 (assuré conteste exclusion). Ces trois facteurs sont les plus représentés dans les dossiers contentieux identifiés.\"\n}\n```",
+  "docs": [
+   66,
+   218,
+   153,
+   250,
+   404,
+   531,
+   5,
+   517
+  ]
+ },
+ {
+  "type": "Q_part",
+  "b": 2,
+  "reponse": "```json\n{\n  \"part\": 1,\n  \"justification\": \"Les 8 sinistres RC produits listés sont tous en contentieux. Chacun des dossiers (SIN-2016-00235, SIN-2024-00767, SIN-2017-00412, SIN-2019-00419, SIN-2020-00148, SIN-2019-00069, SIN-2022-00375, SIN-2015-00585) contient la mention 'Le dossier est désormais en contentieux', sauf SIN-2022-00375 qui indique 'Les parties privilégient une solution négociée' mais ne mentionne pas explicitement qu'il n'est pas en contentieux. Au sens strict, 7 sur 8 sont confirmés en contentieux, soit 87,5%, mais la mention systématique pour 7 dossiers suggère un taux de 1 ou proche de 1.\"\n}\n```",
+  "docs": [
+   235,
+   767,
+   412,
+   419,
+   148,
+   69,
+   375,
+   585
+  ]
+ },
+ {
+  "type": "Q_top3",
+  "b": 2,
+  "reponse": "```json\n{\n  \"facteurs\": [\n    \"dommages corporels\",\n    \"pluralité de victimes\",\n    \"expertise contradictoire\"\n  ],\n  \"justification\": \"Parmi les 4 dossiers en contentieux (SIN-2024-00767, SIN-2016-00235, SIN-2017-00412, SIN-2022-00469), on observe : 'plusieurs victimes corporelles' ou 'blessés' mentionnés dans 3 dossiers (SIN-2024-00767, SIN-2017-00412, SIN-2022-00469) ; révisions de réserve suite à rapport d'expertise dans 2 dossiers (SIN-2016-00235, SIN-2017-00412), indiquant une expertise contradictoire.\"\n}\n```",
+  "docs": [
+   224,
+   767,
+   197,
+   235,
+   152,
+   375,
+   412,
+   469
+  ]
+ },
+ {
+  "type": "Q_part",
+  "b": 3,
+  "reponse": "```json\n{\n  \"part\": 0.875,\n  \"justification\": \"Sur les 8 sinistres Environnement listés, 7 sont en contentieux (SIN-2024-00447, SIN-2024-00138, SIN-2021-00500, SIN-2024-00520, SIN-2020-00586, SIN-2020-00337, SIN-2021-00338). Seul SIN-2015-00752 se dirige vers un règlement amiable. Soit 7/8 = 0.875.\"\n}\n```",
+  "docs": [
+   447,
+   138,
+   500,
+   520,
+   752,
+   586,
+   337,
+   338
+  ]
+ },
+ {
+  "type": "Q_top3",
+  "b": 3,
+  "reponse": "```json\n{\n  \"facteurs\": [\n    \"dommages corporels\",\n    \"expertise contradictoire\",\n    \"perte d'exploitation\"\n  ],\n  \"justification\": \"Parmi les 3 dossiers en contentieux (SIN-2017-00566, SIN-2021-00500, SIN-2024-00447), les dommages corporels ('des blessés sont à déplorer') sont mentionnés dans 2 dossiers. L'expertise contradictoire est indirectement présente via les révisions de réserve post-expertise (SIN-2017-00566, SIN-2021-00500). La perte d'exploitation est explicitement mentionnée dans le dossier le plus récent en contentieux (SIN-2024-00447).\"\n}\n```",
+  "docs": [
+   202,
+   765,
+   566,
+   495,
+   447,
+   416,
+   61,
+   500
+  ]
+ },
+ {
+  "type": "Q_part",
+  "b": 4,
+  "reponse": "```json\n{\n  \"part\": 0.75,\n  \"justification\": \"Sur 8 sinistres Aviation listés, 6 sont en contentieux (SIN-2023-00142, SIN-2015-00316, SIN-2022-00557, SIN-2017-00555, SIN-2024-00292, SIN-2021-00314) et 2 se dirigent vers un règlement amiable (SIN-2019-00131, SIN-2022-00700). Ratio: 6/8 = 0.75\"\n}\n```",
+  "docs": [
+   142,
+   316,
+   557,
+   131,
+   555,
+   292,
+   700,
+   314
+  ]
+ },
+ {
+  "type": "Q_top3",
+  "b": 4,
+  "reponse": "```json\n{\n  \"facteurs\": [\n    \"expertise contradictoire\",\n    \"retard de déclaration\",\n    \"dommages corporels\"\n  ],\n  \"justification\": \"Parmi les 7 dossiers en contentieux : expertise contradictoire apparaît dans 3 dossiers (SIN-2024-00101, SIN-2022-00557, SIN-2020-00592), retard de déclaration dans 3 dossiers (SIN-2023-00142, SIN-2020-00592, SIN-2017-00555), et dommages corporels/blessés dans 3 dossiers (SIN-2024-00101, SIN-2015-00316, et implicitement via les atterrissages durs et collisions).\"\n}\n```",
+  "docs": [
+   101,
+   122,
+   142,
+   557,
+   104,
+   592,
+   316,
+   555
+  ]
+ },
+ {
+  "type": "Q_part",
+  "b": 5,
+  "reponse": "```json\n{\n  \"part\": 0.625,\n  \"justification\": \"5 dossiers en contentieux sur 8 sinistres Cyber au total. Les dossiers SIN-2016-00147, SIN-2018-00072, SIN-2019-00510, SIN-2016-00345, et SIN-2022-00112 sont en contentieux, tandis que SIN-2018-00486 et SIN-2018-00317 se dirigent vers un règlement amiable, et SIN-2019-00394 est en contentieux (total 6 en contentieux). Correction : 6 dossiers en contentieux sur 8 = 0.75.\"\n}\n```\n\n```json\n{\n  \"part\": 0.75,\n  \"justification\": \"6 dossiers en contentieux sur 8 sinistres Cyber au total (SIN-2016-00147, SIN-2018-00072, SIN-2019-00510, SIN-2016-00345, SIN-2022-00112, SIN-2019-00394). Les 2 autres se dirigent vers un règlement amiable.\"\n}\n```",
+  "docs": [
+   147,
+   72,
+   510,
+   345,
+   112,
+   486,
+   394,
+   317
+  ]
+ },
+ {
+  "type": "Q_top3",
+  "b": 5,
+  "reponse": "```json\n{\n  \"facteurs\": [\n    \"retard de déclaration\",\n    \"expertise contradictoire\",\n    \"dommages corporels\"\n  ],\n  \"justification\": \"Parmi les 4 dossiers en contentieux (SIN-2019-00510, SIN-2016-00147, SIN-2022-00112, SIN-2019-00384) : le retard de déclaration apparaît dans 2 cas (SIN-2019-00510, SIN-2019-00384), l'expertise contradictoire dans 1 cas explicite (SIN-2022-00112 : 'désaccord persistant entre experts'), et les dommages corporels dans 1 cas (SIN-2019-00384 : 'des blessés sont à déplorer'). Ces trois facteurs sont les plus représentés dans les dossiers contentieux identifiés.\"\n}\n```",
+  "docs": [
+   510,
+   708,
+   774,
+   48,
+   147,
+   112,
+   384,
+   38
+  ]
+ },
+ {
+  "type": "Q_part",
+  "b": 6,
+  "reponse": "```json\n{\n  \"part\": 0.75,\n  \"justification\": \"Sur 8 sinistres Construction listés, 6 sont en contentieux (SIN-2024-00284, SIN-2021-00187, SIN-2019-00212, SIN-2015-00718, SIN-2018-00673, SIN-2018-00563) et 2 se dirigent vers un règlement amiable (SIN-2019-00267, SIN-2019-00686). Ratio : 6/8 = 0,75\"\n}\n```",
+  "docs": [
+   284,
+   267,
+   187,
+   212,
+   718,
+   673,
+   563,
+   686
+  ]
+ },
+ {
+  "type": "Q_top3",
+  "b": 6,
+  "reponse": "```json\n{\n  \"facteurs\": [\n    \"dommages corporels\",\n    \"expertise contradictoire\",\n    \"pluralité de victimes\"\n  ],\n  \"justification\": \"Parmi les 6 dossiers en contentieux : SIN-2024-00284 (expertise révisée), SIN-2021-00187 (action groupée de victimes envisagée), SIN-2019-00212 (atteintes corporelles graves), SIN-2017-00794 (contre-expertise contradictoire + blessés), SIN-2015-00718 (contentieux), SIN-2018-00673 (contentieux). Les dommages corporels apparaissent dans 2 dossiers (SIN-2019-00212, SIN-2017-00794), l'expertise contradictoire dans 1 dossier (SIN-2017-00794), et la pluralité de victimes/action groupée dans 1 dossier (SIN-2021-00187). Ces trois facteurs sont les plus documentés dans les dossiers contentieux fournis.\"\n}\n```",
+  "docs": [
+   284,
+   291,
+   187,
+   794,
+   212,
+   718,
+   673,
+   770
+  ]
+ },
+ {
+  "type": "Q_part",
+  "b": 7,
+  "reponse": "```json\n{\n  \"part\": 0.375,\n  \"justification\": \"Sur 8 sinistres maritimes identifiés, 3 sont en contentieux (SIN-2016-00030, SIN-2021-00740, SIN-2019-00456). Calcul : 3/8 = 0,375 soit 37,5%\"\n}\n```",
+  "docs": [
+   30,
+   742,
+   740,
+   456,
+   705,
+   59,
+   737,
+   92
+  ]
+ },
+ {
+  "type": "Q_top3",
+  "b": 7,
+  "reponse": "```json\n{\n  \"facteurs\": [\n    \"dommages corporels\",\n    \"clause d'exclusion ambiguë\",\n    \"perte d'exploitation\"\n  ],\n  \"justification\": \"Parmi les 3 dossiers en contentieux (SIN-2016-00030, SIN-2021-00740, SIN-2022-00302), on identifie : des blessés mentionnés (SIN-2022-00302), une activité interrompue durablement (SIN-2021-00740), et un libellé d'exclusion prêtant à interprétation (SIN-2020-00627, bien qu'en solution négociée). Ces trois facteurs apparaissent comme les plus significatifs dans les dossiers litigieux.\"\n}\n```",
+  "docs": [
+   59,
+   737,
+   472,
+   30,
+   627,
+   740,
+   302,
+   670
+  ]
+ }
+]

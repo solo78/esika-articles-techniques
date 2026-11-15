@@ -8,5 +8,6 @@ Un dossier par article, nommé `AAAA-MM_sujet`.
 | Faire confiance aux données de ses partenaires : réputation des flux et provisions | [`2026-11_reputation-flux-donnees`](2026-11_reputation-flux-donnees) |
 | Imputer pour mieux contrôler ? Contrôle qualité d'un recensement d'affiliés | [`2026-11_imputation-controle-qualite`](2026-11_imputation-controle-qualite) |
 | Retirer l'humain de la boucle : des équipes d'agents IA pour construire et valider un tarif auto | [`2026-11_crews-agentiques-tarification`](2026-11_crews-agentiques-tarification) |
+| Une archive de sinistres ne se lit pas, elle s'interroge (knowledge management, EKA) | [`2026-11_memoire-sinistres-eka`](2026-11_memoire-sinistres-eka) |
 
 Les données utilisées sont synthétiques ou publiques (jeu freMTPL2freq de CASdatasets pour l'article sur les crews d'agents). Aucune donnée client.

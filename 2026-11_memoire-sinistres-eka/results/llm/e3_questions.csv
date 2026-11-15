@@ -1,0 +1,17 @@
+type,branche,vrai,rag_llm,sql_extrait,contentieux_dans_top8,meme_branche_dans_top8,succes_rag,succes_sql,ecart_3e_4e
+Q_part,Dommages industriels,0.297029702970297,0.375,0.3069306930693069,3.0,8.0,False,True,
+Q_top3,Dommages industriels,pluralité d'assureurs;retard de déclaration;sous-traitant impliqué,dommages corporels;pluralité de victimes;retard de déclaration,expertise contradictoire;retard de déclaration;sous-traitant impliqué,,,False,False,0.0
+Q_part,RC générale,0.27472527472527475,0.75,0.27472527472527475,6.0,8.0,False,True,
+Q_top3,RC générale,clause d'exclusion ambiguë;pluralité d'assureurs;pluralité de victimes,clause d'exclusion ambiguë;dommages corporels;sous-assurance,clause d'exclusion ambiguë;pluralité d'assureurs;pluralité de victimes,,,False,True,1.0
+Q_part,RC produits,0.27184466019417475,1.0,0.27184466019417475,7.0,8.0,False,True,
+Q_top3,RC produits,clause d'exclusion ambiguë;dommages corporels;pluralité de victimes,dommages corporels;expertise contradictoire;pluralité de victimes,clause d'exclusion ambiguë;dommages corporels;pluralité de victimes,,,False,True,1.0
+Q_part,Environnement,0.24324324324324326,0.875,0.25225225225225223,7.0,8.0,False,True,
+Q_top3,Environnement,perte d'exploitation;retard de déclaration;sous-traitant impliqué,dommages corporels;expertise contradictoire;perte d'exploitation,expertise contradictoire;retard de déclaration;sous-traitant impliqué,,,False,False,1.0
+Q_part,Aviation,0.3069306930693069,0.75,0.3069306930693069,6.0,8.0,False,True,
+Q_top3,Aviation,expertise contradictoire;perte d'exploitation;retard de déclaration,dommages corporels;expertise contradictoire;retard de déclaration,expertise contradictoire;perte d'exploitation;retard de déclaration,,,False,True,2.0
+Q_part,Cyber,0.2708333333333333,0.625,0.28125,6.0,8.0,False,True,
+Q_top3,Cyber,perte d'exploitation;retard de déclaration;sous-traitant impliqué,dommages corporels;expertise contradictoire;retard de déclaration,expertise contradictoire;perte d'exploitation;retard de déclaration,,,False,False,4.0
+Q_part,Construction,0.2916666666666667,0.75,0.3125,6.0,8.0,False,True,
+Q_top3,Construction,pluralité d'assureurs;pluralité de victimes;retard de déclaration,dommages corporels;expertise contradictoire;pluralité de victimes,pluralité d'assureurs;pluralité de victimes;retard de déclaration,,,False,True,1.0
+Q_part,Maritime,0.2871287128712871,0.375,0.297029702970297,3.0,8.0,False,True,
+Q_top3,Maritime,clause d'exclusion ambiguë;dommages corporels;perte d'exploitation,clause d'exclusion ambiguë;dommages corporels;perte d'exploitation,clause d'exclusion ambiguë;dommages corporels;expertise contradictoire,,,True,False,1.0

@@ -1,0 +1,138 @@
+{
+  "e1": {
+    "repetitions": 3,
+    "taille_schemas": [
+      30,
+      30,
+      30
+    ],
+    "couverture_par_attribut": {
+      "annee": 3,
+      "branche": 3,
+      "cause": 3,
+      "clause d'exclusion ambiguë": 3,
+      "contentieux": 3,
+      "dommages corporels": 3,
+      "expertise contradictoire": 3,
+      "faute inexcusable": 3,
+      "fraude suspectée": 3,
+      "montant": 3,
+      "pays": 3,
+      "perte d'exploitation": 3,
+      "pluralité d'assureurs": 3,
+      "pluralité de victimes": 3,
+      "reserve": 3,
+      "retard de déclaration": 3,
+      "sanctions internationales": 1,
+      "sous-assurance": 3,
+      "sous-traitant impliqué": 3
+    }
+  },
+  "e2": {
+    "n_dossiers": 800,
+    "n_champs": 12800,
+    "dossiers_extraits": 800,
+    "exactitude_globale": 0.9853125,
+    "ic95": [
+      0.9830754698125211,
+      0.9873246804989413
+    ],
+    "exactitude_par_champ": {
+      "annee": 1.0,
+      "branche": 1.0,
+      "cause": 1.0,
+      "contentieux": 0.9925,
+      "f0": 1.0,
+      "f1": 0.9938,
+      "f2": 0.87,
+      "f3": 1.0,
+      "f4": 1.0,
+      "f5": 0.9788,
+      "f6": 1.0,
+      "f7": 0.9588,
+      "f8": 0.98,
+      "montant": 0.9988,
+      "pays": 1.0,
+      "reserve": 0.9925
+    },
+    "taux_manquants": 0.01125,
+    "facteurs_rappel": 0.9840637450199203,
+    "facteurs_rappel_ic95": [
+      0.9742492368216257,
+      0.9908643313853319
+    ],
+    "facteurs_faux_positifs": 0.025661717236927006,
+    "facteurs_faux_positifs_ic95": [
+      0.02186837198990795,
+      0.029910015226519832
+    ],
+    "facteurs_null_sur_absents": 0.023240800516462233,
+    "facteurs_faux_positifs_hors_f2_f7": 0.004621848739495782,
+    "facteurs_faux_positifs_hors_f2_f7_ic95": [
+      0.0028986862503580825,
+      0.006989220096695315
+    ],
+    "faux_positifs_par_facteur": {
+      "f0": 0.0,
+      "f1": 0.0076,
+      "f2": 0.1444,
+      "f3": 0.0,
+      "f4": 0.0,
+      "f5": 0.0243,
+      "f6": 0.0,
+      "f7": 0.0461,
+      "f8": 0.0
+    },
+    "n_facteurs_presents": 1004,
+    "n_facteurs_absents": 6196
+  },
+  "e3": {
+    "Q_part": {
+      "n": 8,
+      "succes_rag": 0,
+      "succes_sql": 8,
+      "ic95_rag": [
+        0.0,
+        0.3694166475528192
+      ],
+      "ic95_sql": [
+        0.6305833524471807,
+        1.0
+      ],
+      "mcnemar": {
+        "sql_seul": 8,
+        "rag_seul": 0,
+        "p_exact": 0.0078125
+      }
+    },
+    "Q_top3": {
+      "n": 8,
+      "succes_rag": 1,
+      "succes_sql": 4,
+      "ic95_rag": [
+        0.0031597235312519063,
+        0.5265096708752065
+      ],
+      "ic95_sql": [
+        0.15701277048705795,
+        0.842987229512942
+      ],
+      "mcnemar": {
+        "sql_seul": 4,
+        "rag_seul": 1,
+        "p_exact": 0.375
+      }
+    }
+  },
+  "appels": {
+    "n": 111,
+    "cout_total_usd": 1.231,
+    "jetons_entree": 285529,
+    "jetons_sortie": 167838,
+    "arrets_max_tokens": 0,
+    "par_modele": {
+      "claude-haiku-4-5": 1.0716,
+      "claude-sonnet-4-6": 0.1594
+    }
+  }
+}
