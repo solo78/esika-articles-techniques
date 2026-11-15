@@ -80,7 +80,7 @@ Le dossier est désormais en contentieux.
 La réserve intègre désormais les frais de défense.
 ```
 
-Ces textes sont **beaucoup plus propres** que de vrais courriels : un seul dossier par message, les faits énoncés clairement, sans fil de discussion ni pièce jointe. C'est la principale limite de l'exercice, et elle joue dans les deux sens (section 10).
+Ces textes sont **beaucoup plus propres** que de vrais courriels : un seul dossier par message, les faits énoncés clairement, sans fil de discussion ni pièce jointe. C'est la principale limite de l'exercice, et elle joue dans les deux sens (section 11).
 
 ## 5. Les dispositifs comparés
 
@@ -117,7 +117,7 @@ Les critères ont été fixés avant toute exécution et consignés dans le jour
 
 **L'erreur d'extraction.** Par défaut, 92 % des champs sont corrects, comme dans le papier. Sensibilité à 98 %, 85 % et 70 %, avec les mêmes tirages aléatoires pour tous les niveaux.
 
-**Le schéma induit.** Un facteur entre dans le schéma s'il apparaît au moins 5 fois dans un échantillon de 200 synthèses. Les facteurs rares en sont donc généralement absents. Le volet LLM montrera que cette hypothèse était fausse.
+**Le schéma induit.** Un facteur entre dans le schéma s'il apparaît au moins 5 fois dans un échantillon de 200 synthèses. Les facteurs rares en sont donc généralement absents. Le volet LLM montrera que cette hypothèse était trop pessimiste.
 
 **L'ampleur.** 300 simulations de 5 000 dossiers, soit 1 500 questions par type (1 455 pour les 3 facteurs, certaines archives comptant moins de 5 branches où la question est bien posée). Les comparaisons utilisent des tests de Wilcoxon appariés sur le taux de succès par simulation, et les intervalles sont ceux de Clopper-Pearson.
 
@@ -224,7 +224,7 @@ Pour un assureur, une mutuelle ou une caisse de retraite qui voudrait interroger
 
 ## 11. Limites
 
-- **Des textes trop propres.** Nos synthèses énoncent les faits clairement, sans fil de discussion ni pièce jointe. Cela avantage la recherche par mots-clés (le BM25 top-50) et l'extraction (97 %). Sur de vrais courriels, on peut attendre un écart plus net en faveur de la table pour le BM25, et moins net pour l'extraction.
+- **Des textes trop propres.** Nos synthèses énoncent les faits clairement, sans fil de discussion ni pièce jointe. Cela avantage la recherche par mots-clés (le BM25 top-50) et l'extraction (98,5 %). Sur de vrais courriels, on peut attendre un écart plus net en faveur de la table pour le BM25, et moins net pour l'extraction.
 - **Un proxy d'embeddings.** La LSA remplace multilingual-e5-large. Le constat principal n'en dépend pas : même une recherche parfaite ne renvoie que k documents. En revanche, le chiffre exact des précédents trouvés par le RAG (ratio de 0,74) dépend de cette approximation.
 - **Des choix faits en connaissant le générateur.** La similarité « vraie » des précédents, les poids qui combinent texte et structure dans la double vue, et la liste des facteurs ont été définis par nous, qui connaissions la forme des données. Le schéma de référence de l'extraction aussi. Surtout, la table et l'oracle classent les précédents avec la fonction de notation elle-même : leur avantage sur le RAG pour cette question est en partie construit.
 - **Faux positifs des facteurs rares non mesurés.** Le scénario calibré leur applique le taux mesuré sur les facteurs fréquents, encadré par deux valeurs (2,6 % et 0,46 %).
