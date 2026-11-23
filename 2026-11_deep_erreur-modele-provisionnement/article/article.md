@@ -102,8 +102,6 @@ Si tous les modèles plausibles donnent à peu près la même provision, l'erreu
 
 *Où en sommes-nous ? Nous avons le problème (le choix du modèle) et l'idée (faire voter). Voici les six briques, dans l'ordre où le code les exécute, chacune appliquée au fil rouge.*
 
-![Les six briques de la méthode, dans l'ordre du code.](images/fig0_carte_du_papier.jpg)
-
 ### Brique 1 : fabriquer la famille de modèles
 
 **Pourquoi.** Pour faire voter des modèles, il faut des candidats. Les écrire à la main serait arbitraire et limité. Le LASSO les fabrique automatiquement.
