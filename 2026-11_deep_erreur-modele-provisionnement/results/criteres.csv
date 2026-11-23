@@ -1,0 +1,25 @@
+critere,jeu,apriori,valeur,verifie
+"C1 bootstrap (portes x 1,1) épaissit l'IMSE",1,1se,0.26 % -> 1.49 %,True
+"C3 portes x 1,1 / Table 2 : rapport entre 1,2 et 1,8",1,1se,non évaluable : 3.07 calculé sur 3 réplications gardées avec la Table 2,
+"C3 bis (ajouté après exécution) portes x 1,2 / x 1,1 : rapport entre 1,2 et 1,8",1,1se,1.04,False
+C5 sous-total entre 5 % et 20 %,1,1se,7.3 %,True
+C6 moyenne a posteriori proche du 1se brut (< 3 %),1,1se,0.08 %,True
+"C1 bootstrap (portes x 1,1) épaissit l'IMSE",1,minCV,0.71 % -> 1.40 %,True
+"C3 portes x 1,1 / Table 2 : rapport entre 1,2 et 1,8",1,minCV,non évaluable : 3.39 calculé sur 7 réplications gardées avec la Table 2,
+"C3 bis (ajouté après exécution) portes x 1,2 / x 1,1 : rapport entre 1,2 et 1,8",1,minCV,1.05,False
+C5 sous-total entre 5 % et 20 %,1,minCV,8.0 %,True
+C6 moyenne a posteriori proche du 1se brut (< 3 %),1,minCV,2.17 %,True
+"C2 modèle bien ajusté éliminé par les portes (poids avant élagage >= 0,05)",1,1se,"0 modèle(s) ; 481 éliminés, poids total avant élagage 0.0000",False
+C4 PaE LASSO 1se > PaE GLM structure connue,1,1se,7.1 % contre 8.9 %,False
+"C1 bootstrap (portes x 1,1) épaissit l'IMSE",2,1se,0.47 % -> 1.83 %,True
+"C3 portes x 1,1 / Table 2 : rapport entre 1,2 et 1,8",2,1se,1.39,True
+"C3 bis (ajouté après exécution) portes x 1,2 / x 1,1 : rapport entre 1,2 et 1,8",2,1se,1.07,False
+C5 sous-total entre 5 % et 20 %,2,1se,7.0 %,True
+C6 moyenne a posteriori proche du 1se brut (< 3 %),2,1se,0.11 %,True
+"C1 bootstrap (portes x 1,1) épaissit l'IMSE",2,minCV,0.32 % -> 1.34 %,True
+"C3 portes x 1,1 / Table 2 : rapport entre 1,2 et 1,8",2,minCV,1.12,False
+"C3 bis (ajouté après exécution) portes x 1,2 / x 1,1 : rapport entre 1,2 et 1,8",2,minCV,1.05,False
+C5 sous-total entre 5 % et 20 %,2,minCV,9.0 %,True
+C6 moyenne a posteriori proche du 1se brut (< 3 %),2,minCV,0.21 %,True
+"C2 modèle bien ajusté éliminé par les portes (poids avant élagage >= 0,05)",2,1se,"0 modèle(s) ; 450 éliminés, poids total avant élagage 0.0000",False
+C4 PaE LASSO 1se > PaE GLM structure connue,2,1se,6.7 % contre 5.7 %,True

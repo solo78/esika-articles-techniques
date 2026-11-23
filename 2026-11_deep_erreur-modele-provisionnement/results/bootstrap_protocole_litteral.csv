@@ -1,0 +1,3 @@
+jeu,apriori,residus,elargissement_portes,replications_gardees,B,provision_moyenne,sous_total_cov,provision_1se_bootstrap_p05,provision_1se_bootstrap_p50,provision_1se_bootstrap_p95
+1,1se,Gamma (protocole littéral),1.0,19,300,228712081866.02286,0.1277940092831085,8.221302e+10,2.3361569e+11,1.0516798e+12
+1,1se,Gamma (protocole littéral),1.1,92,300,208513953754.6249,0.14113541074068725,8.221302e+10,2.3361569e+11,1.0516798e+12

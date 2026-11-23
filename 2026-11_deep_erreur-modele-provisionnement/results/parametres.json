@@ -1,0 +1,1 @@
+{"B": 300, "n_real": 20, "seeds": {"1": 1, "2": 2}, "boot_seed": 2023, "widens": [1.0, 1.1, 1.2, 1.3], "work_widen": 1.1, "bootstrap_residus": "ODP (variance proportionnelle a mu)", "npad": 5}

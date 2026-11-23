@@ -1,0 +1,72 @@
+{
+ "fil_rouge_provision_vraie_inflation_arretee": 39928.4433615624,
+ "fil_rouge_provision_vraie_si_inflation_continue": 43715.227341335034,
+ "jeu1_vote_moyenne": 0.2388963763236181,
+ "jeu1_vote_ic95": [
+  0.16777607316903614,
+  0.31001667947820005
+ ],
+ "jeu1_vote_t": 7.030564268961481,
+ "jeu1_vote_p": 1.0794997417224048e-06,
+ "jeu1_vote_hors_bande_commune": 15,
+ "jeu1_mack_moyenne": -0.003917303067503165,
+ "jeu1_mack_ic95": [
+  -0.059299686633417684,
+  0.05146508049841135
+ ],
+ "jeu1_mack_t": -0.14804363808093154,
+ "jeu1_mack_p": 0.8838681655541546,
+ "jeu1_mack_hors_bande_commune": 2,
+ "jeu1_mack_cov_annonce_min_med_max": [
+  0.0694500763284225,
+  0.1113870678860184,
+  0.9191034084381008
+ ],
+ "jeu1_glm_moyenne": 0.015643858277455958,
+ "jeu1_glm_ecart_type": 0.1525676040230492,
+ "jeu1_glm_ic95": [
+  -0.05575915773847194,
+  0.08704687429338386
+ ],
+ "jeu1_glm_surestimations": 9,
+ "jeu2_vote_moyenne": 0.3467332022708952,
+ "jeu2_vote_ic95": [
+  0.2799932150157146,
+  0.4134731895260758
+ ],
+ "jeu2_vote_t": 10.873854830691064,
+ "jeu2_vote_p": 1.3428032536791684e-09,
+ "jeu2_vote_hors_bande_commune": 19,
+ "jeu2_mack_moyenne": 0.025858661027836995,
+ "jeu2_mack_ic95": [
+  -0.03209539954973956,
+  0.08381272160541356
+ ],
+ "jeu2_mack_t": 0.9338914134171052,
+ "jeu2_mack_p": 0.36207753495242995,
+ "jeu2_mack_hors_bande_commune": 3,
+ "jeu2_mack_cov_annonce_min_med_max": [
+  0.0685784922532036,
+  0.11128837351990616,
+  0.8929027317236817
+ ],
+ "jeu2_glm_moyenne": 0.01051133179647945,
+ "jeu2_glm_ecart_type": 0.15534869066915974,
+ "jeu2_glm_ic95": [
+  -0.06219325787661824,
+  0.08321592146957714
+ ],
+ "jeu2_glm_surestimations": 9,
+ "jeu1_elimines": 481,
+ "jeu1_elimines_mieux_ajustes_que_1se": 389,
+ "jeu1_poids_1se_dans_vote": 0.2449642559038939,
+ "jeu1_mode_vote_q": 110,
+ "jeu1_q_1se": 110,
+ "jeu1_part_cellules_plancher": 0.010971544715447154,
+ "jeu2_elimines": 450,
+ "jeu2_elimines_mieux_ajustes_que_1se": 367,
+ "jeu2_poids_1se_dans_vote": 0.11020950888034627,
+ "jeu2_mode_vote_q": 109,
+ "jeu2_q_1se": 110,
+ "jeu2_part_cellules_plancher": 0.008471544715447154
+}
